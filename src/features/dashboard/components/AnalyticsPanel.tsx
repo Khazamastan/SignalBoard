@@ -1,10 +1,9 @@
-import { Card } from "@design-system";
-import styles from "./AnalyticsPanel.module.css";
+import { Card } from '@design-system';
+import type { AnalyticsSeries } from '@/features/dashboard/types';
 
-export type AnalyticsSeries = {
-  range: string;
-  points: Array<{ label: string; value: number }>;
-};
+import styles from './AnalyticsPanel.module.css';
+
+export type { AnalyticsSeries } from '@/features/dashboard/types';
 
 export function AnalyticsPanel({ series }: { series: AnalyticsSeries }) {
   const maxValue = Math.max(...series.points.map((point) => point.value));

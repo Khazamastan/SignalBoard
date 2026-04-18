@@ -1,5 +1,5 @@
-import type { ComponentType } from "react";
-import type { IconProps } from "@design-system";
+import type { ComponentType } from 'react';
+import type { IconProps } from '@design-system';
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -8,31 +8,25 @@ import {
   RevenueIcon,
   SessionsIcon,
   UsersIcon,
-} from "@design-system";
-import styles from "./StatsCard.module.css";
+} from '@design-system';
+import type { StatCardData } from '@/features/dashboard/types';
 
-export type StatCardData = {
-  id: string;
-  metric: string;
-  value: string;
-  trend: {
-    direction: "up" | "down";
-    percentage: number;
-  };
-  icon: "users" | "revenue" | "sessions" | "conversion";
-};
+import styles from './StatsCard.module.css';
 
-const ICON_BY_METRIC: Record<StatCardData["icon"], ComponentType<IconProps>> = {
+const iconByMetric: Record<StatCardData['icon'], ComponentType<IconProps>> = {
   users: UsersIcon,
   revenue: RevenueIcon,
   sessions: SessionsIcon,
   conversion: ConversionIcon,
 };
 
+export type { StatCardData } from '@/features/dashboard/types';
+
 export function StatsCard({ data }: { data: StatCardData }) {
-  const trendClass = data.trend.direction === "up" ? styles.up : styles.down;
-  const TrendArrowIcon = data.trend.direction === "up" ? ArrowUpIcon : ArrowDownIcon;
-  const MetricIcon = ICON_BY_METRIC[data.icon];
+  const trendClass = data.trend.direction === 'up' ? styles.up : styles.down;
+  const trendArrow = data.trend.direction === 'up' ? ArrowUpIcon : ArrowDownIcon;
+  const MetricIcon = iconByMetric[data.icon];
+  const TrendArrowIcon = trendArrow;
 
   return (
     <div className={styles.card}>

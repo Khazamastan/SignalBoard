@@ -1,6 +1,7 @@
-import type { StatCardData } from "./StatsCard";
-import { StatsCard } from "./StatsCard";
-import styles from "./StatsGrid.module.css";
+import type { StatCardData } from '@/features/dashboard/types';
+
+import { StatsCard } from './StatsCard';
+import styles from './StatsGrid.module.css';
 
 export function StatsGrid({ stats }: { stats: StatCardData[] }) {
   return (

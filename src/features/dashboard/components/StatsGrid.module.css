@@ -1,7 +1,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-md, 1rem);
+  gap: var(--space-md);
 }
 
 @media (max-width: 64rem) {
