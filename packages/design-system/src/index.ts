@@ -18,8 +18,8 @@ export type {
 export { Pagination } from "./components/DataTable/Pagination";
 export type { PaginationProps } from "./components/DataTable/Pagination";
 
-export { ThemeProvider, useTheme } from "./theme/ThemeProvider";
 export { ThemeToggle } from "./theme/ThemeToggle";
+export type { ThemeMode } from "./theme/ThemeToggle";
 
 export type { IconProps } from "./icons";
 export {

@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { classNames } from "../../utils/classNames";
 import styles from "./InputField.module.css";
@@ -43,35 +41,14 @@ export function InputField({
   suffix,
   hideMeta = false,
   floatingLabel = false,
-  value,
-  defaultValue,
   disabled,
   readOnly,
-  onChange,
-  onFocus,
-  onBlur,
+  placeholder,
   ...props
 }: InputFieldProps) {
   const reactId = React.useId().replace(/:/g, "");
   const generatedId = `${normalizeIdSeed(label)}-${reactId}`;
   const inputId = id ?? generatedId;
-
-  const isControlled = value !== undefined;
-  const [internalValue, setInternalValue] = React.useState<string>(() => {
-    if (defaultValue === undefined || defaultValue === null) {
-      return "";
-    }
-    return String(defaultValue);
-  });
-  const [isFocused, setIsFocused] = React.useState(false);
-
-  const currentValue = isControlled
-    ? value === undefined || value === null
-      ? ""
-      : String(value)
-    : internalValue;
-  const hasValue = currentValue.length > 0;
-  const valueProps = isControlled ? { value } : { defaultValue };
 
   const showMeta = !hideMeta;
   const hasCounter = counter !== undefined && counter !== null && counter !== false;
@@ -79,13 +56,13 @@ export function InputField({
   const errorId = showMeta && error ? `${inputId}-error` : undefined;
   const counterId = showMeta && hasCounter ? `${inputId}-counter` : undefined;
   const describedBy = [helperId, errorId, counterId].filter(Boolean).join(" ") || undefined;
+  const resolvedPlaceholder = floatingLabel ? placeholder ?? " " : placeholder;
 
   return (
     <div
       className={classNames(
         styles.field,
         floatingLabel && styles.floating,
-        (isFocused || hasValue) && styles.floatActive,
         disabled && styles.disabled,
         readOnly && styles.readOnly,
         !!error && styles.hasError,
@@ -106,39 +83,22 @@ export function InputField({
         ) : null}
 
         <div className={styles.inputWrap}>
+          <input
+            id={inputId}
+            disabled={disabled}
+            readOnly={readOnly}
+            placeholder={resolvedPlaceholder}
+            aria-invalid={!!error || undefined}
+            aria-describedby={describedBy}
+            className={styles.input}
+            {...props}
+          />
+
           {label && floatingLabel ? (
             <label htmlFor={inputId} className={styles.floatingLabel}>
               {label}
             </label>
           ) : null}
-
-          <input
-            id={inputId}
-            disabled={disabled}
-            readOnly={readOnly}
-            aria-invalid={!!error || undefined}
-            aria-describedby={describedBy}
-            className={classNames(
-              styles.input,
-              floatingLabel && styles.inputFloating,
-            )}
-            onChange={(event) => {
-              if (!isControlled) {
-                setInternalValue(event.target.value);
-              }
-              onChange?.(event);
-            }}
-            onFocus={(event) => {
-              setIsFocused(true);
-              onFocus?.(event);
-            }}
-            onBlur={(event) => {
-              setIsFocused(false);
-              onBlur?.(event);
-            }}
-            {...props}
-            {...valueProps}
-          />
         </div>
 
         {suffix ? (

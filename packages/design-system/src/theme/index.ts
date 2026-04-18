@@ -1,1 +1,1 @@
-export { ThemeProvider, useTheme, type ThemeMode } from "./ThemeProvider";
+export { ThemeToggle, type ThemeMode } from "./ThemeToggle";

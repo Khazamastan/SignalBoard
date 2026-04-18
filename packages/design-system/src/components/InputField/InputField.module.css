@@ -63,8 +63,7 @@
   line-height: var(--line-height-normal, 1.45);
 }
 
-.field:not(.floating) .input,
-.inputFloating {
+.field:not(.floating) .input {
   padding: var(--space-sm, 0.75rem);
 }
 
@@ -72,8 +71,7 @@
   color: transparent;
 }
 
-.field:not(.floating) .input::placeholder,
-.inputFloating::placeholder {
+.field:not(.floating) .input::placeholder {
   color: var(--text-secondary);
 }
 
@@ -99,7 +97,8 @@
       var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
 }
 
-.floatActive .floatingLabel {
+.floating .input:focus + .floatingLabel,
+.floating .input:not(:placeholder-shown) + .floatingLabel {
   transform: translateY(calc(var(--space-sm, 0.75rem) * -1.75)) scale(0.82);
   color: var(--color-primary-base);
 }
