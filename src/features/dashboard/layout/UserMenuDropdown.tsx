@@ -2,7 +2,7 @@ import { ChevronRightIcon, ExternalLinkIcon } from '@design-system';
 import type { Translate } from '@/shared/i18n';
 
 import styles from './UserMenuDropdown.module.css';
-import { DASHBOARD_LAYOUT_COPY } from './constants';
+import { DASHBOARD_LAYOUT_COPY, DASHBOARD_LAYOUT_ICON_SIZES } from './constants';
 
 type UserMenuDropdownProps = {
   t: Translate;
@@ -31,11 +31,11 @@ export function UserMenuDropdown({ t }: UserMenuDropdownProps) {
 
         <button type="button" className={styles.dropdownLink}>
           <span className={styles.dropdownLabel}>{t('layout.userSettings')}</span>
-          <ChevronRightIcon size={14} />
+          <ChevronRightIcon size={DASHBOARD_LAYOUT_ICON_SIZES.userMenu} />
         </button>
         <button type="button" className={styles.dropdownLink}>
           <span className={styles.dropdownLabel}>{t('layout.userLogout')}</span>
-          <ExternalLinkIcon size={14} />
+          <ExternalLinkIcon size={DASHBOARD_LAYOUT_ICON_SIZES.userMenu} />
         </button>
       </div>
     </details>

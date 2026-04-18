@@ -3,14 +3,24 @@ import { Button, ChartBarIcon, InputField, MenuIcon, SearchIcon, ThemeToggle } f
 import type { Translate } from '@/shared/i18n';
 
 import styles from './ChromeHeader.module.css';
+import { DASHBOARD_LAYOUT_ICON_SIZES, DASHBOARD_LAYOUT_IDS, DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL } from './constants';
 import { UserMenuDropdown } from './UserMenuDropdown';
 
 type ChromeHeaderProps = {
   t: Translate;
-  onOpenMobileSidebar: () => void;
+  isMobileSidebarOpen: boolean;
+  onToggleMobileSidebar: () => void;
 };
 
-export function ChromeHeader({ t, onOpenMobileSidebar }: ChromeHeaderProps) {
+export function ChromeHeader({
+  t,
+  isMobileSidebarOpen,
+  onToggleMobileSidebar,
+}: ChromeHeaderProps) {
+  const mobileMenuAriaLabel = isMobileSidebarOpen
+    ? t('layout.closeNavigationMenu')
+    : t('layout.openNavigationMenu');
+
   return (
     <header className={styles.header}>
       <div className={styles.brand}>
@@ -18,16 +28,22 @@ export function ChromeHeader({ t, onOpenMobileSidebar }: ChromeHeaderProps) {
           <Button
             variant="ghost"
             size="small"
-            onClick={onOpenMobileSidebar}
-            aria-label={t('layout.openNavigationMenu')}
+            onClick={onToggleMobileSidebar}
+            aria-label={mobileMenuAriaLabel}
+            aria-expanded={isMobileSidebarOpen}
+            aria-controls={DASHBOARD_LAYOUT_IDS.primaryNavigation}
           >
-            <MenuIcon size={18} />
+            {isMobileSidebarOpen ? (
+              <span className={styles.mobileMenuText}>{DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL}</span>
+            ) : (
+              <MenuIcon size={DASHBOARD_LAYOUT_ICON_SIZES.header} />
+            )}
           </Button>
         </div>
 
         <Link href="/" className={styles.logoLink} aria-label={t('layout.goToHome')}>
           <span className={styles.logo} aria-hidden>
-            <ChartBarIcon size={18} />
+            <ChartBarIcon size={DASHBOARD_LAYOUT_ICON_SIZES.header} />
           </span>
         </Link>
 
@@ -42,7 +58,7 @@ export function ChromeHeader({ t, onOpenMobileSidebar }: ChromeHeaderProps) {
           placeholder={t('layout.searchDashboard')}
           aria-label={t('layout.searchDashboard')}
           floatingLabel={false}
-          prefix={<SearchIcon size={24} />}
+          prefix={<SearchIcon size={DASHBOARD_LAYOUT_ICON_SIZES.search} />}
           hideMeta
         />
       </div>

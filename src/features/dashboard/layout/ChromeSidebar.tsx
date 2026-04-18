@@ -5,6 +5,11 @@ import type { Translate } from '@/shared/i18n';
 import { classNames } from '@/shared/utils/class-names';
 
 import styles from './ChromeSidebar.module.css';
+import {
+  DASHBOARD_LAYOUT_ICON_SIZES,
+  DASHBOARD_LAYOUT_IDS,
+  DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL,
+} from './constants';
 import { navItems } from './navigation-items';
 
 type ChromeSidebarProps = {
@@ -26,6 +31,7 @@ export function ChromeSidebar({
 }: ChromeSidebarProps) {
   return (
     <aside
+      id={DASHBOARD_LAYOUT_IDS.primaryNavigation}
       className={classNames(
         styles.sidebar,
         isCollapsed && styles.collapsed,
@@ -39,12 +45,27 @@ export function ChromeSidebar({
         </span>
 
         <Button
+          className={styles.desktopControl}
           variant="ghost"
           size="small"
           onClick={onToggleCollapsed}
           aria-label={isCollapsed ? t('layout.expandSidebar') : t('layout.collapseSidebar')}
         >
-          {isCollapsed ? <ChevronRightIcon size={18} /> : <ChevronLeftIcon size={18} />}
+          {isCollapsed ? (
+            <ChevronRightIcon size={DASHBOARD_LAYOUT_ICON_SIZES.header} />
+          ) : (
+            <ChevronLeftIcon size={DASHBOARD_LAYOUT_ICON_SIZES.header} />
+          )}
+        </Button>
+
+        <Button
+          className={styles.mobileControl}
+          variant="ghost"
+          size="small"
+          onClick={onCloseMobileSidebar}
+          aria-label={t('layout.closeNavigationMenu')}
+        >
+          {DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL}
         </Button>
       </div>
 
@@ -64,7 +85,7 @@ export function ChromeSidebar({
                   aria-current={isActive ? 'page' : undefined}
                 >
                   <span className={styles.navIcon} aria-hidden>
-                    <item.Icon size={18} />
+                    <item.Icon size={DASHBOARD_LAYOUT_ICON_SIZES.header} />
                   </span>
                   <span className={isCollapsed ? styles.navLabelHidden : ''}>{itemLabel}</span>
                 </Link>

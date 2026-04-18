@@ -22,6 +22,11 @@
   display: none;
 }
 
+.mobileMenuText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
 .logo {
   width: calc(var(--space-lg) + var(--space-sm));
   aspect-ratio: 1;

@@ -7,6 +7,7 @@ import { createTranslator, type MessageCatalog } from '@/shared/i18n';
 import styles from './DashboardShell.module.css';
 import { ChromeHeader } from './ChromeHeader';
 import { ChromeSidebar } from './ChromeSidebar';
+import { DASHBOARD_LAYOUT_IDS } from './constants';
 import { navItems } from './navigation-items';
 
 type DashboardChromeProps = {
@@ -36,7 +37,13 @@ export function DashboardChrome({ messages, children }: DashboardChromeProps) {
 
   return (
     <div className={styles.shell}>
-      <ChromeHeader t={t} onOpenMobileSidebar={() => setMobileSidebarOpen(true)} />
+      <ChromeHeader
+        t={t}
+        isMobileSidebarOpen={isMobileSidebarOpen}
+        onToggleMobileSidebar={() => {
+          setMobileSidebarOpen((current) => !current);
+        }}
+      />
 
       <div className={styles.body}>
         {isMobileSidebarOpen ? (
@@ -57,7 +64,7 @@ export function DashboardChrome({ messages, children }: DashboardChromeProps) {
           onCloseMobileSidebar={() => setMobileSidebarOpen(false)}
         />
 
-        <main id="main-content" className={styles.main} tabIndex={-1}>
+        <main id={DASHBOARD_LAYOUT_IDS.mainContent} className={styles.main} tabIndex={-1}>
           {children}
         </main>
       </div>
