@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ArrowDownIcon, ArrowUpIcon, SortIcon } from "../../icons";
 import { classNames } from "../../utils/classNames";
+import { Pagination, type PaginationProps } from "./Pagination";
 import styles from "./DataTable.module.css";
 
 export type DataTableSortDirection = "asc" | "desc";
@@ -49,6 +50,7 @@ type DataTableSharedProps = {
   stickyFirstColumn?: boolean;
   title?: React.ReactNode;
   actions?: React.ReactNode;
+  pagination?: PaginationProps;
   maxBodyHeight?: number | string;
   containerClassName?: string;
   emptyMessage?: React.ReactNode;
@@ -190,6 +192,7 @@ function DataTableLegacy(props: DataTableLegacyProps) {
     stickyFirstColumn = false,
     title,
     actions,
+    pagination,
     maxBodyHeight,
     containerClassName,
     caption,
@@ -230,6 +233,8 @@ function DataTableLegacy(props: DataTableLegacyProps) {
           {tableProps.children}
         </table>
       </div>
+
+      {pagination ? <Pagination {...pagination} /> : null}
     </section>
   );
 }
@@ -251,6 +256,7 @@ function DataTableGenericImpl<
     stickyFirstColumn = false,
     title,
     actions,
+    pagination,
     maxBodyHeight,
     emptyMessage = "No data available.",
     errorMessage,
@@ -627,6 +633,8 @@ function DataTableGenericImpl<
           </tbody>
         </table>
       </div>
+
+      {pagination ? <Pagination {...pagination} /> : null}
     </section>
   );
 }
