@@ -103,17 +103,20 @@
   background: var(--table-row-bg, var(--surface-card, var(--surface-default)));
 }
 
-.table tbody tr {
+.rowBase {
   --table-row-bg: var(--surface-card, var(--surface-default));
 }
 
-.table tbody tr:nth-child(odd) {
+.rowAlt {
   --table-row-bg: var(--surface-table-row-alt);
 }
 
-.table tbody tr:hover,
-.row:hover {
+.rowInteractive:hover {
   --table-row-bg: color-mix(in srgb, var(--color-primary-base) 10%, transparent);
+}
+
+.rowStatic:hover {
+  --table-row-bg: var(--table-row-bg, var(--surface-card, var(--surface-default)));
 }
 
 @container (max-width: 58rem) {
@@ -206,12 +209,8 @@
   -webkit-user-select: none;
 }
 
-.table tbody tr.stateRow > td {
-  background: var(--surface-card, var(--surface-default));
-}
-
-.table tbody tr.stateRow:hover > td {
-  background: var(--surface-card, var(--surface-default));
+.stateRow {
+  --table-row-bg: var(--surface-card, var(--surface-default));
 }
 
 .table td.emptyMessage .stateText {
@@ -222,14 +221,23 @@
   color: var(--color-error);
 }
 
-.rowSkeleton > td,
-.rowSkeleton > th {
-  background: var(--surface-card, var(--surface-default));
+.virtualSpacerRow {
+  --table-row-bg: transparent;
 }
 
-.rowSkeleton:hover > td,
-.rowSkeleton:hover > th {
-  background: var(--surface-card, var(--surface-default));
+.table .virtualSpacerCell {
+  padding: 0;
+  border-bottom: 0;
+  background: transparent !important;
+  position: static !important;
+  left: auto !important;
+  z-index: auto !important;
+  box-shadow: none !important;
+}
+
+.virtualSpacerInner {
+  width: 1px;
+  pointer-events: none;
 }
 
 .loadingDataCell {

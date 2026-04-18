@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { ArrowDownIcon, ArrowUpIcon, SortIcon } from "../../icons";
 import { classNames } from "../../utils/classNames";
@@ -51,6 +53,12 @@ type DataTableSharedProps = {
   containerClassName?: string;
   emptyMessage?: React.ReactNode;
   errorMessage?: React.ReactNode;
+  virtualization?: {
+    enabled?: boolean;
+    threshold?: number;
+    rowHeight?: number;
+    overscan?: number;
+  };
 };
 
 export type DataTableGenericProps<
@@ -174,62 +182,63 @@ function resolveCellValue<TRow extends Record<string, unknown>>(
   return null;
 }
 
-export function DataTable<
+function DataTableLegacy(props: DataTableLegacyProps) {
+  const {
+    className,
+    sticky = true,
+    stickyHeader,
+    stickyFirstColumn = false,
+    title,
+    actions,
+    maxBodyHeight,
+    containerClassName,
+    caption,
+    ...tableProps
+  } = props;
+
+  const hasTopRow = title !== undefined || actions !== undefined;
+
+  return (
+    <section className={classNames(styles.root, containerClassName)}>
+      {hasTopRow ? (
+        <header className={styles.topRow}>
+          <div className={styles.title}>{title}</div>
+          <div className={styles.actions}>{actions}</div>
+        </header>
+      ) : null}
+
+      <div
+        className={styles.viewport}
+        style={
+          maxBodyHeight !== undefined
+            ? {
+                maxHeight: toCssSize(maxBodyHeight),
+                minHeight: toCssSize(maxBodyHeight),
+              }
+            : undefined
+        }
+      >
+        <table
+          className={classNames(
+            styles.table,
+            (stickyHeader ?? sticky) && styles.stickyHeader,
+            stickyFirstColumn && styles.stickyFirstColumn,
+            className,
+          )}
+          {...tableProps}
+        >
+          {caption ? <caption className={styles.caption}>{caption}</caption> : null}
+          {tableProps.children}
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function DataTableGenericImpl<
   TRow extends Record<string, unknown>,
   TSortKey extends string = string,
->(props: DataTableProps<TRow, TSortKey>) {
-  if (!isGenericProps(props)) {
-    const {
-      className,
-      sticky = true,
-      stickyHeader,
-      stickyFirstColumn = false,
-      title,
-      actions,
-      maxBodyHeight,
-      containerClassName,
-      caption,
-      ...tableProps
-    } = props;
-
-    const hasTopRow = title !== undefined || actions !== undefined;
-
-    return (
-      <section className={classNames(styles.root, containerClassName)}>
-        {hasTopRow ? (
-          <header className={styles.topRow}>
-            <div className={styles.title}>{title}</div>
-            <div className={styles.actions}>{actions}</div>
-          </header>
-        ) : null}
-
-        <div
-          className={styles.viewport}
-          style={
-            maxBodyHeight !== undefined
-              ? {
-                  maxHeight: toCssSize(maxBodyHeight),
-                  minHeight: toCssSize(maxBodyHeight),
-                }
-              : undefined
-          }
-        >
-          <table
-            className={classNames(
-              styles.table,
-              (stickyHeader ?? sticky) && styles.stickyHeader,
-              stickyFirstColumn && styles.stickyFirstColumn,
-              className,
-            )}
-            {...tableProps}
-          >
-            {caption ? <caption className={styles.caption}>{caption}</caption> : null}
-            {tableProps.children}
-          </table>
-        </div>
-      </section>
-    );
-  }
+>(props: DataTableGenericProps<TRow, TSortKey>) {
 
   const {
     columns,
@@ -250,6 +259,7 @@ export function DataTable<
     containerClassName,
     rowClassName,
     caption,
+    virtualization,
   } = props;
 
   const hasTopRow = title !== undefined || actions !== undefined;
@@ -262,6 +272,134 @@ export function DataTable<
   const showLoadingCells = loading && hasRows;
   const showError = !loading && !hasRows && hasErrorMessage;
   const showEmpty = !loading && !hasRows && !hasErrorMessage;
+  const viewportRef = React.useRef<HTMLDivElement | null>(null);
+  const [virtualScrollTop, setVirtualScrollTop] = React.useState(0);
+  const [virtualViewportHeight, setVirtualViewportHeight] = React.useState(0);
+
+  const virtualEnabled = virtualization?.enabled ?? true;
+  const virtualThreshold = Math.max(1, virtualization?.threshold ?? 200);
+  const virtualRowHeight = Math.max(1, virtualization?.rowHeight ?? 52);
+  const virtualOverscan = Math.max(1, virtualization?.overscan ?? 6);
+  const shouldVirtualizeRows = virtualEnabled && hasRows && rows.length >= virtualThreshold;
+
+  React.useEffect(() => {
+    const viewport = viewportRef.current;
+
+    if (!viewport || !shouldVirtualizeRows) {
+      setVirtualScrollTop(0);
+      setVirtualViewportHeight(0);
+      return;
+    }
+
+    let animationFrame = 0;
+
+    const syncViewport = () => {
+      const nextScrollTop = viewport.scrollTop;
+      const nextViewportHeight = viewport.clientHeight;
+
+      setVirtualScrollTop((current) =>
+        current === nextScrollTop ? current : nextScrollTop,
+      );
+      setVirtualViewportHeight((current) =>
+        current === nextViewportHeight ? current : nextViewportHeight,
+      );
+    };
+
+    const onScroll = () => {
+      if (animationFrame !== 0) {
+        return;
+      }
+
+      animationFrame = window.requestAnimationFrame(() => {
+        animationFrame = 0;
+        syncViewport();
+      });
+    };
+
+    syncViewport();
+    viewport.addEventListener("scroll", onScroll, { passive: true });
+
+    let resizeObserver: ResizeObserver | null = null;
+    const onWindowResize = () => {
+      syncViewport();
+    };
+
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => {
+        syncViewport();
+      });
+      resizeObserver.observe(viewport);
+    } else {
+      window.addEventListener("resize", onWindowResize);
+    }
+
+    return () => {
+      viewport.removeEventListener("scroll", onScroll);
+
+      if (animationFrame !== 0) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      } else {
+        window.removeEventListener("resize", onWindowResize);
+      }
+    };
+  }, [shouldVirtualizeRows]);
+
+  const rowWindow = React.useMemo(() => {
+    if (!shouldVirtualizeRows) {
+      return {
+        startIndex: 0,
+        endIndex: rows.length,
+        topSpacerHeight: 0,
+        bottomSpacerHeight: 0,
+      };
+    }
+
+    const safeViewportHeight =
+      virtualViewportHeight > 0 ? virtualViewportHeight : virtualRowHeight * 10;
+    const estimatedVisibleCount = Math.max(
+      1,
+      Math.ceil(safeViewportHeight / virtualRowHeight),
+    );
+    const startIndex = Math.max(
+      0,
+      Math.floor(virtualScrollTop / virtualRowHeight) - virtualOverscan,
+    );
+    const endIndex = Math.min(
+      rows.length,
+      startIndex + estimatedVisibleCount + virtualOverscan * 2,
+    );
+    const topSpacerHeight = startIndex * virtualRowHeight;
+    const bottomSpacerHeight = Math.max(
+      0,
+      (rows.length - endIndex) * virtualRowHeight,
+    );
+
+    return {
+      startIndex,
+      endIndex,
+      topSpacerHeight,
+      bottomSpacerHeight,
+    };
+  }, [
+    rows.length,
+    shouldVirtualizeRows,
+    virtualOverscan,
+    virtualRowHeight,
+    virtualScrollTop,
+    virtualViewportHeight,
+  ]);
+
+  const visibleRows = React.useMemo(() => {
+    if (!shouldVirtualizeRows) {
+      return rows;
+    }
+
+    return rows.slice(rowWindow.startIndex, rowWindow.endIndex);
+  }, [rows, shouldVirtualizeRows, rowWindow.endIndex, rowWindow.startIndex]);
 
   const resolveRowId =
     getRowId ??
@@ -279,6 +417,7 @@ export function DataTable<
       ) : null}
 
       <div
+        ref={viewportRef}
         className={styles.viewport}
         style={
           maxBodyHeight !== undefined
@@ -356,9 +495,28 @@ export function DataTable<
           </thead>
 
           <tbody>
+            {shouldVirtualizeRows && rowWindow.topSpacerHeight > 0 ? (
+              <tr className={styles.virtualSpacerRow} aria-hidden>
+                <td className={styles.virtualSpacerCell} colSpan={columns.length}>
+                  <div
+                    className={styles.virtualSpacerInner}
+                    style={{ height: `${rowWindow.topSpacerHeight}px` }}
+                  />
+                </td>
+              </tr>
+            ) : null}
+
             {showSkeletonRows
               ? Array.from({ length: skeletonRowCount }).map((_, rowIndex) => (
-                  <tr key={`skeleton-${rowIndex}`} className={styles.rowSkeleton}>
+                  <tr
+                    key={`skeleton-${rowIndex}`}
+                    className={classNames(
+                      styles.row,
+                      styles.rowBase,
+                      styles.rowStatic,
+                      styles.rowSkeleton,
+                    )}
+                  >
                     {columns.map((column, columnIndex) => (
                       <td
                         key={`${column.id}-${rowIndex}`}
@@ -378,7 +536,14 @@ export function DataTable<
               : null}
 
             {showError ? (
-              <tr className={styles.stateRow}>
+              <tr
+                className={classNames(
+                  styles.row,
+                  styles.rowBase,
+                  styles.rowStatic,
+                  styles.stateRow,
+                )}
+              >
                 <td className={styles.errorMessage} colSpan={columns.length}>
                   <div className={styles.stateText}>{errorMessage}</div>
                 </td>
@@ -386,7 +551,14 @@ export function DataTable<
             ) : null}
 
             {showEmpty ? (
-              <tr className={styles.stateRow}>
+              <tr
+                className={classNames(
+                  styles.row,
+                  styles.rowBase,
+                  styles.rowStatic,
+                  styles.stateRow,
+                )}
+              >
                 <td className={styles.emptyMessage} colSpan={columns.length}>
                   <div className={styles.stateText}>{emptyMessage}</div>
                 </td>
@@ -394,15 +566,26 @@ export function DataTable<
             ) : null}
 
             {hasRows
-              ? rows.map((row, rowIndex) => {
-                  const rowKey = resolveRowId(row, rowIndex);
+              ? visibleRows.map((row, rowIndex) => {
+                  const resolvedRowIndex = shouldVirtualizeRows
+                    ? rowWindow.startIndex + rowIndex
+                    : rowIndex;
+                  const rowKey = resolveRowId(row, resolvedRowIndex);
 
                   return (
                     <tr
                       key={rowKey}
+                      style={
+                        shouldVirtualizeRows
+                          ? { height: `${virtualRowHeight}px` }
+                          : undefined
+                      }
                       className={classNames(
                         styles.row,
-                        rowClassName?.(row, rowIndex),
+                        styles.rowBase,
+                        resolvedRowIndex % 2 === 0 && styles.rowAlt,
+                        styles.rowInteractive,
+                        rowClassName?.(row, resolvedRowIndex),
                       )}
                     >
                       {columns.map((column, columnIndex) => (
@@ -423,7 +606,7 @@ export function DataTable<
                             {resolveCellValue(
                               column as DataTableColumn<TRow, string>,
                               row,
-                              rowIndex,
+                              resolvedRowIndex,
                             )}
                           </span>
                         </td>
@@ -432,9 +615,31 @@ export function DataTable<
                   );
                 })
               : null}
+
+            {shouldVirtualizeRows && rowWindow.bottomSpacerHeight > 0 ? (
+              <tr className={styles.virtualSpacerRow} aria-hidden>
+                <td className={styles.virtualSpacerCell} colSpan={columns.length}>
+                  <div
+                    className={styles.virtualSpacerInner}
+                    style={{ height: `${rowWindow.bottomSpacerHeight}px` }}
+                  />
+                </td>
+              </tr>
+            ) : null}
           </tbody>
         </table>
       </div>
     </section>
   );
+}
+
+export function DataTable<
+  TRow extends Record<string, unknown>,
+  TSortKey extends string = string,
+>(props: DataTableProps<TRow, TSortKey>) {
+  if (!isGenericProps(props)) {
+    return <DataTableLegacy {...props} />;
+  }
+
+  return <DataTableGenericImpl {...props} />;
 }

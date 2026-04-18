@@ -18,6 +18,7 @@ import {
   USERS_TABLE_EMPTY_MESSAGE,
   USERS_TABLE_SEARCH_LABEL,
   USERS_TABLE_TITLE,
+  USERS_TABLE_VIRTUALIZATION,
 } from './users-table/constants';
 import type { UsersTableProps } from './users-table/types';
 import { useUsersTableQuery } from './users-table/useUsersTableQuery';
@@ -163,6 +164,7 @@ export function UsersTable({ initialData }: UsersTableProps) {
         emptyMessage={USERS_TABLE_EMPTY_MESSAGE}
         maxBodyHeight="34rem"
         stickyFirstColumn
+        virtualization={USERS_TABLE_VIRTUALIZATION}
       />
 
       <Pagination
