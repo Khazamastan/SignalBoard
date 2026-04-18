@@ -1,165 +1,119 @@
 # Frontend Engineer Assignment — SignalBoard
 
-A Next.js App Router dashboard implementation focused on scalable frontend architecture: design tokens, reusable components, server/client boundaries, and URL-driven table state.
+SignalBoard is a Next.js App Router analytics dashboard built for the frontend engineer assignment.  
+The implementation is token-driven, server-first by default, and uses URL-synced table state for shareable views.
 
 ## Live Demo
 
-- Live URL: `Deployment pending` (run `vercel` and paste the production URL here before submission)
+- Live URL: `TODO: add deployed URL`
 
-## Tech Choices
+## Tech Stack
 
-- Framework: Next.js 16 App Router + TypeScript
+- Framework: Next.js 16.1.6 (App Router) + React 19 + TypeScript
 - Styling: CSS Modules + CSS custom properties (design tokens)
-- State: React built-in state + Context (`ThemeProvider`)
-- Data: Next.js Route Handlers (`src/app/api/*`) + server component initial load + client fetch for table interactivity
+- State: React state + reusable custom hooks
+- Data: Next.js Route Handlers (`src/app/api/*`) with shared `ApiResponse<T>` envelope
+- Interactivity: Client islands only where required (`UsersTable`, dashboard chrome, analytics range controls, theme toggle)
 
-## How to Run Locally
+## Run Locally
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Start development server:
-   ```bash
-   npm run dev
-   ```
-3. Open [http://localhost:3000](http://localhost:3000)
+```bash
+npm install
+npm run dev
+```
 
-## Architecture Overview
+Open [http://localhost:3000](http://localhost:3000).
 
-### Design System (Part A)
+### Other Scripts
 
-- Global tokens live in `packages/design-system/src/styles/tokens.css`
-- Token categories included:
-  - Colors: primary/secondary shades, neutral 50–900, semantic, surface, text
-  - Spacing: semantic fluid scale (`--space-2xs` … `--space-3xl`)
-  - Typography: families, sizes (`xs`…`2xl`), weights, line-heights
-  - Shadows: `sm`…`xl`
-  - Breakpoints: `sm`, `md`, `lg`, `xl`
-  - Bonus: radii, borders, transitions, easing
-- Theme system:
-  - Light/dark token overrides via `[data-theme='dark']`
-  - `ThemeProvider` persists preference in `localStorage`
-  - `ThemeToggle` switches theme with smooth token-based transitions
+```bash
+npm run lint
+npm run build
+npm run start
+```
 
-### CSS Architecture Scalability
+## Assignment Coverage
 
-1. **Centralized tokens as a single source of truth**
-   - Core primitives (color, spacing, type, shadow, radius, motion, breakpoints) are defined once in `packages/design-system/src/styles/tokens.css`, so visual updates scale without hunting through component files.
+### Part A — Design System
 
-2. **Theme expansion through token overrides**
-   - Components consume stable token names, while theme-specific values are swapped at the root (`[data-theme='dark']`). Adding future themes means adding token scopes, not rewriting component styles.
+- Tokens are centralized in `packages/design-system/src/styles/tokens.css`
+- Categories implemented:
+  - Colors (primary/secondary shades, neutral scale, semantic colors, surface, text)
+  - Spacing scale (fluid semantic tokens)
+  - Typography (families, sizes, weights, line-height)
+  - Shadows, radii, borders, motion durations/easing
+  - Breakpoints (`sm`, `md`, `lg`, `xl`)
+- Theme support:
+  - Light + dark via `[data-theme="dark"]` token overrides
+  - `ThemeToggle` updates `data-theme`, `localStorage`, and theme cookie
+  - SSR theme hydration uses cookie in `src/app/layout.tsx`
+- Core components:
+  - `Button` (variants, sizes, loading spinner, icon support, focus/disabled states)
+  - `InputField` (floating label, helper/error/counter, prefix/suffix, read-only/disabled)
+  - `Card` (slot-based header/body/footer, variants, hover elevation)
 
-3. **Local component boundaries with CSS Modules**
-   - Each component keeps its styles isolated (`*.module.css`), reducing global cascade risk and making parallel team work safer as the system grows.
+### Part B — Dashboard Layout
 
-4. **Variant/state composition instead of duplication**
-   - Reusable variant classes (`primary/secondary/ghost`, `focused/error/disabled`, etc.) let new states and visual treatments scale through composition, not copy-paste.
-
-5. **Responsive primitives that age well**
-   - Fluid `clamp()` token scales and container queries keep components adaptive to context, which avoids brittle, page-specific breakpoint overrides over time.
-
-6. **Clear package boundary inside a single app**
-   - Reusable primitives and theme logic live in `packages/design-system`, while app concerns are organized under `src/features` and `src/shared` for clean ownership boundaries.
-
-### Components Built
-
-- `Button`: `primary | secondary | ghost`, `small | medium | large`, loading spinner, icon slots, focus/disabled/loading states
-- `InputField`: floating label (transform/scale), helper/error/counter, prefix/suffix, disabled/read-only
-- `Card`: optional header/body/footer slots, `default | elevated`, hover elevation
-
-### Dashboard (Part B)
-
-- Sticky top nav with:
-  - brand + breadcrumb
-  - center search input (design system input)
-  - theme toggle
-  - CSS-only avatar dropdown (`details/summary` + hover)
+- Sticky top header with app title/breadcrumb, search, theme toggle, and user menu
 - Sidebar:
-  - desktop collapsible (260px → 64px)
-  - mobile slide-in drawer with backdrop + hamburger trigger
+  - Desktop collapse/expand
+  - Mobile drawer with backdrop and close controls
 - Main content:
-  - responsive stats card row (4-up desktop, 2x2 tablet, stacked mobile)
-  - analytics card
-  - data table with sticky header, sticky first column, row striping, hover, pagination controls
+  - Stats cards row
+  - Analytics panel
+  - Data table with sticky header + sticky first column + pagination UI
+- Responsive behavior for desktop/tablet/mobile is implemented in dashboard layout CSS modules
 
-### Data Layer + React/Next.js (Part C)
+### Part C — Data + React/Next.js
 
-- Route Handlers:
+- Route handlers:
   - `GET /api/stats`
-  - `GET /api/analytics?range=7d|30d|90d`
-  - `GET /api/users?page&limit&sort&order&search`
-- Shared response contract:
-  ```ts
-  type ApiResponse<T> = {
-    data: T;
-    meta?: { page: number; totalPages: number; totalItems: number };
-    error?: string;
-  };
-  ```
-- Randomized response latency (200–800ms) in API handlers
-- API failure responses use the same `ApiResponse<T>` envelope shape (`data` + optional `meta` + `error`)
-- Server Components:
-  - initial stats + analytics fetch in `src/app/page.tsx`
-- Client Components:
-  - sidebar/nav interactivity
-  - stats + analytics refresh
-  - users table sorting, search, pagination
-- Table interactivity:
-  - server-side pagination/sorting/search
-  - debounced search (300ms)
+  - `GET /api/analytics`
+  - `GET /api/users`
+- Shared API envelope:
+
+```ts
+type ApiResponse<T> = {
+  data: T;
+  meta?: { page: number; totalPages: number; totalItems: number };
+  error?: string;
+}
+```
+
+- All handlers support randomized delay (`200–800ms`) and consistent failure payloads
+- Server components provide initial dashboard payloads:
+  - `StatsAnalyticsSection`
+  - `UsersTableSection`
+- Client components handle interactive state:
+  - server-side pagination/sort/search table flow
   - URL state sync (`page`, `sort`, `order`, `search`)
-  - direct URL hydration of state
-  - skeleton rows during fetch
-  - empty state messaging
-  - optimistic sort indicator updates
+  - debounced search (500ms)
+  - loading skeleton rows
+  - empty state (`No results found.`)
+  - error state messaging from API failures
 
-### Part C Compliance Checklist
+### Part D Challenges Completed
 
-- Mock API Route Handlers:
-  - `GET /api/stats` → `src/app/api/stats/route.ts`
-  - `GET /api/analytics` → `src/app/api/analytics/route.ts`
-  - `GET /api/users` → `src/app/api/users/route.ts`
-- Consistent generic response type:
-  - `ApiResponse<T>` defined in `src/shared/types/api.ts`
-- Realistic API latency:
-  - shared `randomDelay(200-800ms)` in `src/features/dashboard/api/http-effects.ts` (active in all environments unless `x-internal-no-delay: 1` is set)
-- Consistent API failure envelope:
-  - all route handlers return `ApiResponse<T>` payloads on both success and failure paths
-- Users endpoint query support:
-  - `page`, `limit`, `sort`, `order`, `search` parsed in `parseUsersSearchParams`
-- Server Components for initial load:
-  - initial dashboard data fetched in `src/app/page.tsx`
-- Client Components only where interactivity is needed:
-  - table behavior in `src/features/dashboard/components/UsersTable.tsx`
-  - shell interactions in `src/features/dashboard/layout/DashboardChrome.tsx`
-  - stats and analytics refresh in `src/features/dashboard/components/StatsAnalyticsClient.tsx`
-- Route-level boundaries:
-  - loading UI in `src/app/loading.tsx`
-  - error boundary in `src/app/error.tsx`
+1. Challenge 2 — Container Queries
+2. Challenge 4 — Fluid Typography and Spacing with `clamp()`
 
-## Part D Challenges Completed
+### Part E Reflection
 
-1. **Challenge 2 — Container Queries**
-   - Stats card uses `container-type: inline-size` and `@container` rules
-   - Same `StatsCard` component shows horizontal layout in wide containers and vertical layout in narrow containers
+- See `NOTES.md`
 
-2. **Challenge 4 — Fluid Typography & Spacing System**
-   - Type and spacing tokens use `clamp(min, preferred, max)`
-   - Formula approach is documented in token comments and demonstrated in `/challenges`
-   - Demo includes specimen text plus frame-width previews (320-ish to 4K-scale container)
+## Performance and Scalability Notes
 
-## Server vs Client Boundary Rationale
+- Feature composition is registry-driven (`src/features/dashboard/feature-registry.tsx`) so sections can be added/removed cleanly.
+- Users data path is optimized for larger sets:
+  - precomputed search index
+  - sorted result cache by field/order
+  - server-side paging/filtering/sorting
+- Client fetch layer uses:
+  - abortable requests (`AbortController`) through `useAsyncQuery`
+  - short-lived in-memory caches for users and analytics
+- DataTable virtualization is enabled for large row counts (`threshold: 120`, `rowHeight: 52`, `overscan: 8`).
 
-- Server by default for first paint and reduced client JS (`src/app/page.tsx` fetches core dashboard payload).
-- Client only for interaction-heavy islands (`DashboardChrome`, `UsersTable`, theme toggle/input behaviors).
-- Tricky boundary: keeping URL-driven table state responsive while avoiding full-page loading; solved with client-side param updates + granular skeleton loading in the table area.
-
-## Part E Reflection
-
-- See [`NOTES.md`](./NOTES.md) for the required Part E written reflection answers.
-
-## File Structure Overview
+## File Structure (Current)
 
 ```text
 src/
@@ -169,10 +123,10 @@ src/
       stats/route.ts
       users/route.ts
     challenges/
-      page.tsx
-      page.module.css
+    design-system-lab/
+    reports/
+    settings/
     error.tsx
-    globals.css
     layout.tsx
     loading.tsx
     page.tsx
@@ -181,6 +135,9 @@ src/
       api/
       components/
       data/
+      layout/
+      feature-registry.tsx
+      constants.ts
       types.ts
   shared/
     hooks/
@@ -191,16 +148,16 @@ packages/
   design-system/
     src/
       components/
+        Badge/
         Button/
         Card/
+        DataTable/
         InputField/
       styles/
-        tokens.css
-        foundations.css
-        index.css
       theme/
-        ThemeProvider.tsx
-        ThemeToggle.tsx
+      icons/
+ARCHITECTURE.md
 NOTES.md
 README.md
 ```
+
