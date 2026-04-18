@@ -1,0 +1,106 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md, 0.625rem);
+  background: var(--surface-default);
+  color: var(--text-primary);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.variantDefault {
+  background: var(--surface-default);
+  border-color: var(--border-default);
+}
+
+.variantElevated {
+  background: var(--surface-elevated);
+  border-color: transparent;
+  box-shadow: var(--shadow-sm, 0 4px 12px rgba(21, 32, 48, 0.06));
+}
+
+.hoverable {
+  transition:
+    transform var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    box-shadow var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    border-color var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    background-color var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease);
+}
+
+.hoverable:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(21, 32, 48, 0.1));
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-base) 25%,
+    var(--border-default)
+  );
+}
+
+.stretch {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.withChrome {}
+
+.header,
+.body,
+.footer {
+  padding: var(--space-md, 1rem);
+}
+
+.header {
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-default);
+  font-weight: 600;
+}
+
+.body {
+  min-width: 0;
+}
+
+.stretch .body {
+  flex: 1 1 auto;
+}
+
+.footer {
+  border-top: 1px solid var(--border-default);
+  background: var(--surface-default);
+}
+
+.toneMuted {
+  background: var(--surface-muted);
+  border-color: var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.toneInverse {
+  background: var(--surface-inverse);
+  border-color: var(--border-strong);
+  color: var(--text-inverse);
+}
+
+.toneMuted .header,
+.toneMuted .footer {
+  border-color: var(--border-subtle);
+  background: color-mix(in srgb, var(--surface-default) 24%, var(--surface-muted));
+}
+
+.toneInverse .header,
+.toneInverse .footer {
+  border-color: color-mix(in srgb, var(--border-strong) 65%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--surface-elevated) 10%,
+    var(--surface-inverse)
+  );
+}

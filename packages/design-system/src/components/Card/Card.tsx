@@ -1,23 +1,72 @@
 import * as React from "react";
 import { classNames } from "../../utils/classNames";
+import styles from "./Card.module.css";
 
-export type CardProps = React.HTMLAttributes<HTMLElement> & {
+type CardTone = "default" | "muted" | "inverse";
+
+export type CardProps = Omit<React.HTMLAttributes<HTMLElement>, "children"> & {
   as?: React.ElementType;
-  tone?: "default" | "muted" | "inverse";
+  variant?: "default" | "elevated";
+  hoverable?: boolean;
+  stretch?: boolean;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
+  children?: React.ReactNode;
+  tone?: CardTone;
+};
+
+const VARIANT_CLASS: Record<NonNullable<CardProps["variant"]>, string> = {
+  default: styles.variantDefault,
+  elevated: styles.variantElevated,
+};
+
+const TONE_CLASS: Record<CardTone, string | undefined> = {
+  default: undefined,
+  muted: styles.toneMuted,
+  inverse: styles.toneInverse,
 };
 
 export function Card({
   as = "section",
   className,
+  variant = "default",
+  hoverable = false,
+  stretch = false,
+  header,
+  footer,
+  children,
   tone = "default",
   ...props
 }: CardProps) {
   const Component = as as React.ElementType;
 
+  const hasHeader = header !== undefined && header !== null;
+  const hasFooter = footer !== undefined && footer !== null;
+  const hasBody = children !== undefined && children !== null;
+  const hasChrome = hasHeader || hasFooter;
+
   return (
     <Component
-      className={classNames("ds-card", `ds-card--${tone}`, className)}
+      className={classNames(
+        styles.card,
+        VARIANT_CLASS[variant],
+        TONE_CLASS[tone],
+        hoverable && styles.hoverable,
+        stretch && styles.stretch,
+        hasChrome && styles.withChrome,
+        className,
+      )}
       {...props}
-    />
+    >
+      {hasHeader ? <div className={styles.header}>{header}</div> : null}
+
+      {hasChrome && hasBody ? (
+        <div className={styles.body}>{children}</div>
+      ) : (
+        children
+      )}
+
+      {hasFooter ? <div className={styles.footer}>{footer}</div> : null}
+    </Component>
   );
 }

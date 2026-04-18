@@ -1,0 +1,39 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1, 0.25rem);
+  min-height: 1.35rem;
+  padding: 0.14rem 0.55rem;
+  border: 0;
+  border-radius: var(--radius-pill, 9999px);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.toneNeutral {
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--surface-muted) 82%, var(--surface-elevated));
+}
+
+.toneSuccess {
+  color: var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 22%, transparent);
+}
+
+.toneWarning {
+  color: var(--color-warning);
+  background: color-mix(in srgb, var(--color-warning) 22%, transparent);
+}
+
+.toneError {
+  color: var(--color-error);
+  background: color-mix(in srgb, var(--color-error) 18%, transparent);
+}
+
+.toneInfo {
+  color: var(--color-info);
+  background: color-mix(in srgb, var(--color-info) 20%, transparent);
+}

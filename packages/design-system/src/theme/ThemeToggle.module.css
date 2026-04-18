@@ -1,34 +1,30 @@
 .toggle {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-xs, 0.5rem);
+  justify-content: center;
+  gap: var(--space-2xs, 0.25rem);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-pill, 9999px);
   background: var(--surface-elevated);
   color: var(--text-primary);
-  padding: var(--space-xs, 0.5rem) var(--space-md, 1rem);
-  font-size: var(--font-size-sm, 0.875rem);
-  font-weight: 600;
+  padding: var(--space-xs, 0.5rem) var(--space-sm, 0.75rem);
+  font-size: var(--font-size-xs, 0.875rem);
+  font-weight: 500;
   line-height: 1;
   cursor: pointer;
-  box-shadow: var(--shadow-xs, 0 1px 2px rgba(21, 32, 48, 0.08));
   transition:
-    transform var(--motion-duration-fast, 160ms)
+    background-color var(--motion-duration-fast, 160ms)
       var(--motion-ease-standard, ease),
     border-color var(--motion-duration-fast, 160ms)
       var(--motion-ease-standard, ease),
-    box-shadow var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease),
-    background-color var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease),
-    color var(--motion-duration-fast, 160ms)
+    color var(--motion-duration-fast, 160ms) var(--motion-ease-standard, ease),
+    transform var(--motion-duration-fast, 160ms)
       var(--motion-ease-standard, ease);
 }
 
 .toggle:hover {
   transform: translateY(-1px);
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-sm, 0 4px 10px rgba(21, 32, 48, 0.12));
 }
 
 .toggle:active {
@@ -41,5 +37,12 @@
 }
 
 .icon {
-  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon :global(svg) {
+  width: var(--font-size-sm, 1rem);
+  height: var(--font-size-sm, 1rem);
 }
