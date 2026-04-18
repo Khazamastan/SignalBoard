@@ -210,9 +210,27 @@
   background: var(--surface-card, var(--surface-default));
 }
 
-.skeletonBlock {
+.loadingDataCell {
+  position: relative;
+}
+
+.cellContent {
   display: inline-block;
-  width: var(--skeleton-width, 70%);
+  width: 100%;
+  min-width: 0;
+}
+
+.loadingDataCell .cellContent {
+  visibility: hidden;
+}
+
+.loadingDataCell::after {
+  content: "";
+  position: absolute;
+  left: var(--space-sm, 0.75rem);
+  right: var(--space-sm, 0.75rem);
+  top: 50%;
+  transform: translateY(-50%);
   height: var(--space-md, 1rem);
   border-radius: var(--radius-xs, 0.25rem);
   background: linear-gradient(
@@ -222,36 +240,26 @@
     color-mix(in srgb, var(--color-neutral-200) 82%, transparent)
   );
   background-size: 200% 100%;
-  animation: shimmer var(--motion-duration-slow, 320ms) linear infinite;
+  animation: shimmer var(--duration-slow) linear infinite;
 }
 
-.loadingMask {
-  position: absolute;
-  inset: 0;
-  z-index: 40;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  background: color-mix(in srgb, var(--surface-card, var(--surface-default)) 75%, transparent);
-}
-
-.loadingMaskSpinner {
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 9999px;
-  border: 2px solid color-mix(in srgb, var(--color-primary-base) 30%, transparent);
-  border-top-color: var(--color-primary-base);
-  animation: spin 0.72s linear infinite;
+.skeleton {
+  display: inline-block;
+  width: 100%;
+  height: var(--space-md, 1rem);
+  border-radius: var(--radius-xs, 0.25rem);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-neutral-200) 82%, transparent),
+    color-mix(in srgb, var(--color-neutral-100) 92%, transparent),
+    color-mix(in srgb, var(--color-neutral-200) 82%, transparent)
+  );
+  background-size: 200% 100%;
+  animation: shimmer var(--duration-slow) linear infinite;
 }
 
 @keyframes shimmer {
   to {
     background-position: -200% 0;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }

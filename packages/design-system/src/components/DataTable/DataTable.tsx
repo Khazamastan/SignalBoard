@@ -245,7 +245,7 @@ export function DataTable<
   const hasTopRow = title !== undefined || actions !== undefined;
   const hasRows = rows.length > 0;
   const showSkeletonRows = loading && !hasRows;
-  const showMask = loading && hasRows;
+  const showLoadingCells = loading && hasRows;
   const showError = !loading && !hasRows && errorMessage !== undefined;
   const showEmpty = !loading && !hasRows && errorMessage === undefined;
 
@@ -346,12 +346,7 @@ export function DataTable<
                             styles.firstSticky,
                         )}
                       >
-                        <span
-                          className={styles.skeletonBlock}
-                          style={{
-                            ["--skeleton-width" as string]: `${62 + (columnIndex % 3) * 12}%`,
-                          }}
-                        />
+                        <span className={styles.skeleton} aria-hidden />
                       </td>
                     ))}
                   </tr>
@@ -395,15 +390,18 @@ export function DataTable<
                             stickyFirstColumn &&
                               columnIndex === 0 &&
                               styles.firstSticky,
+                            showLoadingCells && styles.loadingDataCell,
                             column.cellClassName,
                           )}
                           style={column.width ? { width: column.width } : undefined}
                         >
-                          {resolveCellValue(
-                            column as DataTableColumn<TRow, string>,
-                            row,
-                            rowIndex,
-                          )}
+                          <span className={styles.cellContent}>
+                            {resolveCellValue(
+                              column as DataTableColumn<TRow, string>,
+                              row,
+                              rowIndex,
+                            )}
+                          </span>
                         </td>
                       ))}
                     </tr>
@@ -412,12 +410,6 @@ export function DataTable<
               : null}
           </tbody>
         </table>
-
-        {showMask ? (
-          <div className={styles.loadingMask} aria-hidden="true">
-            <div className={styles.loadingMaskSpinner} />
-          </div>
-        ) : null}
       </div>
     </section>
   );
