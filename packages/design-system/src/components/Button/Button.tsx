@@ -22,18 +22,6 @@ export function Button({
   type = "button",
   ...props
 }: ButtonProps) {
-  const variantClass = {
-    primary: styles.variantPrimary,
-    secondary: styles.variantSecondary,
-    ghost: styles.variantGhost,
-  }[variant];
-
-  const sizeClass = {
-    small: styles.sizeSmall,
-    medium: styles.sizeMedium,
-    large: styles.sizeLarge,
-  }[size];
-
   const isDisabled = disabled || loading;
 
   return (
@@ -43,8 +31,9 @@ export function Button({
       aria-busy={loading || undefined}
       className={classNames(
         styles.button,
-        variantClass,
-        sizeClass,
+        styles[variant],
+        styles[size],
+        loading && styles.loading,
         className,
       )}
       {...props}

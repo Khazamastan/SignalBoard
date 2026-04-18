@@ -78,29 +78,37 @@ export function AppShell({ children }: AppShellProps) {
         <aside className={styles.sidebar}>
           <div className={styles.navHeader}>
             <h2 className={styles.navTitle}>Navigation</h2>
-            <div className={styles.collapse}>
-              <ChevronLeftIcon size={16} />
-            </div>
+            <span className={styles.collapse} aria-hidden>
+              <ChevronLeftIcon size={18} />
+            </span>
           </div>
 
-          <nav className={styles.navList} aria-label="Primary">
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
+          <nav aria-label="Primary">
+            <ul className={styles.navList}>
+              {NAV_ITEMS.map((item) => {
+                const Icon = item.icon;
 
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={classNames(
-                    styles.navItem,
-                    matchesPath(pathname, item.href) && styles.navItemActive,
-                  )}
-                >
-                  <Icon className={styles.navIcon} size={16} />
-                  <span className={styles.navLabel}>{item.label}</span>
-                </Link>
-              );
-            })}
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={classNames(
+                        styles.navItem,
+                        matchesPath(pathname, item.href) && styles.navItemActive,
+                      )}
+                      aria-current={
+                        matchesPath(pathname, item.href) ? "page" : undefined
+                      }
+                    >
+                      <span className={styles.navIcon} aria-hidden>
+                        <Icon size={18} />
+                      </span>
+                      <span>{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </nav>
         </aside>
 

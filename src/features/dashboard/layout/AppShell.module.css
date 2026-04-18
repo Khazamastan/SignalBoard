@@ -105,6 +105,9 @@
   border-right: var(--border-width-thin) solid var(--color-border-subtle);
   background: color-mix(in srgb, var(--color-surface-card) 86%, transparent);
   padding: var(--space-md) var(--space-sm);
+  transition:
+    width var(--duration-normal) var(--ease-emphasized),
+    transform var(--duration-normal) var(--ease-emphasized);
   overflow: hidden;
 }
 
@@ -133,6 +136,9 @@
 }
 
 .navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: grid;
   gap: var(--space-2xs);
 }
@@ -143,12 +149,8 @@
   gap: var(--space-sm);
   width: 100%;
   border-radius: var(--radius-sm);
-  min-height: calc(var(--space-lg) + var(--space-xs));
-  padding: calc(var(--space-xs) * 0.9) var(--space-sm);
+  padding: var(--space-xs);
   color: var(--color-text-secondary);
-  text-decoration: none;
-  font-size: var(--font-size-sm);
-  line-height: 1.2;
   transition:
     background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
@@ -166,18 +168,9 @@
 }
 
 .navIcon {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: calc(var(--space-md) + var(--space-2xs));
   display: inline-flex;
-  align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-}
-
-.navLabel {
-  display: inline-flex;
-  align-items: center;
-  line-height: 1.2;
 }
 
 .main {
