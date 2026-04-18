@@ -1,5 +1,8 @@
 import { parseUsersSearchParams } from '@/features/dashboard/api/query-parsers';
-import { USERS_PAGE_LIMIT } from '@/features/dashboard/constants';
+import {
+  USERS_PAGE_LIMIT,
+  USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
+} from '@/features/dashboard/constants';
 import { dashboardService } from '@/features/dashboard/data/dashboard-service';
 
 import { UsersTable } from './UsersTable';
@@ -36,7 +39,7 @@ export async function UsersTableSection({ searchParams }: UsersTableSectionProps
 
   const initialUsersMeta = initialUsers.meta ?? {
     page: usersQuery.page,
-    totalPages: 1,
+    totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
     totalItems: initialUsers.data.length,
   };
 

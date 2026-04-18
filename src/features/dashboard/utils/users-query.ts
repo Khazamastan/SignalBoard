@@ -5,6 +5,7 @@ import {
   DEFAULT_USER_SORT_ORDER,
   SORT_ORDER_OPTIONS,
   USER_SORT_FIELDS,
+  USERS_DEFAULT_PAGE,
   USERS_PAGE_LIMIT,
   USERS_PAGE_LIMIT_MAX,
   USERS_PAGE_LIMIT_MIN,
@@ -41,7 +42,7 @@ export const resolveUserSortState = (
   };
 };
 
-export const parseUsersPageParam = (value: string | null, fallback = 1): number => {
+export const parseUsersPageParam = (value: string | null, fallback = USERS_DEFAULT_PAGE): number => {
   return parsePositiveIntegerOrFallback(value, fallback);
 };
 

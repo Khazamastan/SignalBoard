@@ -8,6 +8,18 @@ import { Card } from '@design-system';
 import styles from './page.module.css';
 
 const frameWidths = ['20rem', '48rem', '90rem', '160rem'] as const;
+const CHALLENGES_PAGE_COPY = {
+  pageTitle: 'Part D Challenges',
+  pageSubtitle:
+    'Completed: Challenge 2 (Container Queries) and Challenge 4 (Fluid Typography & Spacing System).',
+  challenge2Title: 'Challenge 2 · Container Queries',
+  challenge2SidebarLabel: 'Sidebar-width container',
+  challenge2MainLabel: 'Main-content container',
+  challenge4Title: 'Challenge 4 · Fluid Typography & Spacing',
+  fluidSpecimen:
+    'Spacing and type tokens use `clamp(min, preferred, max)` so they scale continuously from mobile to large displays without breakpoint jumps.',
+  frameWidthLabel: 'Frame width',
+} as const;
 
 async function ChallengesContent() {
   const statsData = await dashboardService.getStatsResponse();
@@ -16,31 +28,28 @@ async function ChallengesContent() {
   return (
     <div className={styles.page}>
       <section>
-        <h1 className={styles.title}>Part D Challenges</h1>
-        <p className={styles.subtitle}>
-          Completed: Challenge 2 (Container Queries) and Challenge 4 (Fluid Typography & Spacing
-          System).
-        </p>
+        <h1 className={styles.title}>{CHALLENGES_PAGE_COPY.pageTitle}</h1>
+        <p className={styles.subtitle}>{CHALLENGES_PAGE_COPY.pageSubtitle}</p>
       </section>
 
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Challenge 2 · Container Queries</h2>
+        <h2 className={styles.sectionTitle}>{CHALLENGES_PAGE_COPY.challenge2Title}</h2>
 
         <div className={styles.demoGrid}>
           <Card variant="default">
-            <h3>Sidebar-width container</h3>
+            <h3>{CHALLENGES_PAGE_COPY.challenge2SidebarLabel}</h3>
             <StatsCard data={sampleCard} />
           </Card>
 
           <Card variant="default">
-            <h3>Main-content container</h3>
+            <h3>{CHALLENGES_PAGE_COPY.challenge2MainLabel}</h3>
             <StatsCard data={sampleCard} />
           </Card>
         </div>
       </section>
 
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Challenge 4 · Fluid Typography & Spacing</h2>
+        <h2 className={styles.sectionTitle}>{CHALLENGES_PAGE_COPY.challenge4Title}</h2>
 
         <Card variant="default">
           <div className={styles.specimen}>
@@ -52,15 +61,16 @@ async function ChallengesContent() {
             </div>
 
             <p>
-              Spacing and type tokens use `clamp(min, preferred, max)` so they scale continuously
-              from mobile to large displays without breakpoint jumps.
+              {CHALLENGES_PAGE_COPY.fluidSpecimen}
             </p>
           </div>
 
           <div className={styles.frames}>
             {frameWidths.map((width) => (
               <div key={width} className={styles.frame}>
-                <p>Frame width: {width}</p>
+                <p>
+                  {CHALLENGES_PAGE_COPY.frameWidthLabel}: {width}
+                </p>
                 <div className={styles.cardFlow} style={{ width }}>
                   <StatsCard data={sampleCard} />
                 </div>

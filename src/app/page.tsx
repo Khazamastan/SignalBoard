@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 
+import { DASHBOARD_PAGE_COPY } from '@/app/constants';
 import {
   dashboardFeatureRegistry,
   type DashboardRouteSearchParams,
@@ -19,11 +20,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <>
       <section className={styles.hero}>
-        <h1 className={styles.title}>Analytics Dashboard</h1>
-        <p className={styles.subtitle}>
-          A token-driven design system with server-first rendering, URL-synced table interactions,
-          and container-aware components.
-        </p>
+        <h1 className={styles.title}>{DASHBOARD_PAGE_COPY.title}</h1>
+        <p className={styles.subtitle}>{DASHBOARD_PAGE_COPY.subtitle}</p>
       </section>
 
       {dashboardFeatureRegistry.map((feature) => {

@@ -1,12 +1,19 @@
 import { Card } from '@design-system';
 import type { AnalyticsSeries } from '@/features/dashboard/types';
 
+import {
+  ANALYTICS_LABEL_MIDDLE_DIVISOR,
+  ANALYTICS_PANEL_MIN_BAR_HEIGHT_PERCENT,
+  ANALYTICS_PANEL_RANGE_PREFIX,
+  ANALYTICS_PANEL_TITLE,
+} from './stats-analytics/constants';
 import styles from './AnalyticsPanel.module.css';
 
 export type { AnalyticsSeries } from '@/features/dashboard/types';
 
 export function AnalyticsPanel({ series }: { series: AnalyticsSeries }) {
   const maxValue = Math.max(...series.points.map((point) => point.value));
+  const middleLabelIndex = Math.floor(series.points.length / ANALYTICS_LABEL_MIDDLE_DIVISOR);
 
   return (
     <div className={styles.panelCard}>
@@ -15,8 +22,10 @@ export function AnalyticsPanel({ series }: { series: AnalyticsSeries }) {
         stretch
         header={
           <div className={styles.headline}>
-            <h2 className={styles.title}>Traffic Overview</h2>
-            <span className={styles.subtitle}>Range: {series.range}</span>
+            <h2 className={styles.title}>{ANALYTICS_PANEL_TITLE}</h2>
+            <span className={styles.subtitle}>
+              {ANALYTICS_PANEL_RANGE_PREFIX}: {series.range}
+            </span>
           </div>
         }
       >
@@ -30,7 +39,9 @@ export function AnalyticsPanel({ series }: { series: AnalyticsSeries }) {
             >
               <span
                 className={styles.bar}
-                style={{ height: `${Math.max(14, (point.value / maxValue) * 100)}%` }}
+                style={{
+                  height: `${Math.max(ANALYTICS_PANEL_MIN_BAR_HEIGHT_PERCENT, (point.value / maxValue) * 100)}%`,
+                }}
               />
               <span className={styles.tooltip} aria-hidden>
                 {point.label}: {point.value}
@@ -40,7 +51,7 @@ export function AnalyticsPanel({ series }: { series: AnalyticsSeries }) {
         </div>
         <div className={styles.labels}>
           <span>{series.points[0]?.label}</span>
-          <span>{series.points[Math.floor(series.points.length / 2)]?.label}</span>
+          <span>{series.points[middleLabelIndex]?.label}</span>
           <span>{series.points[series.points.length - 1]?.label}</span>
         </div>
       </Card>

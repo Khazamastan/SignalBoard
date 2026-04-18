@@ -2,16 +2,21 @@ import { NextResponse } from 'next/server';
 
 import { randomDelay, shouldBypassDelay } from '@/features/dashboard/api/http-effects';
 import { parseUsersSearchParams } from '@/features/dashboard/api/query-parsers';
+import {
+  API_CACHE_CONTROL_NO_STORE,
+  API_ERROR_CACHE_CONTROL_NO_STORE,
+  API_ERROR_STATUS_CODE,
+  DASHBOARD_API_ERROR_MESSAGES,
+  USERS_PAGINATION_FALLBACK_TOTAL_ITEMS,
+  USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
+} from '@/features/dashboard/constants';
 import { dashboardService } from '@/features/dashboard/data/dashboard-service';
 import type { UserRow } from '@/features/dashboard/types';
 import { createApiResponse } from '@/shared/utils/api-response';
 
-const USERS_FALLBACK_ERROR_MESSAGE = 'Unable to fetch users.';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: import('next/server').NextRequest) {
-  const cacheControlValue = 'private, no-store, max-age=0';
-  const errorCacheControlValue = 'no-store, max-age=0';
   const query = parseUsersSearchParams(request.nextUrl.searchParams);
 
   if (!shouldBypassDelay(request)) {
@@ -23,7 +28,7 @@ export async function GET(request: import('next/server').NextRequest) {
 
     return NextResponse.json(result, {
       headers: {
-        'Cache-Control': cacheControlValue,
+        'Cache-Control': API_CACHE_CONTROL_NO_STORE,
       },
     });
   } catch {
@@ -33,16 +38,16 @@ export async function GET(request: import('next/server').NextRequest) {
         {
           meta: {
             page: query.page,
-            totalPages: 1,
-            totalItems: 0,
+            totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
+            totalItems: USERS_PAGINATION_FALLBACK_TOTAL_ITEMS,
           },
-          error: USERS_FALLBACK_ERROR_MESSAGE,
+          error: DASHBOARD_API_ERROR_MESSAGES.users,
         },
       ),
       {
-        status: 500,
+        status: API_ERROR_STATUS_CODE,
         headers: {
-          'Cache-Control': errorCacheControlValue,
+          'Cache-Control': API_ERROR_CACHE_CONTROL_NO_STORE,
         },
       },
     );

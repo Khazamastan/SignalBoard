@@ -10,6 +10,8 @@ import {
   ANALYTICS_POINTS_BY_RANGE,
   MOCK_REFERENCE_DATE,
   MOCK_USERS_TOTAL,
+  USERS_DEFAULT_PAGE,
+  USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
 } from '@/features/dashboard/constants';
 
 export type UsersPageData = {
@@ -225,9 +227,12 @@ const queryUsers = (query: UsersQuery): UsersPageData => {
       })
     : sorted;
   const totalItems = filtered.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / query.limit));
-  const safePage = Math.min(Math.max(query.page, 1), totalPages);
-  const start = (safePage - 1) * query.limit;
+  const totalPages = Math.max(
+    USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
+    Math.ceil(totalItems / query.limit),
+  );
+  const safePage = Math.min(Math.max(query.page, USERS_DEFAULT_PAGE), totalPages);
+  const start = (safePage - USERS_DEFAULT_PAGE) * query.limit;
   const data = filtered.slice(start, start + query.limit);
 
   return {
@@ -254,7 +259,7 @@ const inMemoryDashboardRepository: DashboardRepository = {
       data: payload.data,
       meta: payload.meta ?? {
         page: query.page,
-        totalPages: 1,
+        totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
         totalItems: payload.data.length,
       },
     };

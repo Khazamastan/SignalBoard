@@ -7,6 +7,9 @@ import { DataTable, InputField, Pagination, SearchIcon } from '@design-system';
 import type { DataTableSortOrder } from '@design-system';
 import type { UserSortField } from '@/features/dashboard/types';
 import {
+  USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
+  USERS_QUERY_PARAMS,
+  USERS_RESET_PAGE_PARAM_VALUE,
   USERS_SEARCH_DEBOUNCE_MS,
   USERS_TABLE_SKELETON_ROW_COUNT_MIN,
 } from '@/features/dashboard/constants';
@@ -15,6 +18,8 @@ import { usersTableColumns } from './users-table/columns';
 import {
   USERS_TABLE_ARIA_LABEL,
   USERS_TABLE_EMPTY_MESSAGE,
+  USERS_TABLE_MAX_BODY_HEIGHT,
+  USERS_TABLE_SEARCH_ICON_SIZE,
   USERS_TABLE_SEARCH_LABEL,
   USERS_TABLE_TITLE,
   USERS_TABLE_VIRTUALIZATION,
@@ -45,7 +50,7 @@ export function UsersTable({ initialData }: UsersTableProps) {
   const meta = data?.meta ?? {
       page: queryState.page,
       totalItems: rows.length,
-      totalPages: 1,
+      totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
     };
 
   const updateParams = useCallback(
@@ -75,8 +80,8 @@ export function UsersTable({ initialData }: UsersTableProps) {
         const normalizedSearch = value.trim();
 
         updateParams({
-          search: normalizedSearch ? normalizedSearch : null,
-          page: '1',
+          [USERS_QUERY_PARAMS.search]: normalizedSearch ? normalizedSearch : null,
+          [USERS_QUERY_PARAMS.page]: USERS_RESET_PAGE_PARAM_VALUE,
         });
       }, USERS_SEARCH_DEBOUNCE_MS);
     },
@@ -87,17 +92,17 @@ export function UsersTable({ initialData }: UsersTableProps) {
     (nextSort: UsersDataTableSortState) => {
       if (!nextSort) {
         updateParams({
-          sort: null,
-          order: null,
-          page: '1',
+          [USERS_QUERY_PARAMS.sort]: null,
+          [USERS_QUERY_PARAMS.order]: null,
+          [USERS_QUERY_PARAMS.page]: USERS_RESET_PAGE_PARAM_VALUE,
         });
         return;
       }
 
       updateParams({
-        sort: nextSort.key,
-        order: nextSort.direction,
-        page: '1',
+        [USERS_QUERY_PARAMS.sort]: nextSort.key,
+        [USERS_QUERY_PARAMS.order]: nextSort.direction,
+        [USERS_QUERY_PARAMS.page]: USERS_RESET_PAGE_PARAM_VALUE,
       });
     },
     [updateParams],
@@ -142,7 +147,7 @@ export function UsersTable({ initialData }: UsersTableProps) {
               queueSearchUpdate(nextValue);
             }}
             hideMeta
-            prefix={<SearchIcon size={24} />}
+            prefix={<SearchIcon size={USERS_TABLE_SEARCH_ICON_SIZE} />}
           />
         }
         errorMessage={error ?? undefined}
@@ -152,7 +157,7 @@ export function UsersTable({ initialData }: UsersTableProps) {
         sort={{ key: queryState.sort, direction: queryState.order }}
         onSortChange={onSortChange}
         emptyMessage={USERS_TABLE_EMPTY_MESSAGE}
-        maxBodyHeight="34rem"
+        maxBodyHeight={USERS_TABLE_MAX_BODY_HEIGHT}
         stickyFirstColumn
         virtualization={USERS_TABLE_VIRTUALIZATION}
       />
@@ -162,7 +167,10 @@ export function UsersTable({ initialData }: UsersTableProps) {
         totalPages={meta.totalPages}
         totalItems={meta.totalItems}
         isLoading={isLoading}
-        onChangePage={(page) => updateParams({ page: String(page) })}
+        onChangePage={(page) =>
+          updateParams({
+            [USERS_QUERY_PARAMS.page]: String(page),
+          })}
       />
     </>
   );

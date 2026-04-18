@@ -1,6 +1,12 @@
 import type { ApiMeta, ApiResponse, RangeKey } from '@/shared/types/api';
 import { parseApiResponse } from '@/shared/utils/api-response';
-import { USERS_PAGE_LIMIT } from '@/features/dashboard/constants';
+import {
+  DASHBOARD_API_ERROR_MESSAGES,
+  DASHBOARD_API_QUERY_PARAMS,
+  DASHBOARD_API_ROUTES,
+  USERS_PAGE_LIMIT,
+  USERS_QUERY_PARAMS,
+} from '@/features/dashboard/constants';
 import type { AnalyticsSeries, StatCardData, UserRow, UsersQuery } from '@/features/dashboard/types';
 
 type RequestOptions = {
@@ -11,10 +17,6 @@ type UsersPagePayload = {
   rows: UserRow[];
   meta: ApiMeta;
 };
-
-const DEFAULT_USERS_ERROR_MESSAGE = 'Unable to fetch users.';
-const DEFAULT_STATS_ERROR_MESSAGE = 'Unable to load dashboard data.';
-const DEFAULT_ANALYTICS_ERROR_MESSAGE = 'Unable to load dashboard data.';
 
 const readApiData = async <T,>(
   response: Response,
@@ -43,38 +45,47 @@ const resolveUsersMeta = (meta: ApiMeta | undefined, rows: UserRow[], query: Use
 
 export const dashboardApiClient = {
   async getStats(options: RequestOptions): Promise<StatCardData[]> {
-    const response = await fetch('/api/stats', {
+    const response = await fetch(DASHBOARD_API_ROUTES.stats, {
       cache: 'no-store',
       signal: options.signal,
     });
-    const payload = await readApiData<StatCardData[]>(response, DEFAULT_STATS_ERROR_MESSAGE);
+    const payload = await readApiData<StatCardData[]>(
+      response,
+      DASHBOARD_API_ERROR_MESSAGES.dashboardData,
+    );
     return payload.data;
   },
 
   async getAnalytics(range: RangeKey, options: RequestOptions): Promise<AnalyticsSeries> {
-    const response = await fetch(`/api/analytics?range=${encodeURIComponent(range)}`, {
+    const response = await fetch(
+      `${DASHBOARD_API_ROUTES.analytics}?${DASHBOARD_API_QUERY_PARAMS.range}=${encodeURIComponent(range)}`,
+      {
       cache: 'no-store',
       signal: options.signal,
-    });
-    const payload = await readApiData<AnalyticsSeries>(response, DEFAULT_ANALYTICS_ERROR_MESSAGE);
+      },
+    );
+    const payload = await readApiData<AnalyticsSeries>(
+      response,
+      DASHBOARD_API_ERROR_MESSAGES.dashboardData,
+    );
     return payload.data;
   },
 
   async getUsersPage(query: UsersQuery, options: RequestOptions): Promise<UsersPagePayload> {
     const params = new URLSearchParams({
-      page: String(query.page),
-      limit: String(query.limit),
-      sort: query.sort,
-      order: query.order,
-      search: query.search,
+      [USERS_QUERY_PARAMS.page]: String(query.page),
+      [USERS_QUERY_PARAMS.limit]: String(query.limit),
+      [USERS_QUERY_PARAMS.sort]: query.sort,
+      [USERS_QUERY_PARAMS.order]: query.order,
+      [USERS_QUERY_PARAMS.search]: query.search,
     });
 
-    const response = await fetch(`/api/users?${params.toString()}`, {
+    const response = await fetch(`${DASHBOARD_API_ROUTES.users}?${params.toString()}`, {
       cache: 'no-store',
       signal: options.signal,
     });
 
-    const payload = await readApiData<UserRow[]>(response, DEFAULT_USERS_ERROR_MESSAGE);
+    const payload = await readApiData<UserRow[]>(response, DASHBOARD_API_ERROR_MESSAGES.users);
 
     return {
       rows: payload.data,

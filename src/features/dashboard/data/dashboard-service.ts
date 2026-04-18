@@ -1,5 +1,6 @@
 import type { ApiResponse, RangeKey } from '@/shared/types/api';
 import { createApiResponse } from '@/shared/utils/api-response';
+import { USERS_PAGINATION_FALLBACK_TOTAL_PAGES } from '@/features/dashboard/constants';
 import type { AnalyticsSeries, StatCardData, UserRow, UsersQuery } from '@/features/dashboard/types';
 
 import { dashboardRepository } from './dashboard-repository';
@@ -21,7 +22,7 @@ export const dashboardService = {
     const usersPage = await dashboardRepository.getUsersPage(query);
     const meta = usersPage.meta ?? {
       page: query.page,
-      totalPages: 1,
+      totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
       totalItems: usersPage.data.length,
     };
 

@@ -25,12 +25,14 @@ type QueryError = {
   message: string;
 };
 
+const UNKNOWN_QUERY_ERROR_MESSAGE = 'Unknown error.';
+
 const resolveErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {
     return error.message;
   }
 
-  return 'Unknown error.';
+  return UNKNOWN_QUERY_ERROR_MESSAGE;
 };
 
 export function useAsyncQuery<TData>({

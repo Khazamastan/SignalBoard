@@ -4,6 +4,7 @@ import type { AnalyticsSeries } from '@/features/dashboard/types';
 import { useAsyncQuery } from '@/shared/hooks/useAsyncQuery';
 
 import { fetchAnalyticsDataByRange } from './api';
+import { ANALYTICS_QUERY_KEY_PREFIX } from './constants';
 
 type UseStatsAnalyticsQueryOptions = {
   range: RangeKey;
@@ -11,7 +12,7 @@ type UseStatsAnalyticsQueryOptions = {
 };
 
 const toQueryKey = (range: RangeKey): string => {
-  return `analytics|${range}`;
+  return `${ANALYTICS_QUERY_KEY_PREFIX}|${range}`;
 };
 
 export const useStatsAnalyticsQuery = ({ range, initialAnalytics }: UseStatsAnalyticsQueryOptions) => {

@@ -1,7 +1,12 @@
-import { USERS_CLIENT_CACHE_TTL_MS, USERS_PAGE_LIMIT } from '@/features/dashboard/constants';
+import {
+  USERS_CLIENT_CACHE_TTL_MS,
+  USERS_PAGE_LIMIT,
+  USERS_TABLE_CACHE_MAX_ENTRIES,
+} from '@/features/dashboard/constants';
 import { dashboardApiClient } from '@/features/dashboard/api/dashboard-client';
 
 import type { UsersTableData, UsersTableQueryState } from './types';
+import { toUsersTableQueryKey } from './utils';
 
 type QueryOptions = {
   query: UsersTableQueryState;
@@ -14,7 +19,6 @@ type UsersCacheEntry = {
 };
 
 const usersTableCache = new Map<string, UsersCacheEntry>();
-const USERS_TABLE_CACHE_MAX_ENTRIES = 120;
 
 const pruneUsersTableCache = (now: number): void => {
   usersTableCache.forEach((entry, key) => {
@@ -32,15 +36,11 @@ const pruneUsersTableCache = (now: number): void => {
   }
 };
 
-const toUsersTableCacheKey = (query: UsersTableQueryState): string => {
-  return `${query.page}|${query.sort}|${query.order}|${query.search}`;
-};
-
 export const fetchUsersTableData = async ({ query, signal }: QueryOptions): Promise<UsersTableData> => {
   const now = Date.now();
   pruneUsersTableCache(now);
 
-  const cacheKey = toUsersTableCacheKey(query);
+  const cacheKey = toUsersTableQueryKey(query);
   const cached = usersTableCache.get(cacheKey);
 
   if (cached && cached.expiresAt > now) {

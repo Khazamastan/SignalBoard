@@ -1,4 +1,9 @@
 import styles from './DashboardStreamingFallbacks.module.css';
+import {
+  LOADING_ANALYTICS_ARIA_LABEL,
+  LOADING_CHALLENGES_ARIA_LABEL,
+  LOADING_USERS_TABLE_ARIA_LABEL,
+} from './stats-analytics/constants';
 
 const statCardSkeletonIds = ['1', '2', '3', '4'] as const;
 const tableColumnSkeletonIds = ['1', '2', '3', '4', '5', '6', '7'] as const;
@@ -15,7 +20,12 @@ const SkeletonBlock = ({ className }: BlockProps) => {
 
 export function StatsAnalyticsSectionFallback() {
   return (
-    <section className={styles.section} aria-busy aria-live="polite" aria-label="Loading analytics">
+    <section
+      className={styles.section}
+      aria-busy
+      aria-live="polite"
+      aria-label={LOADING_ANALYTICS_ARIA_LABEL}
+    >
       <div className={styles.statsGrid}>
         {statCardSkeletonIds.map((id) => (
           <article key={id} className={styles.statCard}>
@@ -52,7 +62,12 @@ export function StatsAnalyticsSectionFallback() {
 
 export function UsersTableSectionFallback() {
   return (
-    <section className={styles.section} aria-busy aria-live="polite" aria-label="Loading users table">
+    <section
+      className={styles.section}
+      aria-busy
+      aria-live="polite"
+      aria-label={LOADING_USERS_TABLE_ARIA_LABEL}
+    >
       <div className={styles.tableHeader}>
         <SkeletonBlock className={styles.tableTitle} />
         <SkeletonBlock className={styles.tableSearch} />
@@ -88,7 +103,12 @@ export function UsersTableSectionFallback() {
 
 export function ChallengesContentFallback() {
   return (
-    <section className={styles.section} aria-busy aria-live="polite" aria-label="Loading challenges">
+    <section
+      className={styles.section}
+      aria-busy
+      aria-live="polite"
+      aria-label={LOADING_CHALLENGES_ARIA_LABEL}
+    >
       <div className={styles.challengeHeader}>
         <SkeletonBlock className={styles.challengeTitle} />
         <SkeletonBlock className={styles.challengeSubtitle} />

@@ -3,6 +3,8 @@ import { Manrope, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import { cookies } from 'next/headers';
 
 import { DEFAULT_THEME, THEME_COOKIE_NAME, parseTheme } from '@design-system';
+import { APP_METADATA } from '@/app/constants';
+import { DASHBOARD_LAYOUT_IDS } from '@/features/dashboard/layout/constants';
 import { DashboardChrome } from '@/features/dashboard/layout';
 import { DEFAULT_LOCALE, MESSAGES_BY_LOCALE } from '@/shared/i18n';
 import './globals.css';
@@ -26,8 +28,8 @@ const monoFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'SignalBoard Analytics Dashboard',
-  description: 'Design-system driven analytics dashboard assignment',
+  title: APP_METADATA.title,
+  description: APP_METADATA.description,
 };
 
 export default async function RootLayout({
@@ -48,7 +50,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <a href="#main-content" className="skip-link">
+        <a href={`#${DASHBOARD_LAYOUT_IDS.mainContent}`} className="skip-link">
           {messages['a11y.skipToMainContent']}
         </a>
         <DashboardChrome messages={messages}>{children}</DashboardChrome>
