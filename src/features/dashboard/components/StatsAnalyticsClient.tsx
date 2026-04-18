@@ -15,19 +15,27 @@ import { StatsGrid } from './StatsGrid';
 import { STATS_ANALYTICS_SECTION_ARIA_LABEL } from './stats-analytics/constants';
 import type { StatsAnalyticsClientProps } from './stats-analytics/types';
 import { useStatsAnalyticsQuery } from './stats-analytics/useStatsAnalyticsQuery';
+import { useStatsCardsQuery } from './stats-analytics/useStatsCardsQuery';
 import styles from './StatsAnalyticsSection.module.css';
 
 const ranges: RangeKey[] = DASHBOARD_RANGE_OPTIONS;
 
 export function StatsAnalyticsClient({ initialStats, initialAnalytics }: StatsAnalyticsClientProps) {
   const [range, setRange] = useState<RangeKey>(initialAnalytics.range);
-  const { data, isLoading, error } = useStatsAnalyticsQuery({
+  const {
+    data: analyticsData,
+    isLoading: isAnalyticsLoading,
+    error: analyticsError,
+  } = useStatsAnalyticsQuery({
     range,
     initialAnalytics,
   });
+  const { data: statsData, error: statsError } = useStatsCardsQuery({
+    initialStats,
+  });
 
-  const stats = initialStats;
-  const analytics = data ?? initialAnalytics;
+  const stats = statsData ?? initialStats;
+  const analytics = analyticsData ?? initialAnalytics;
 
   return (
     <section className={styles.section} aria-label={STATS_ANALYTICS_SECTION_ARIA_LABEL}>
@@ -47,7 +55,7 @@ export function StatsAnalyticsClient({ initialStats, initialAnalytics }: StatsAn
                   setRange(rangeOption);
                 }
               }}
-              disabled={isLoading && rangeOption === range}
+              disabled={isAnalyticsLoading && rangeOption === range}
             >
               {rangeOption}
             </Button>
@@ -58,7 +66,7 @@ export function StatsAnalyticsClient({ initialStats, initialAnalytics }: StatsAn
       <div className={styles.analyticsShell}>
         <AnalyticsPanel series={analytics} />
 
-        {isLoading ? (
+        {isAnalyticsLoading ? (
           <div className={styles.skeletonOverlay} aria-hidden>
             <div className={styles.skeletonChart}>
               <Card
@@ -91,7 +99,8 @@ export function StatsAnalyticsClient({ initialStats, initialAnalytics }: StatsAn
         ) : null}
       </div>
 
-      {error ? <p className={styles.error}>{error}</p> : null}
+      {statsError ? <p className={styles.error}>{statsError}</p> : null}
+      {analyticsError ? <p className={styles.error}>{analyticsError}</p> : null}
     </section>
   );
 }
