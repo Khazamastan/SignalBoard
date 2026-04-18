@@ -150,6 +150,13 @@ const analyticsDataByRange: Record<RangeKey, AnalyticsSeries> = {
 };
 
 const usersData = createUsers();
+const usersSearchIndexById = new Map<number, string>(
+  usersData.map((user) => [
+    user.id,
+    `${user.name} ${user.email} ${user.role} ${user.country}`.toLowerCase(),
+  ]),
+);
+const sortedUsersCache = new Map<`${UserSortField}|asc` | `${UserSortField}|desc`, UserRow[]>();
 
 const comparePrimitive = <T extends string | number>(
   a: T,
@@ -186,26 +193,42 @@ const sortUsers = (
   });
 };
 
+const toSortCacheKey = (
+  sortField: UserSortField,
+  order: 'asc' | 'desc',
+): `${UserSortField}|asc` | `${UserSortField}|desc` => {
+  return `${sortField}|${order}`;
+};
+
+const getSortedUsers = (
+  sortField: UserSortField,
+  order: 'asc' | 'desc',
+): UserRow[] => {
+  const cacheKey = toSortCacheKey(sortField, order);
+  const cached = sortedUsersCache.get(cacheKey);
+
+  if (cached) {
+    return cached;
+  }
+
+  const sortedUsers = sortUsers(usersData, sortField, order);
+  sortedUsersCache.set(cacheKey, sortedUsers);
+  return sortedUsers;
+};
+
 const queryUsers = (query: UsersQuery): UsersPageData => {
   const normalizedSearch = query.search.trim().toLowerCase();
-
+  const sorted = getSortedUsers(query.sort, query.order);
   const filtered = normalizedSearch
-    ? usersData.filter((user) => {
-        return (
-          user.name.toLowerCase().includes(normalizedSearch) ||
-          user.email.toLowerCase().includes(normalizedSearch) ||
-          user.role.toLowerCase().includes(normalizedSearch) ||
-          user.country.toLowerCase().includes(normalizedSearch)
-        );
+    ? sorted.filter((user) => {
+        return usersSearchIndexById.get(user.id)?.includes(normalizedSearch);
       })
-    : usersData;
-
-  const sorted = sortUsers(filtered, query.sort, query.order);
-  const totalItems = sorted.length;
+    : sorted;
+  const totalItems = filtered.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / query.limit));
   const safePage = Math.min(Math.max(query.page, 1), totalPages);
   const start = (safePage - 1) * query.limit;
-  const data = sorted.slice(start, start + query.limit);
+  const data = filtered.slice(start, start + query.limit);
 
   return {
     data,
