@@ -21,6 +21,13 @@ export type PaginationProps = {
   currentPage: number;
   totalPages: number;
   totalItems?: number;
+  ariaLabel?: string;
+  pageLabel?: string;
+  ofLabel?: string;
+  itemsLabel?: string;
+  previousLabel?: string;
+  nextLabel?: string;
+  goToPageLabelPrefix?: string;
   isLoading?: boolean;
   onChangePage: (page: number) => void;
 };
@@ -29,6 +36,13 @@ export function Pagination({
   currentPage,
   totalPages,
   totalItems,
+  ariaLabel = "Pagination",
+  pageLabel = "Page",
+  ofLabel = "of",
+  itemsLabel = "items",
+  previousLabel = "Previous",
+  nextLabel = "Next",
+  goToPageLabelPrefix = "Go to page",
   isLoading = false,
   onChangePage,
 }: PaginationProps) {
@@ -40,10 +54,10 @@ export function Pagination({
   );
 
   return (
-    <nav className={styles.container} aria-label="Pagination">
+    <nav className={styles.container} aria-label={ariaLabel}>
       <span className={styles.pageInfo} aria-live="polite">
-        Page {safeCurrentPage} of {safeTotalPages}
-        {typeof totalItems === "number" ? ` · ${totalItems} items` : ""}
+        {pageLabel} {safeCurrentPage} {ofLabel} {safeTotalPages}
+        {typeof totalItems === "number" ? ` · ${totalItems} ${itemsLabel}` : ""}
       </span>
 
       <div className={styles.controls}>
@@ -53,7 +67,7 @@ export function Pagination({
           onClick={() => onChangePage(Math.max(1, safeCurrentPage - 1))}
           disabled={safeCurrentPage <= 1 || isLoading}
         >
-          Previous
+          {previousLabel}
         </Button>
 
         {visiblePageMarkers.map((pageNumber) => (
@@ -67,7 +81,7 @@ export function Pagination({
             onClick={() => onChangePage(pageNumber)}
             disabled={pageNumber === safeCurrentPage || isLoading}
             aria-current={pageNumber === safeCurrentPage ? "page" : undefined}
-            aria-label={`Go to page ${pageNumber}`}
+            aria-label={`${goToPageLabelPrefix} ${pageNumber}`}
           >
             {pageNumber}
           </button>
@@ -79,7 +93,7 @@ export function Pagination({
           onClick={() => onChangePage(Math.min(safeTotalPages, safeCurrentPage + 1))}
           disabled={safeCurrentPage >= safeTotalPages || isLoading}
         >
-          Next
+          {nextLabel}
         </Button>
       </div>
     </nav>

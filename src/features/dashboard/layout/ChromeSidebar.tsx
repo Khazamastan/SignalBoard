@@ -8,7 +8,6 @@ import styles from './ChromeSidebar.module.css';
 import {
   DASHBOARD_LAYOUT_ICON_SIZES,
   DASHBOARD_LAYOUT_IDS,
-  DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL,
 } from './constants';
 import { navItems } from './navigation-items';
 
@@ -65,7 +64,7 @@ export function ChromeSidebar({
           onClick={onCloseMobileSidebar}
           aria-label={t('layout.closeNavigationMenu')}
         >
-          {DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL}
+          {t('layout.mobileMenuClose')}
         </Button>
       </div>
 
@@ -73,10 +72,10 @@ export function ChromeSidebar({
         <ul className={styles.navList}>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
-            const itemLabel = t(item.labelKey, item.label);
+            const itemLabel = t(item.labelKey);
 
             return (
-              <li key={item.label}>
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   className={classNames(styles.navLink, isActive && styles.active)}

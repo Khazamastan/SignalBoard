@@ -3,7 +3,7 @@ import { Button, ChartBarIcon, InputField, MenuIcon, SearchIcon, ThemeToggle } f
 import type { Translate } from '@/shared/i18n';
 
 import styles from './ChromeHeader.module.css';
-import { DASHBOARD_LAYOUT_ICON_SIZES, DASHBOARD_LAYOUT_IDS, DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL } from './constants';
+import { DASHBOARD_LAYOUT_ICON_SIZES, DASHBOARD_LAYOUT_IDS } from './constants';
 import { UserMenuDropdown } from './UserMenuDropdown';
 
 type ChromeHeaderProps = {
@@ -34,7 +34,7 @@ export function ChromeHeader({
             aria-controls={DASHBOARD_LAYOUT_IDS.primaryNavigation}
           >
             {isMobileSidebarOpen ? (
-              <span className={styles.mobileMenuText}>{DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL}</span>
+              <span className={styles.mobileMenuText}>{t('layout.mobileMenuClose')}</span>
             ) : (
               <MenuIcon size={DASHBOARD_LAYOUT_ICON_SIZES.header} />
             )}

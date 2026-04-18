@@ -13,5 +13,3 @@ export const DASHBOARD_LAYOUT_ICON_SIZES = {
   search: 24,
   userMenu: 14,
 } as const;
-
-export const DASHBOARD_LAYOUT_MOBILE_CLOSE_LABEL = 'Close';

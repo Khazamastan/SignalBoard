@@ -1,9 +1,5 @@
 import styles from './DashboardStreamingFallbacks.module.css';
-import {
-  LOADING_ANALYTICS_ARIA_LABEL,
-  LOADING_CHALLENGES_ARIA_LABEL,
-  LOADING_USERS_TABLE_ARIA_LABEL,
-} from './stats-analytics/constants';
+import { t } from '@/shared/i18n';
 
 const statCardSkeletonIds = ['1', '2', '3', '4'] as const;
 const tableColumnSkeletonIds = ['1', '2', '3', '4', '5', '6', '7'] as const;
@@ -19,12 +15,13 @@ const SkeletonBlock = ({ className }: BlockProps) => {
 };
 
 export function StatsAnalyticsSectionFallback() {
+
   return (
     <section
       className={styles.section}
       aria-busy
       aria-live="polite"
-      aria-label={LOADING_ANALYTICS_ARIA_LABEL}
+      aria-label={t('dashboard.loading.analytics')}
     >
       <div className={styles.statsGrid}>
         {statCardSkeletonIds.map((id) => (
@@ -61,12 +58,13 @@ export function StatsAnalyticsSectionFallback() {
 }
 
 export function UsersTableSectionFallback() {
+
   return (
     <section
       className={styles.section}
       aria-busy
       aria-live="polite"
-      aria-label={LOADING_USERS_TABLE_ARIA_LABEL}
+      aria-label={t('dashboard.loading.usersTable')}
     >
       <div className={styles.tableHeader}>
         <SkeletonBlock className={styles.tableTitle} />
@@ -102,12 +100,13 @@ export function UsersTableSectionFallback() {
 }
 
 export function ChallengesContentFallback() {
+
   return (
     <section
       className={styles.section}
       aria-busy
       aria-live="polite"
-      aria-label={LOADING_CHALLENGES_ARIA_LABEL}
+      aria-label={t('dashboard.loading.challenges')}
     >
       <div className={styles.challengeHeader}>
         <SkeletonBlock className={styles.challengeTitle} />

@@ -1,11 +1,10 @@
 import { Card } from '@design-system';
 import type { AnalyticsSeries } from '@/features/dashboard/types';
+import { t } from '@/shared/i18n';
 
 import {
   ANALYTICS_LABEL_MIDDLE_DIVISOR,
   ANALYTICS_PANEL_MIN_BAR_HEIGHT_PERCENT,
-  ANALYTICS_PANEL_RANGE_PREFIX,
-  ANALYTICS_PANEL_TITLE,
 } from './stats-analytics/constants';
 import styles from './AnalyticsPanel.module.css';
 
@@ -22,9 +21,9 @@ export function AnalyticsPanel({ series }: { series: AnalyticsSeries }) {
         stretch
         header={
           <div className={styles.headline}>
-            <h2 className={styles.title}>{ANALYTICS_PANEL_TITLE}</h2>
+            <h2 className={styles.title}>{t('dashboard.analytics.panelTitle')}</h2>
             <span className={styles.subtitle}>
-              {ANALYTICS_PANEL_RANGE_PREFIX}: {series.range}
+              {t('dashboard.analytics.rangePrefix')}: {series.range}
             </span>
           </div>
         }

@@ -6,10 +6,10 @@ import {
   API_CACHE_CONTROL_NO_STORE,
   API_ERROR_CACHE_CONTROL_NO_STORE,
   API_ERROR_STATUS_CODE,
-  DASHBOARD_API_ERROR_MESSAGES,
   DASHBOARD_API_QUERY_PARAMS,
 } from '@/features/dashboard/constants';
 import { dashboardService } from '@/features/dashboard/data/dashboard-service';
+import { t } from '@/shared/i18n';
 import type { AnalyticsSeries } from '@/features/dashboard/types';
 import { createApiResponse } from '@/shared/utils/api-response';
 
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
           points: [],
         },
         {
-          error: DASHBOARD_API_ERROR_MESSAGES.dashboardData,
+          error: t('api.error.dashboardData'),
         },
       ),
       {

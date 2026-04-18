@@ -6,7 +6,7 @@ import { DEFAULT_THEME, THEME_COOKIE_NAME, parseTheme } from '@design-system';
 import { APP_METADATA } from '@/app/constants';
 import { DASHBOARD_LAYOUT_IDS } from '@/features/dashboard/layout/constants';
 import { DashboardChrome } from '@/features/dashboard/layout';
-import { DEFAULT_LOCALE, MESSAGES_BY_LOCALE } from '@/shared/i18n';
+import { createTranslator, DEFAULT_LOCALE, MESSAGES_BY_LOCALE } from '@/shared/i18n';
 import './globals.css';
 
 const headingFont = Space_Grotesk({
@@ -41,6 +41,7 @@ export default async function RootLayout({
   const themePreference = parseTheme(cookieStore.get(THEME_COOKIE_NAME)?.value) ?? DEFAULT_THEME;
   const locale = DEFAULT_LOCALE;
   const messages = MESSAGES_BY_LOCALE[locale];
+  const translate = createTranslator(messages);
 
   return (
     <html
@@ -51,7 +52,7 @@ export default async function RootLayout({
     >
       <body>
         <a href={`#${DASHBOARD_LAYOUT_IDS.mainContent}`} className="skip-link">
-          {messages['a11y.skipToMainContent']}
+          {translate('a11y.skipToMainContent')}
         </a>
         <DashboardChrome messages={messages}>{children}</DashboardChrome>
       </body>

@@ -1,13 +1,14 @@
 import type { ApiMeta, ApiResponse, RangeKey } from '@/shared/types/api';
 import { parseApiResponse } from '@/shared/utils/api-response';
 import {
-  DASHBOARD_API_ERROR_MESSAGES,
   DASHBOARD_API_QUERY_PARAMS,
   DASHBOARD_API_ROUTES,
   USERS_PAGE_LIMIT,
   USERS_QUERY_PARAMS,
 } from '@/features/dashboard/constants';
 import type { AnalyticsSeries, StatCardData, UserRow, UsersQuery } from '@/features/dashboard/types';
+import { t } from '@/shared/i18n';
+
 
 type RequestOptions = {
   signal: AbortSignal;
@@ -51,7 +52,7 @@ export const dashboardApiClient = {
     });
     const payload = await readApiData<StatCardData[]>(
       response,
-      DASHBOARD_API_ERROR_MESSAGES.dashboardData,
+      t('api.error.dashboardData'),
     );
     return payload.data;
   },
@@ -66,7 +67,7 @@ export const dashboardApiClient = {
     );
     const payload = await readApiData<AnalyticsSeries>(
       response,
-      DASHBOARD_API_ERROR_MESSAGES.dashboardData,
+      t('api.error.dashboardData'),
     );
     return payload.data;
   },
@@ -85,7 +86,7 @@ export const dashboardApiClient = {
       signal: options.signal,
     });
 
-    const payload = await readApiData<UserRow[]>(response, DASHBOARD_API_ERROR_MESSAGES.users);
+    const payload = await readApiData<UserRow[]>(response, t('api.error.users'));
 
     return {
       rows: payload.data,

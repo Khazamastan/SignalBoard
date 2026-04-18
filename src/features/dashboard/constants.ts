@@ -62,11 +62,6 @@ export const DASHBOARD_API_QUERY_PARAMS = {
   range: 'range',
 } as const;
 
-export const DASHBOARD_API_ERROR_MESSAGES = {
-  users: 'Unable to fetch users.',
-  dashboardData: 'Unable to load dashboard data.',
-} as const;
-
 export const ANALYTICS_CLIENT_CACHE_TTL_MS = 60000;
 export const USERS_CLIENT_CACHE_TTL_MS = 30000;
 

@@ -6,11 +6,11 @@ import {
   API_CACHE_CONTROL_NO_STORE,
   API_ERROR_CACHE_CONTROL_NO_STORE,
   API_ERROR_STATUS_CODE,
-  DASHBOARD_API_ERROR_MESSAGES,
   USERS_PAGINATION_FALLBACK_TOTAL_ITEMS,
   USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
 } from '@/features/dashboard/constants';
 import { dashboardService } from '@/features/dashboard/data/dashboard-service';
+import { t } from '@/shared/i18n';
 import type { UserRow } from '@/features/dashboard/types';
 import { createApiResponse } from '@/shared/utils/api-response';
 
@@ -41,7 +41,7 @@ export async function GET(request: import('next/server').NextRequest) {
             totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
             totalItems: USERS_PAGINATION_FALLBACK_TOTAL_ITEMS,
           },
-          error: DASHBOARD_API_ERROR_MESSAGES.users,
+          error: t('api.error.users'),
         },
       ),
       {

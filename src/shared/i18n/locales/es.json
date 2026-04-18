@@ -1,0 +1,147 @@
+{
+  "a11y": {
+    "skipToMainContent": "Saltar al contenido principal"
+  },
+  "layout": {
+    "appName": "SignalBoard",
+    "breadcrumb": "Panel > Analítica",
+    "searchDashboard": "Buscar en el panel",
+    "openNavigationMenu": "Abrir menú de navegación",
+    "closeNavigationMenu": "Cerrar menú de navegación",
+    "mobileMenuClose": "Cerrar",
+    "goToHome": "Ir al panel de analítica",
+    "navigation": "Navegación",
+    "primaryNavigation": "Navegación principal",
+    "expandSidebar": "Expandir barra lateral",
+    "collapseSidebar": "Contraer barra lateral",
+    "userMenu": "Menú de usuario",
+    "userSettings": "Configuración",
+    "userLogout": "Cerrar sesión",
+    "nav": {
+      "analytics": "Analítica",
+      "challenges": "Retos",
+      "reports": "Reportes",
+      "settings": "Configuración"
+    }
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "label": "Tema"
+  },
+  "meta": {
+    "title": "Dashboard de Analítica SignalBoard",
+    "description": "Asignación de dashboard de analítica impulsado por sistema de diseño"
+  },
+  "dashboard": {
+    "title": "Panel de Analítica",
+    "subtitle": "Un sistema de diseño basado en tokens con renderizado server-first, interacciones de tabla sincronizadas por URL y componentes conscientes del contenedor.",
+    "stats": {
+      "sectionAria": "Estadísticas y analítica",
+      "gridAria": "Métricas clave",
+      "metric": {
+        "totalUsers": "Usuarios Totales",
+        "monthlyRevenue": "Ingresos Mensuales",
+        "avgSessions": "Sesiones Prom.",
+        "conversionRate": "Tasa de Conversión"
+      }
+    },
+    "analytics": {
+      "panelTitle": "Resumen de Tráfico",
+      "rangePrefix": "Rango"
+    },
+    "loading": {
+      "analytics": "Cargando analítica",
+      "usersTable": "Cargando tabla de usuarios",
+      "challenges": "Cargando desafíos"
+    }
+  },
+  "table": {
+    "users": {
+      "title": "Usuarios",
+      "caption": "Tabla de usuarios",
+      "searchLabel": "Buscar usuarios",
+      "empty": "No se encontraron resultados.",
+      "columns": {
+        "name": "Nombre",
+        "email": "Correo",
+        "role": "Rol",
+        "status": "Estado",
+        "country": "País",
+        "lastActive": "Última actividad",
+        "spend": "Gasto"
+      },
+      "role": {
+        "admin": "Administrador",
+        "manager": "Gerente",
+        "analyst": "Analista",
+        "support": "Soporte"
+      },
+      "status": {
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "pending": "Pendiente"
+      },
+      "pagination": {
+        "ariaLabel": "Paginación",
+        "page": "Página",
+        "of": "de",
+        "items": "elementos",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "goToPage": "Ir a la página"
+      }
+    }
+  },
+  "page": {
+    "reports": {
+      "title": "Reportes",
+      "subtitle": "Esta es un área de reportes ligera, preparada para futuros flujos de exportación y programación de reportes.",
+      "recentTitle": "Reportes Recientes",
+      "recentEmpty": "Aún no hay reportes generados.",
+      "scheduledTitle": "Reportes Programados",
+      "scheduledEmpty": "No hay programaciones configuradas."
+    },
+    "settings": {
+      "title": "Configuración",
+      "subtitle": "Aquí ya están listos los placeholders básicos para perfil, preferencias y controles de notificaciones.",
+      "profileTitle": "Perfil",
+      "profileDescription": "Actualiza nombre, correo y datos de organización.",
+      "notificationsTitle": "Notificaciones",
+      "notificationsDescription": "Administra alertas de reportes y del sistema.",
+      "comingSoon": "Próximamente"
+    },
+    "challenges": {
+      "title": "Desafíos Parte D",
+      "subtitle": "Completado: Desafío 2 (Container Queries) y Desafío 4 (Tipografía y Espaciado Fluido).",
+      "challenge2Title": "Desafío 2 · Container Queries",
+      "challenge2SidebarLabel": "Contenedor ancho de barra lateral",
+      "challenge2MainLabel": "Contenedor ancho de contenido principal",
+      "challenge4Title": "Desafío 4 · Tipografía y Espaciado Fluido",
+      "fluidSpecimen": "Los tokens de espaciado y tipografía usan `clamp(min, preferred, max)` para escalar continuamente de móvil a pantallas grandes sin saltos por breakpoints.",
+      "frameWidthLabel": "Ancho del marco",
+      "specimen": {
+        "display": "Display / 2xl",
+        "large": "Encabezado grande / lg",
+        "medium": "Texto base / md",
+        "small": "Texto auxiliar / xs"
+      }
+    }
+  },
+  "app": {
+    "loading": {
+      "pageContent": "Cargando contenido de la página"
+    },
+    "error": {
+      "title": "Algo salió mal al cargar el dashboard.",
+      "description": "Intenta actualizar los datos.",
+      "retry": "Reintentar",
+      "unknown": "Error desconocido."
+    }
+  },
+  "api": {
+    "error": {
+      "users": "No se pudieron obtener los usuarios.",
+      "dashboardData": "No se pudieron cargar los datos del dashboard."
+    }
+  }
+}

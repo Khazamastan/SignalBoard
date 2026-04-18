@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 
-import { DASHBOARD_PAGE_COPY } from '@/app/constants';
 import {
   dashboardFeatureRegistry,
   type DashboardRouteSearchParams,
 } from '@/features/dashboard/feature-registry';
+import { t } from '@/shared/i18n';
 
 import styles from './page.module.css';
 
@@ -20,8 +20,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <>
       <section className={styles.hero}>
-        <h1 className={styles.title}>{DASHBOARD_PAGE_COPY.title}</h1>
-        <p className={styles.subtitle}>{DASHBOARD_PAGE_COPY.subtitle}</p>
+        <h1 className={styles.title}>{t('dashboard.title')}</h1>
+        <p className={styles.subtitle}>{t('dashboard.subtitle')}</p>
       </section>
 
       {dashboardFeatureRegistry.map((feature) => {

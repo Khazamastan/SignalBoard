@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { t } from '@/shared/i18n';
 
 type QueryContext = {
   signal: AbortSignal;
@@ -25,7 +26,7 @@ type QueryError = {
   message: string;
 };
 
-const UNKNOWN_QUERY_ERROR_MESSAGE = 'Unknown error.';
+const UNKNOWN_QUERY_ERROR_MESSAGE = t('app.error.unknown');
 
 const resolveErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {

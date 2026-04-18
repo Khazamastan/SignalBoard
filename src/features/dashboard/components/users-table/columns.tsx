@@ -1,5 +1,6 @@
 import { Badge, type DataTableColumn } from '@design-system';
 import type { UserRow, UserSortField } from '@/features/dashboard/types';
+import type { Translate, TranslationKey } from '@/shared/i18n';
 
 const toStatusTone = (status: UserRow['status']): 'success' | 'warning' | 'error' => {
   switch (status) {
@@ -12,52 +13,71 @@ const toStatusTone = (status: UserRow['status']): 'success' | 'warning' | 'error
   }
 };
 
-export const usersTableColumns: DataTableColumn<UserRow, UserSortField>[] = [
+const statusKeyByValue: Record<UserRow['status'], TranslationKey> = {
+  Active: 'table.users.status.active',
+  Inactive: 'table.users.status.inactive',
+  Pending: 'table.users.status.pending',
+};
+
+const roleKeyByValue: Record<UserRow['role'], TranslationKey> = {
+  Admin: 'table.users.role.admin',
+  Manager: 'table.users.role.manager',
+  Analyst: 'table.users.role.analyst',
+  Support: 'table.users.role.support',
+};
+
+export const createUsersTableColumns = (
+  t: Translate,
+): DataTableColumn<UserRow, UserSortField>[] => [
   {
     id: 'name',
-    header: 'Name',
+    header: t('table.users.columns.name'),
     sortable: true,
     sortKey: 'name',
     cell: (row: UserRow) => row.name,
   },
   {
     id: 'email',
-    header: 'Email',
+    header: t('table.users.columns.email'),
     sortable: true,
     sortKey: 'email',
     cell: (row: UserRow) => row.email,
   },
   {
     id: 'role',
-    header: 'Role',
+    header: t('table.users.columns.role'),
     sortable: true,
     sortKey: 'role',
-    cell: (row: UserRow) => row.role,
+    cell: (row: UserRow) => t(roleKeyByValue[row.role], row.role),
   },
   {
     id: 'status',
-    header: 'Status',
+    header: t('table.users.columns.status'),
     sortable: true,
     sortKey: 'status',
-    cell: (row: UserRow) => <Badge tone={toStatusTone(row.status)}>{row.status}</Badge>,
+    cell: (row: UserRow) => (
+      <Badge tone={toStatusTone(row.status)}>
+        {t(statusKeyByValue[row.status], row.status)}
+      </Badge>
+    ),
   },
   {
     id: 'country',
-    header: 'Country',
+    header: t('table.users.columns.country'),
     sortable: true,
     sortKey: 'country',
     cell: (row: UserRow) => row.country,
   },
   {
     id: 'lastActive',
-    header: 'Last Active',
+    header: t('table.users.columns.lastActive'),
     sortable: true,
     sortKey: 'lastActive',
     cell: (row: UserRow) => row.lastActive,
   },
   {
     id: 'spend',
-    header: 'Spend',
+    header: t('table.users.columns.spend'),
     sortable: true,
     sortKey: 'spend',
     align: 'right',

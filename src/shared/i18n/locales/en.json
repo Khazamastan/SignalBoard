@@ -1,0 +1,147 @@
+{
+  "a11y": {
+    "skipToMainContent": "Skip to main content"
+  },
+  "layout": {
+    "appName": "SignalBoard",
+    "breadcrumb": "Dashboard > Analytics",
+    "searchDashboard": "Search dashboard",
+    "openNavigationMenu": "Open navigation menu",
+    "closeNavigationMenu": "Close navigation menu",
+    "mobileMenuClose": "Close",
+    "goToHome": "Go to analytics dashboard",
+    "navigation": "Navigation",
+    "primaryNavigation": "Primary navigation",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "userMenu": "User menu",
+    "userSettings": "Settings",
+    "userLogout": "Logout",
+    "nav": {
+      "analytics": "Analytics",
+      "challenges": "Challenges",
+      "reports": "Reports",
+      "settings": "Settings"
+    }
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "label": "Theme"
+  },
+  "meta": {
+    "title": "SignalBoard Analytics Dashboard",
+    "description": "Design-system driven analytics dashboard assignment"
+  },
+  "dashboard": {
+    "title": "Analytics Dashboard",
+    "subtitle": "A token-driven design system with server-first rendering, URL-synced table interactions, and container-aware components.",
+    "stats": {
+      "sectionAria": "Stats and analytics",
+      "gridAria": "Key metrics",
+      "metric": {
+        "totalUsers": "Total Users",
+        "monthlyRevenue": "Monthly Revenue",
+        "avgSessions": "Avg. Sessions",
+        "conversionRate": "Conversion Rate"
+      }
+    },
+    "analytics": {
+      "panelTitle": "Traffic Overview",
+      "rangePrefix": "Range"
+    },
+    "loading": {
+      "analytics": "Loading analytics",
+      "usersTable": "Loading users table",
+      "challenges": "Loading challenges"
+    }
+  },
+  "table": {
+    "users": {
+      "title": "Users",
+      "caption": "Users table",
+      "searchLabel": "Search users",
+      "empty": "No results found.",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "country": "Country",
+        "lastActive": "Last Active",
+        "spend": "Spend"
+      },
+      "role": {
+        "admin": "Admin",
+        "manager": "Manager",
+        "analyst": "Analyst",
+        "support": "Support"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "pending": "Pending"
+      },
+      "pagination": {
+        "ariaLabel": "Pagination",
+        "page": "Page",
+        "of": "of",
+        "items": "items",
+        "previous": "Previous",
+        "next": "Next",
+        "goToPage": "Go to page"
+      }
+    }
+  },
+  "page": {
+    "reports": {
+      "title": "Reports",
+      "subtitle": "This is a lightweight reports area placeholder for future export and scheduled reporting workflows.",
+      "recentTitle": "Recent Reports",
+      "recentEmpty": "No generated reports yet.",
+      "scheduledTitle": "Scheduled Reports",
+      "scheduledEmpty": "No schedules configured."
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Basic settings placeholders are ready here for profile, preferences, and notification controls.",
+      "profileTitle": "Profile",
+      "profileDescription": "Update name, email, and organization details.",
+      "notificationsTitle": "Notifications",
+      "notificationsDescription": "Manage report and system alerts.",
+      "comingSoon": "Coming soon"
+    },
+    "challenges": {
+      "title": "Part D Challenges",
+      "subtitle": "Completed: Challenge 2 (Container Queries) and Challenge 4 (Fluid Typography & Spacing System).",
+      "challenge2Title": "Challenge 2 · Container Queries",
+      "challenge2SidebarLabel": "Sidebar-width container",
+      "challenge2MainLabel": "Main-content container",
+      "challenge4Title": "Challenge 4 · Fluid Typography & Spacing",
+      "fluidSpecimen": "Spacing and type tokens use `clamp(min, preferred, max)` so they scale continuously from mobile to large displays without breakpoint jumps.",
+      "frameWidthLabel": "Frame width",
+      "specimen": {
+        "display": "Display / 2xl",
+        "large": "Large heading / lg",
+        "medium": "Body copy / md",
+        "small": "Support text / xs"
+      }
+    }
+  },
+  "app": {
+    "loading": {
+      "pageContent": "Loading page content"
+    },
+    "error": {
+      "title": "Something went wrong while loading the dashboard.",
+      "description": "Try refreshing the data.",
+      "retry": "Retry",
+      "unknown": "Unknown error."
+    }
+  },
+  "api": {
+    "error": {
+      "users": "Unable to fetch users.",
+      "dashboardData": "Unable to load dashboard data."
+    }
+  }
+}

@@ -1,11 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { DataTable, InputField, Pagination, SearchIcon } from '@design-system';
 import type { DataTableSortOrder } from '@design-system';
 import type { UserSortField } from '@/features/dashboard/types';
+import { t } from '@/shared/i18n';
 import {
   USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
   USERS_QUERY_PARAMS,
@@ -14,14 +15,10 @@ import {
   USERS_TABLE_SKELETON_ROW_COUNT_MIN,
 } from '@/features/dashboard/constants';
 
-import { usersTableColumns } from './users-table/columns';
+import { createUsersTableColumns } from './users-table/columns';
 import {
-  USERS_TABLE_ARIA_LABEL,
-  USERS_TABLE_EMPTY_MESSAGE,
   USERS_TABLE_MAX_BODY_HEIGHT,
   USERS_TABLE_SEARCH_ICON_SIZE,
-  USERS_TABLE_SEARCH_LABEL,
-  USERS_TABLE_TITLE,
   USERS_TABLE_VIRTUALIZATION,
 } from './users-table/constants';
 import type { UsersTableProps } from './users-table/types';
@@ -34,12 +31,14 @@ type UsersDataTableSortState = {
   direction: DataTableSortOrder;
 } | null;
 
+
 export function UsersTable({ initialData }: UsersTableProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const searchDebounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [queryState, setQueryState] = useState(initialData?.query ?? resolveUsersTableQueryState(searchParams));
   const [searchInputValue, setSearchInputValue] = useState(queryState.search);
+  const usersTableColumns = useMemo(() => createUsersTableColumns(t), []);
 
   const { data, isLoading, error } = useUsersTableQuery({
     query: queryState,
@@ -134,11 +133,11 @@ export function UsersTable({ initialData }: UsersTableProps) {
         rows={rows}
         columns={usersTableColumns}
         getRowId={(row) => row.id}
-        title={USERS_TABLE_TITLE}
+        title={t('table.users.title')}
         actions={
           <InputField
-            placeholder={USERS_TABLE_SEARCH_LABEL}
-            aria-label={USERS_TABLE_SEARCH_LABEL}
+            placeholder={t('table.users.searchLabel')}
+            aria-label={t('table.users.searchLabel')}
             floatingLabel={false}
             value={searchInputValue}
             onChange={(event) => {
@@ -151,12 +150,12 @@ export function UsersTable({ initialData }: UsersTableProps) {
           />
         }
         errorMessage={error ?? undefined}
-        caption={USERS_TABLE_ARIA_LABEL}
+        caption={t('table.users.caption')}
         loading={isLoading}
         skeletonRowCount={loadingSkeletonRowCount}
         sort={{ key: queryState.sort, direction: queryState.order }}
         onSortChange={onSortChange}
-        emptyMessage={USERS_TABLE_EMPTY_MESSAGE}
+        emptyMessage={t('table.users.empty')}
         maxBodyHeight={USERS_TABLE_MAX_BODY_HEIGHT}
         stickyFirstColumn
         virtualization={USERS_TABLE_VIRTUALIZATION}
@@ -166,6 +165,13 @@ export function UsersTable({ initialData }: UsersTableProps) {
         currentPage={queryState.page}
         totalPages={meta.totalPages}
         totalItems={meta.totalItems}
+        ariaLabel={t('table.users.pagination.ariaLabel')}
+        pageLabel={t('table.users.pagination.page')}
+        ofLabel={t('table.users.pagination.of')}
+        itemsLabel={t('table.users.pagination.items')}
+        previousLabel={t('table.users.pagination.previous')}
+        nextLabel={t('table.users.pagination.next')}
+        goToPageLabelPrefix={t('table.users.pagination.goToPage')}
         isLoading={isLoading}
         onChangePage={(page) =>
           updateParams({

@@ -1,6 +1,8 @@
 'use client';
 
 import { Button } from '@design-system';
+import { t } from '@/shared/i18n';
+
 
 export default function Error({
   reset,
@@ -10,9 +12,9 @@ export default function Error({
 }) {
   return (
     <section>
-      <h1>Something went wrong while loading the dashboard.</h1>
-      <p>Try refreshing the data.</p>
-      <Button onClick={reset}>Retry</Button>
+      <h1>{t('app.error.title')}</h1>
+      <p>{t('app.error.description')}</p>
+      <Button onClick={reset}>{t('app.error.retry')}</Button>
     </section>
   );
 }
