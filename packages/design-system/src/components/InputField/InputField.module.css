@@ -19,12 +19,9 @@
   background: var(--surface-card, var(--surface-elevated));
   overflow: hidden;
   transition:
-    border-color var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-    box-shadow var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-    background-color var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+    border-color var(--duration-normal, 220ms) var(--ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    box-shadow var(--duration-normal, 220ms) var(--ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    background-color var(--duration-normal, 220ms) var(--ease-standard, cubic-bezier(0.2, 0, 0, 1));
 }
 
 .field:focus-within .control {
@@ -91,10 +88,8 @@
   line-height: 1;
   pointer-events: none;
   transition:
-    transform var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-    color var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+    transform var(--duration-normal, 220ms) var(--ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    color var(--duration-normal, 220ms) var(--ease-standard, cubic-bezier(0.2, 0, 0, 1));
 }
 
 .floating .input:focus + .floatingLabel,
