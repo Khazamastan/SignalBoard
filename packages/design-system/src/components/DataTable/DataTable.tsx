@@ -203,7 +203,17 @@ export function DataTable<
           </header>
         ) : null}
 
-        <div className={styles.viewport} style={{ maxHeight: toCssSize(maxBodyHeight) }}>
+        <div
+          className={styles.viewport}
+          style={
+            maxBodyHeight !== undefined
+              ? {
+                  maxHeight: toCssSize(maxBodyHeight),
+                  minHeight: toCssSize(maxBodyHeight),
+                }
+              : undefined
+          }
+        >
           <table
             className={classNames(
               styles.table,
@@ -244,10 +254,14 @@ export function DataTable<
 
   const hasTopRow = title !== undefined || actions !== undefined;
   const hasRows = rows.length > 0;
+  const hasErrorMessage =
+    errorMessage !== undefined &&
+    errorMessage !== null &&
+    errorMessage !== false;
   const showSkeletonRows = loading && !hasRows;
   const showLoadingCells = loading && hasRows;
-  const showError = !loading && !hasRows && errorMessage !== undefined;
-  const showEmpty = !loading && !hasRows && errorMessage === undefined;
+  const showError = !loading && !hasRows && hasErrorMessage;
+  const showEmpty = !loading && !hasRows && !hasErrorMessage;
 
   const resolveRowId =
     getRowId ??
@@ -264,7 +278,17 @@ export function DataTable<
         </header>
       ) : null}
 
-      <div className={styles.viewport} style={{ maxHeight: toCssSize(maxBodyHeight) }}>
+      <div
+        className={styles.viewport}
+        style={
+          maxBodyHeight !== undefined
+            ? {
+                maxHeight: toCssSize(maxBodyHeight),
+                minHeight: toCssSize(maxBodyHeight),
+              }
+            : undefined
+        }
+      >
         <table
           className={classNames(
             styles.table,
@@ -354,17 +378,17 @@ export function DataTable<
               : null}
 
             {showError ? (
-              <tr>
+              <tr className={styles.stateRow}>
                 <td className={styles.errorMessage} colSpan={columns.length}>
-                  {errorMessage}
+                  <div className={styles.stateText}>{errorMessage}</div>
                 </td>
               </tr>
             ) : null}
 
             {showEmpty ? (
-              <tr>
+              <tr className={styles.stateRow}>
                 <td className={styles.emptyMessage} colSpan={columns.length}>
-                  {emptyMessage}
+                  <div className={styles.stateText}>{emptyMessage}</div>
                 </td>
               </tr>
             ) : null}

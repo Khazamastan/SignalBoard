@@ -43,11 +43,15 @@
 }
 
 .caption {
-  caption-side: bottom;
-  text-align: left;
-  padding: var(--space-xs, 0.5rem) var(--space-sm, 0.75rem);
-  color: var(--text-secondary);
-  font-size: var(--font-size-xs, 0.875rem);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .table th,
@@ -185,18 +189,36 @@
   text-align: right;
 }
 
-.emptyMessage,
-.errorMessage {
+.table td.emptyMessage,
+.table td.errorMessage {
   text-align: center;
-  padding: var(--space-lg, 1.5rem);
-  font-size: var(--font-size-sm, 1rem);
+  padding: var(--space-lg, 1.5rem) var(--space-sm, 0.75rem);
+  border-bottom: 0;
 }
 
-.emptyMessage {
+.stateText {
+  width: 100%;
+  margin-inline: auto;
+  text-align: center;
+  font-size: var(--font-size-sm, 1rem);
+  line-height: var(--line-height-normal, 1.45);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.table tbody tr.stateRow > td {
+  background: var(--surface-card, var(--surface-default));
+}
+
+.table tbody tr.stateRow:hover > td {
+  background: var(--surface-card, var(--surface-default));
+}
+
+.table td.emptyMessage .stateText {
   color: var(--text-secondary);
 }
 
-.errorMessage {
+.table td.errorMessage .stateText {
   color: var(--color-error);
 }
 
