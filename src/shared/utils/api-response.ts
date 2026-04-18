@@ -18,11 +18,13 @@ export const parseApiResponse = async <T,>(
   response: Response,
   fallbackErrorMessage: string,
 ): Promise<ApiResponse<T>> => {
+  const payload = (await response.json()) as ApiResponse<T>;
+
   if (!response.ok) {
-    throw new Error(fallbackErrorMessage);
+    throw new Error(payload.error || fallbackErrorMessage);
   }
 
-  return (await response.json()) as ApiResponse<T>;
+  return payload;
 };
 
 export const readApiResponseData = async <T,>(
