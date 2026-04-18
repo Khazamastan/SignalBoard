@@ -1,39 +1,20 @@
 import { Suspense } from 'react';
 
 import {
-  StatsAnalyticsSectionFallback,
-  UsersTableSectionFallback,
-} from '@/features/dashboard/components/DashboardStreamingFallbacks';
-import { StatsAnalyticsSection } from '@/features/dashboard/components/StatsAnalyticsSection';
-import { UsersTableSection } from '@/features/dashboard/components/UsersTableSection';
+  dashboardFeatureRegistry,
+  type DashboardRouteSearchParams,
+} from '@/features/dashboard/feature-registry';
 
 import styles from './page.module.css';
 
-type RouteSearchParams = Record<string, string | string[] | undefined>;
-
 type DashboardPageProps = {
   searchParams?:
-    | Promise<RouteSearchParams>
-    | RouteSearchParams;
-};
-
-const toSearchKey = (searchParams: RouteSearchParams): string => {
-  const serialized = new URLSearchParams();
-
-  Object.entries(searchParams).forEach(([key, value]) => {
-    if (typeof value === 'string') {
-      serialized.set(key, value);
-    } else if (Array.isArray(value) && value[0]) {
-      serialized.set(key, value[0]);
-    }
-  });
-
-  return serialized.toString();
+    | Promise<DashboardRouteSearchParams>
+    | DashboardRouteSearchParams;
 };
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
-  const usersSearchKey = toSearchKey(resolvedSearchParams);
 
   return (
     <>
@@ -45,13 +26,18 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </p>
       </section>
 
-      <Suspense fallback={<StatsAnalyticsSectionFallback />}>
-        <StatsAnalyticsSection />
-      </Suspense>
+      {dashboardFeatureRegistry.map((feature) => {
+        const suspenseKey = feature.resolveSuspenseKey?.({
+          searchParams: resolvedSearchParams,
+        });
+        const key = suspenseKey ? `${feature.id}:${suspenseKey}` : feature.id;
 
-      <Suspense key={usersSearchKey} fallback={<UsersTableSectionFallback />}>
-        <UsersTableSection searchParams={resolvedSearchParams} />
-      </Suspense>
+        return (
+          <Suspense key={key} fallback={feature.fallback}>
+            {feature.render({ searchParams: resolvedSearchParams })}
+          </Suspense>
+        );
+      })}
     </>
   );
 }
