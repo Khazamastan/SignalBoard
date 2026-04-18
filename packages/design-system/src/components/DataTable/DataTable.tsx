@@ -587,7 +587,7 @@ function DataTableGenericImpl<
                       className={classNames(
                         styles.row,
                         styles.rowBase,
-                        resolvedRowIndex % 2 === 0 && styles.rowAlt,
+                        styles.dataRow,
                         styles.rowInteractive,
                         rowClassName?.(row, resolvedRowIndex),
                       )}

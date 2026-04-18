@@ -129,6 +129,16 @@
   --table-sticky-row-bg: var(--table-row-bg-base);
 }
 
+.dataRow:nth-child(even) {
+  --table-row-bg: var(--table-row-bg-alt);
+  --table-sticky-row-bg: var(--table-row-bg-alt);
+}
+
+.dataRow:nth-child(even of .dataRow) {
+  --table-row-bg: var(--table-row-bg-alt);
+  --table-sticky-row-bg: var(--table-row-bg-alt);
+}
+
 .rowAlt {
   --table-row-bg: var(--table-row-bg-alt);
   --table-sticky-row-bg: var(--table-row-bg-alt);

@@ -5,7 +5,7 @@ The app is token-driven, server-first by default, and URL-state driven for share
 
 ## Live Demo
 
-- Live URL: `Pending deployment (add Vercel URL here)`
+- Live URL: [https://signal-board-green.vercel.app/](https://signal-board-green.vercel.app/)
 
 ## Tech Stack
 
@@ -79,8 +79,8 @@ type ApiResponse<T> = {
 
 ### Part D Challenges Completed
 
-1. Challenge 2 — Container Queries
-2. Challenge 4 — Fluid Typography and Spacing (`clamp()`)
+1. Challenge 2 — Container Queries (chosen to demonstrate component-level responsiveness independent of viewport)
+2. Challenge 4 — Fluid Typography and Spacing (`clamp()`) (chosen to showcase principled token scaling without breakpoint jumps)
 
 ### Part E Reflection
 

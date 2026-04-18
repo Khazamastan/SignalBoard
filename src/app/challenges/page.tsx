@@ -42,16 +42,16 @@ async function ChallengesContent() {
 
         <Card variant="default">
           <div className={styles.specimen}>
-            <div className={styles.sizeRow}>
-              <span className={styles.xxlarge}>{t('page.challenges.specimen.display')}</span>
-              <span className={styles.large}>{t('page.challenges.specimen.large')}</span>
-              <span className={styles.medium}>{t('page.challenges.specimen.medium')}</span>
-              <span className={styles.small}>{t('page.challenges.specimen.small')}</span>
+            <div className={styles.typeSpecimen}>
+              <h1 className={styles.specimenH1}>{t('page.challenges.specimen.display')}</h1>
+              <h2 className={styles.specimenH2}>{t('page.challenges.specimen.large')}</h2>
+              <h3 className={styles.specimenH3}>{t('page.challenges.specimen.medium')}</h3>
+              <h4 className={styles.specimenH4}>H4</h4>
+              <h5 className={styles.specimenH5}>H5</h5>
+              <h6 className={styles.specimenH6}>H6</h6>
+              <p className={styles.specimenBody}>{t('page.challenges.fluidSpecimen')}</p>
+              <small className={styles.specimenSmall}>{t('page.challenges.specimen.small')}</small>
             </div>
-
-            <p>
-              {t('page.challenges.fluidSpecimen')}
-            </p>
           </div>
 
           <div className={styles.frames}>

@@ -32,27 +32,49 @@
   gap: var(--space-sm);
 }
 
-.sizeRow {
+.typeSpecimen {
   display: grid;
   gap: var(--space-xs);
   border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
   padding-bottom: var(--space-sm);
 }
 
-.small {
-  font-size: var(--font-size-xs);
+.typeSpecimen > * {
+  margin: 0;
 }
 
-.medium {
-  font-size: var(--font-size-md);
+.specimenH1 {
+  font-size: var(--font-size-2xl);
 }
 
-.large {
+.specimenH2 {
+  font-size: var(--font-size-xl);
+}
+
+.specimenH3 {
   font-size: var(--font-size-lg);
 }
 
-.xxlarge {
-  font-size: var(--font-size-2xl);
+.specimenH4 {
+  font-size: var(--font-size-md);
+}
+
+.specimenH5 {
+  font-size: var(--font-size-sm);
+}
+
+.specimenH6 {
+  font-size: var(--font-size-xs);
+}
+
+.specimenBody {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+.specimenSmall {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
 }
 
 .frames {
