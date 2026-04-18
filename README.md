@@ -4,7 +4,7 @@ A Next.js App Router dashboard implementation focused on scalable frontend archi
 
 ## Live Demo
 
-- Live URL: `TBD (deploy to Vercel)`
+- Live URL: `Deployment pending` (run `vercel` and paste the production URL here before submission)
 
 ## Tech Choices
 
@@ -98,10 +98,12 @@ A Next.js App Router dashboard implementation focused on scalable frontend archi
   };
   ```
 - Randomized response latency (200–800ms) in API handlers
+- API failure responses use the same `ApiResponse<T>` envelope shape (`data` + optional `meta` + `error`)
 - Server Components:
   - initial stats + analytics fetch in `src/app/page.tsx`
 - Client Components:
   - sidebar/nav interactivity
+  - stats + analytics refresh
   - users table sorting, search, pagination
 - Table interactivity:
   - server-side pagination/sorting/search
@@ -121,14 +123,17 @@ A Next.js App Router dashboard implementation focused on scalable frontend archi
 - Consistent generic response type:
   - `ApiResponse<T>` defined in `src/shared/types/api.ts`
 - Realistic API latency:
-  - shared `randomDelay(200-800ms)` in `src/features/dashboard/api/http-effects.ts`
+  - shared `randomDelay(200-800ms)` in `src/features/dashboard/api/http-effects.ts` (active in all environments unless `x-internal-no-delay: 1` is set)
+- Consistent API failure envelope:
+  - all route handlers return `ApiResponse<T>` payloads on both success and failure paths
 - Users endpoint query support:
   - `page`, `limit`, `sort`, `order`, `search` parsed in `parseUsersSearchParams`
 - Server Components for initial load:
   - initial dashboard data fetched in `src/app/page.tsx`
 - Client Components only where interactivity is needed:
   - table behavior in `src/features/dashboard/components/UsersTable.tsx`
-  - shell interactions in `src/shared/layout/Dashboard/DashboardChrome.tsx`
+  - shell interactions in `src/features/dashboard/layout/DashboardChrome.tsx`
+  - stats and analytics refresh in `src/features/dashboard/components/StatsAnalyticsClient.tsx`
 - Route-level boundaries:
   - loading UI in `src/app/loading.tsx`
   - error boundary in `src/app/error.tsx`
@@ -149,6 +154,10 @@ A Next.js App Router dashboard implementation focused on scalable frontend archi
 - Server by default for first paint and reduced client JS (`src/app/page.tsx` fetches core dashboard payload).
 - Client only for interaction-heavy islands (`DashboardChrome`, `UsersTable`, theme toggle/input behaviors).
 - Tricky boundary: keeping URL-driven table state responsive while avoiding full-page loading; solved with client-side param updates + granular skeleton loading in the table area.
+
+## Part E Reflection
+
+- See [`NOTES.md`](./NOTES.md) for the required Part E written reflection answers.
 
 ## File Structure Overview
 
@@ -175,8 +184,9 @@ src/
       types.ts
   shared/
     hooks/
-    layout/
+    i18n/
     types/
+    utils/
 packages/
   design-system/
     src/
