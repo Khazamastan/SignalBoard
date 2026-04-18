@@ -41,5 +41,6 @@ export const useUsersTableQuery = ({ query, initialData }: UseUsersTableQueryOpt
     queryFn,
     initialData: toInitialTableData(initialData),
     skipInitialRequest,
+    preserveDataOnError: false,
   });
 };

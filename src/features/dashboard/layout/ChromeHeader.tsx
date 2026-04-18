@@ -40,7 +40,8 @@ export function ChromeHeader({ onOpenMobileSidebar }: ChromeHeaderProps) {
 
       <div className={styles.searchSlot}>
         <InputField
-          label={t('layout.searchDashboard')}
+          placeholder={t('layout.searchDashboard')}
+          aria-label={t('layout.searchDashboard')}
           floatingLabel={false}
           prefix={<SearchIcon size={24} />}
           hideMeta

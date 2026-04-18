@@ -34,15 +34,15 @@ export function UsersTable({ initialData }: UsersTableProps) {
   const pathname = usePathname();
   const searchDebounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [queryState, setQueryState] = useState(initialData?.query ?? resolveUsersTableQueryState(searchParams));
+  const [searchInputValue, setSearchInputValue] = useState(queryState.search);
 
   const { data, isLoading, error } = useUsersTableQuery({
     query: queryState,
     initialData,
   });
 
-  const rows = data?.rows ?? initialData?.rows ?? [];
-  const meta = data?.meta ??
-    initialData?.meta ?? {
+  const rows = data?.rows ?? [];
+  const meta = data?.meta ?? {
       page: queryState.page,
       totalItems: rows.length,
       totalPages: 1,
@@ -57,8 +57,10 @@ export function UsersTable({ initialData }: UsersTableProps) {
       const params = applySearchParamsPatch(new URLSearchParams(window.location.search), patch);
       const queryString = params.toString();
       const nextUrl = queryString ? `${pathname}?${queryString}` : pathname;
+      const nextQueryState = resolveUsersTableQueryState(params);
       window.history.replaceState(window.history.state, '', nextUrl);
-      setQueryState(resolveUsersTableQueryState(params));
+      setQueryState(nextQueryState);
+      setSearchInputValue(nextQueryState.search);
     },
     [pathname],
   );
@@ -114,7 +116,9 @@ export function UsersTable({ initialData }: UsersTableProps) {
 
   useEffect(() => {
     const handlePopState = () => {
-      setQueryState(resolveUsersTableQueryState(new URLSearchParams(window.location.search)));
+      const nextQueryState = resolveUsersTableQueryState(new URLSearchParams(window.location.search));
+      setQueryState(nextQueryState);
+      setSearchInputValue(nextQueryState.search);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -137,16 +141,20 @@ export function UsersTable({ initialData }: UsersTableProps) {
         title={USERS_TABLE_TITLE}
         actions={
           <InputField
-            key={`users-search-${queryState.search}`}
-            label={USERS_TABLE_SEARCH_LABEL}
+            placeholder={USERS_TABLE_SEARCH_LABEL}
+            aria-label={USERS_TABLE_SEARCH_LABEL}
             floatingLabel={false}
-            defaultValue={queryState.search}
-            onChange={(event) => queueSearchUpdate(event.target.value)}
+            value={searchInputValue}
+            onChange={(event) => {
+              const nextValue = event.target.value;
+              setSearchInputValue(nextValue);
+              queueSearchUpdate(nextValue);
+            }}
             hideMeta
-            prefix={<SearchIcon size={20} />}
+            prefix={<SearchIcon size={24} />}
           />
         }
-        errorMessage={error}
+        errorMessage={error ?? undefined}
         caption={USERS_TABLE_ARIA_LABEL}
         loading={isLoading}
         skeletonRowCount={loadingSkeletonRowCount}
