@@ -10,7 +10,6 @@ export type CardProps = Omit<React.HTMLAttributes<HTMLElement>, "children"> & {
   hoverable?: boolean;
   stretch?: boolean;
   header?: React.ReactNode;
-  footer?: React.ReactNode;
   children?: React.ReactNode;
   tone?: CardTone;
 };
@@ -33,7 +32,6 @@ export function Card({
   hoverable = false,
   stretch = false,
   header,
-  footer,
   children,
   tone = "default",
   ...props
@@ -41,7 +39,6 @@ export function Card({
   const Component = as as React.ElementType;
 
   const hasHeader = header !== undefined && header !== null;
-  const hasFooter = footer !== undefined && footer !== null;
   const hasBody = children !== undefined && children !== null;
 
   return (
@@ -59,8 +56,6 @@ export function Card({
       {hasHeader ? <div className={styles.header}>{header}</div> : null}
 
       {hasBody ? <div className={styles.body}>{children}</div> : null}
-
-      {hasFooter ? <div className={styles.footer}>{footer}</div> : null}
     </Component>
   );
 }

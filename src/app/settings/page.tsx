@@ -13,7 +13,7 @@ export default function SettingsPage() {
       </section>
 
       <section className={styles.stack}>
-        <Card variant="default">
+        <Card>
           <div className={styles.row}>
             <div>
               <h2>{t('page.settings.profileTitle')}</h2>
@@ -23,7 +23,7 @@ export default function SettingsPage() {
           </div>
         </Card>
 
-        <Card variant="default">
+        <Card>
           <div className={styles.row}>
             <div>
               <h2>{t('page.settings.notificationsTitle')}</h2>

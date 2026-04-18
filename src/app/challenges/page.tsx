@@ -25,12 +25,12 @@ async function ChallengesContent() {
         <h2 className={styles.sectionTitle}>{t('page.challenges.challenge2Title')}</h2>
 
         <div className={styles.demoGrid}>
-          <Card variant="default">
+          <Card>
             <h3>{t('page.challenges.challenge2SidebarLabel')}</h3>
             <StatsCard data={sampleCard} />
           </Card>
 
-          <Card variant="default">
+          <Card>
             <h3>{t('page.challenges.challenge2MainLabel')}</h3>
             <StatsCard data={sampleCard} />
           </Card>
@@ -40,7 +40,7 @@ async function ChallengesContent() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('page.challenges.challenge4Title')}</h2>
 
-        <Card variant="default">
+        <Card>
           <div className={styles.specimen}>
             <div className={styles.typeSpecimen}>
               <h1 className={styles.specimenH1}>{t('page.challenges.specimen.display')}</h1>

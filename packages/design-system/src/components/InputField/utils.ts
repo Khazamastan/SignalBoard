@@ -24,7 +24,6 @@ export const resolveInputId = (
 ): string => id ?? `${normalizeIdSeed(label)}-${reactId}`;
 
 type ResolveInputFieldMetaOptions = {
-  showMeta: boolean;
   helperText: ReactNode;
   error: ReactNode;
   counter: ReactNode;
@@ -32,16 +31,15 @@ type ResolveInputFieldMetaOptions = {
 };
 
 export const resolveInputFieldMeta = ({
-  showMeta,
   helperText,
   error,
   counter,
   inputId,
 }: ResolveInputFieldMetaOptions) => {
   const hasCounter = hasRenderableNode(counter);
-  const helperId = showMeta && hasRenderableNode(helperText) ? `${inputId}-helper` : undefined;
-  const errorId = showMeta && hasRenderableNode(error) ? `${inputId}-error` : undefined;
-  const counterId = showMeta && hasCounter ? `${inputId}-counter` : undefined;
+  const helperId = hasRenderableNode(helperText) ? `${inputId}-helper` : undefined;
+  const errorId = hasRenderableNode(error) ? `${inputId}-error` : undefined;
+  const counterId = hasCounter ? `${inputId}-counter` : undefined;
   const describedBy = [helperId, errorId, counterId].filter(Boolean).join(" ") || undefined;
 
   return {
@@ -52,8 +50,3 @@ export const resolveInputFieldMeta = ({
     describedBy,
   };
 };
-
-export const resolveInputPlaceholder = (
-  floatingLabel: boolean,
-  placeholder: string | undefined,
-): string | undefined => (floatingLabel ? placeholder ?? " " : placeholder);

@@ -13,13 +13,13 @@ export default function ReportsPage() {
       </section>
 
       <section className={styles.grid}>
-        <Card variant="default" header={<h2>{t('page.reports.recentTitle')}</h2>}>
+        <Card header={<h2>{t('page.reports.recentTitle')}</h2>}>
           <div className={styles.cardContent}>
             <p className={styles.meta}>{t('page.reports.recentEmpty')}</p>
           </div>
         </Card>
 
-        <Card variant="default" header={<h2>{t('page.reports.scheduledTitle')}</h2>}>
+        <Card header={<h2>{t('page.reports.scheduledTitle')}</h2>}>
           <div className={styles.cardContent}>
             <p className={styles.meta}>{t('page.reports.scheduledEmpty')}</p>
           </div>

@@ -1,14 +1,10 @@
 import * as React from "react";
 import { SearchIcon } from "../../icons";
 import { classNames } from "../../utils/classNames";
-import {
-  resolveInputFieldMeta,
-  resolveInputId,
-  resolveInputPlaceholder,
-} from "./utils";
+import { resolveInputFieldMeta, resolveInputId } from "./utils";
 import styles from "./InputField.module.css";
 
-const INPUT_FIELD_DEFAULT_SEARCH_PLACEHOLDER = "Search";
+const INPUT_FIELD_DEFAULT_SEARCH_PLACEHOLDER = "Search dashboard";
 const INPUT_FIELD_DEFAULT_SEARCH_ICON_SIZE = 24;
 
 export type InputFieldProps = Omit<
@@ -21,8 +17,6 @@ export type InputFieldProps = Omit<
   counter?: React.ReactNode;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
-  hideMeta?: boolean;
-  floatingLabel?: boolean;
 };
 
 export function InputField({
@@ -35,8 +29,6 @@ export function InputField({
   prefix,
   suffix,
   "aria-label": ariaLabel,
-  hideMeta = false,
-  floatingLabel = false,
   disabled,
   readOnly,
   placeholder,
@@ -45,10 +37,8 @@ export function InputField({
   const reactId = React.useId().replace(/:/g, "");
   const inputId = resolveInputId(id, label, reactId);
 
-  const showMeta = !hideMeta;
   const { hasCounter, helperId, errorId, counterId, describedBy } =
     resolveInputFieldMeta({
-      showMeta,
       helperText,
       error,
       counter,
@@ -57,23 +47,19 @@ export function InputField({
   const resolvedPrefix =
     prefix ?? <SearchIcon size={INPUT_FIELD_DEFAULT_SEARCH_ICON_SIZE} />;
   const resolvedAriaLabel = ariaLabel ?? label ?? INPUT_FIELD_DEFAULT_SEARCH_PLACEHOLDER;
-  const resolvedPlaceholder = resolveInputPlaceholder(
-    floatingLabel,
-    placeholder ?? INPUT_FIELD_DEFAULT_SEARCH_PLACEHOLDER,
-  );
+  const resolvedPlaceholder = placeholder ?? INPUT_FIELD_DEFAULT_SEARCH_PLACEHOLDER;
 
   return (
     <div
       className={classNames(
         styles.field,
-        floatingLabel && styles.floating,
         disabled && styles.disabled,
         readOnly && styles.readOnly,
         !!error && styles.hasError,
         className,
       )}
     >
-      {label && !floatingLabel ? (
+      {label ? (
         <label htmlFor={inputId} className={styles.label}>
           {label}
         </label>
@@ -98,12 +84,6 @@ export function InputField({
             className={styles.input}
             {...props}
           />
-
-          {label && floatingLabel ? (
-            <label htmlFor={inputId} className={styles.floatingLabel}>
-              {label}
-            </label>
-          ) : null}
         </div>
 
         {suffix ? (
@@ -113,7 +93,7 @@ export function InputField({
         ) : null}
       </div>
 
-      {showMeta && (helperText || error || hasCounter) ? (
+      {helperText || error || hasCounter ? (
         <div className={styles.meta}>
           <div className={styles.metaStart}>
             {error ? (

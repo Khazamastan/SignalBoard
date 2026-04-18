@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button, ChartBarIcon, InputField, MenuIcon, SearchIcon, ThemeToggle } from '@design-system';
+import { Button, ChartBarIcon, InputField, MenuIcon, ThemeToggle } from '@design-system';
 import type { Translate } from '@/shared/i18n';
 
 import styles from './ChromeHeader.module.css';
@@ -54,17 +54,11 @@ export function ChromeHeader({
       </div>
 
       <div className={styles.searchSlot}>
-        <InputField
-          placeholder={t('layout.searchDashboard')}
-          aria-label={t('layout.searchDashboard')}
-          floatingLabel={false}
-          prefix={<SearchIcon size={DASHBOARD_LAYOUT_ICON_SIZES.search} />}
-          hideMeta
-        />
+        <InputField />
       </div>
 
       <div className={styles.rightActions}>
-        <ThemeToggle label={t('theme.label')} ariaLabel={t('theme.toggle')} />
+        <ThemeToggle />
         <UserMenuDropdown t={t} />
       </div>
     </header>

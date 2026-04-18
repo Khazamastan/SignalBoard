@@ -30,7 +30,7 @@ export function StatsCard({ data }: { data: StatCardData }) {
 
   return (
     <div className={styles.card}>
-      <Card variant="default" hoverable stretch>
+      <Card hoverable stretch>
         <div className={styles.layout}>
           <span className={styles.icon} aria-hidden>
             <MetricIcon className={styles.metricIcon} />

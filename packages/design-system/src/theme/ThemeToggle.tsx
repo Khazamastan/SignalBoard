@@ -9,16 +9,10 @@ import {
   type ThemeMode,
 } from "./theme-preferences";
 export type { ThemeMode } from "./theme-preferences";
+const THEME_TOGGLE_LABEL = "Theme";
+const THEME_TOGGLE_ARIA_LABEL = "Toggle theme";
 
-export type ThemeToggleProps = {
-  label?: string;
-  ariaLabel?: string;
-};
-
-export function ThemeToggle({
-  label = "Theme",
-  ariaLabel = "Toggle theme",
-}: ThemeToggleProps) {
+export function ThemeToggle() {
   const [theme, setTheme] = React.useState<ThemeMode>(() => readThemeFromBrowser());
   const nextTheme = theme === "dark" ? "light" : "dark";
 
@@ -29,12 +23,12 @@ export function ThemeToggle({
   return (
     <button
       type="button"
-      aria-label={ariaLabel}
+      aria-label={THEME_TOGGLE_ARIA_LABEL}
       className={styles.toggle}
       onClick={() => setTheme(nextTheme)}
     >
       <ThemeIcon className={styles.icon} size={16} />
-      <span className={styles.label}>{label}</span>
+      <span className={styles.label}>{THEME_TOGGLE_LABEL}</span>
     </button>
   );
 }
