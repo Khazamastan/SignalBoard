@@ -8,6 +8,7 @@ import type { UserRow } from '@/features/dashboard/types';
 import { createApiResponse } from '@/shared/utils/api-response';
 
 const USERS_FALLBACK_ERROR_MESSAGE = 'Unable to fetch users.';
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: import('next/server').NextRequest) {
   const cacheControlValue = `public, max-age=${Math.max(10, Math.floor(API_CACHE_MAX_AGE_SECONDS / 2))}, stale-while-revalidate=60`;

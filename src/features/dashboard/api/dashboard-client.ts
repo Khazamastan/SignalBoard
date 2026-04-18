@@ -43,13 +43,19 @@ const resolveUsersMeta = (meta: ApiMeta | undefined, rows: UserRow[], query: Use
 
 export const dashboardApiClient = {
   async getStats(options: RequestOptions): Promise<StatCardData[]> {
-    const response = await fetch('/api/stats', { signal: options.signal });
+    const response = await fetch('/api/stats', {
+      cache: 'no-store',
+      signal: options.signal,
+    });
     const payload = await readApiData<StatCardData[]>(response, DEFAULT_STATS_ERROR_MESSAGE);
     return payload.data;
   },
 
   async getAnalytics(range: RangeKey, options: RequestOptions): Promise<AnalyticsSeries> {
-    const response = await fetch(`/api/analytics?range=${range}`, { signal: options.signal });
+    const response = await fetch(`/api/analytics?range=${encodeURIComponent(range)}`, {
+      cache: 'no-store',
+      signal: options.signal,
+    });
     const payload = await readApiData<AnalyticsSeries>(response, DEFAULT_ANALYTICS_ERROR_MESSAGE);
     return payload.data;
   },
@@ -64,6 +70,7 @@ export const dashboardApiClient = {
     });
 
     const response = await fetch(`/api/users?${params.toString()}`, {
+      cache: 'no-store',
       signal: options.signal,
     });
 

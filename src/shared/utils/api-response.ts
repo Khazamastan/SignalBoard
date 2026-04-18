@@ -18,10 +18,22 @@ export const parseApiResponse = async <T,>(
   response: Response,
   fallbackErrorMessage: string,
 ): Promise<ApiResponse<T>> => {
-  const payload = (await response.json()) as ApiResponse<T>;
+  let payload: ApiResponse<T> | null = null;
+
+  try {
+    payload = (await response.json()) as ApiResponse<T>;
+  } catch {
+    payload = null;
+  }
+
+  const resolvedError = payload?.error || fallbackErrorMessage;
 
   if (!response.ok) {
-    throw new Error(payload.error || fallbackErrorMessage);
+    throw new Error(resolvedError);
+  }
+
+  if (!payload || typeof payload !== 'object' || !('data' in payload)) {
+    throw new Error(resolvedError);
   }
 
   return payload;

@@ -14,16 +14,36 @@ type UsersCacheEntry = {
 };
 
 const usersTableCache = new Map<string, UsersCacheEntry>();
+const USERS_TABLE_CACHE_MAX_ENTRIES = 120;
+
+const pruneUsersTableCache = (now: number): void => {
+  usersTableCache.forEach((entry, key) => {
+    if (entry.expiresAt <= now) {
+      usersTableCache.delete(key);
+    }
+  });
+
+  while (usersTableCache.size > USERS_TABLE_CACHE_MAX_ENTRIES) {
+    const oldestKey = usersTableCache.keys().next().value;
+    if (oldestKey === undefined) {
+      break;
+    }
+    usersTableCache.delete(oldestKey);
+  }
+};
 
 const toUsersTableCacheKey = (query: UsersTableQueryState): string => {
   return `${query.page}|${query.sort}|${query.order}|${query.search}`;
 };
 
 export const fetchUsersTableData = async ({ query, signal }: QueryOptions): Promise<UsersTableData> => {
+  const now = Date.now();
+  pruneUsersTableCache(now);
+
   const cacheKey = toUsersTableCacheKey(query);
   const cached = usersTableCache.get(cacheKey);
 
-  if (cached && cached.expiresAt > Date.now()) {
+  if (cached && cached.expiresAt > now) {
     return cached.value;
   }
 
@@ -45,7 +65,7 @@ export const fetchUsersTableData = async ({ query, signal }: QueryOptions): Prom
 
   usersTableCache.set(cacheKey, {
     value: response,
-    expiresAt: Date.now() + USERS_CLIENT_CACHE_TTL_MS,
+    expiresAt: now + USERS_CLIENT_CACHE_TTL_MS,
   });
 
   return response;

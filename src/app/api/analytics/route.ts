@@ -11,6 +11,7 @@ import type { AnalyticsSeries } from '@/features/dashboard/types';
 import { createApiResponse } from '@/shared/utils/api-response';
 
 const ANALYTICS_FALLBACK_ERROR_MESSAGE = 'Unable to load dashboard data.';
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   const cacheControlValue = `public, max-age=${API_CACHE_MAX_AGE_SECONDS}, stale-while-revalidate=${API_CACHE_STALE_WHILE_REVALIDATE_SECONDS}`;
