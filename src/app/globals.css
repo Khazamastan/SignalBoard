@@ -1,17 +1,13 @@
 @import '../../packages/design-system/src/styles/index.css';
 
+html,
 body {
-  background:
-    radial-gradient(circle at 16% 20%, rgba(95, 168, 255, 0.2), transparent 46%),
-    radial-gradient(circle at 84% 10%, rgba(123, 220, 196, 0.18), transparent 42%),
-    linear-gradient(180deg, #f6f8fb 0%, #ebeff5 48%, #dce3ed 100%);
+  min-height: 100%;
 }
 
-[data-theme='dark'] body {
-  background:
-    radial-gradient(circle at 18% 24%, rgba(76, 148, 235, 0.22), transparent 52%),
-    radial-gradient(circle at 82% 16%, rgba(69, 172, 152, 0.18), transparent 48%),
-    linear-gradient(180deg, #000000 0%, #0a0a0a 48%, #121212 100%);
+body {
+  margin: 0;
+  background: var(--surface-background);
 }
 
 .skip-link {
@@ -20,10 +16,10 @@ body {
   left: 0.5rem;
   transform: translateY(-140%);
   padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md, 0.625rem);
   background: var(--surface-elevated);
   color: var(--text-primary);
-  box-shadow: var(--shadow-sm, 0 2px 6px rgba(1, 6, 13, 0.24));
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(21, 32, 48, 0.2));
   text-decoration: none;
   z-index: 1000;
 }

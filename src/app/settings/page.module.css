@@ -1,0 +1,67 @@
+.page {
+  display: grid;
+  gap: 1.6rem;
+}
+
+.hero {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.title {
+  font-size: clamp(2.8rem, 4vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  max-width: 76rem;
+  font-size: clamp(1.2rem, 1.8vw, 1.85rem);
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.blocks {
+  display: grid;
+  gap: 1rem;
+}
+
+.settingCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem 1.5rem;
+}
+
+.settingBody {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.settingTitle {
+  margin: 0;
+  font-size: clamp(2rem, 2.8vw, 3rem);
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
+.settingDescription {
+  margin: 0;
+  font-size: clamp(1.2rem, 1.7vw, 1.8rem);
+  color: var(--text-secondary);
+}
+
+.settingMeta {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.5vw, 1.65rem);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 48rem) {
+  .settingCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,265 @@
+.page {
+  display: grid;
+  gap: 1.6rem;
+}
+
+.hero {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.title {
+  font-size: clamp(2.8rem, 4vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  max-width: 64rem;
+  font-size: clamp(1.2rem, 1.8vw, 1.85rem);
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+.kpiCard {
+  display: grid;
+  gap: 1rem;
+  padding: 1.4rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.kpiIconWrap {
+  width: 3.55rem;
+  height: 3.55rem;
+  border-radius: 0.8rem;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--color-primary-light) 28%, var(--surface-default));
+  color: var(--text-primary);
+}
+
+.kpiLabel {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.kpiValue {
+  margin-top: 0.15rem;
+  font-size: clamp(2.1rem, 3vw, 3rem);
+  line-height: 1;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.kpiTrend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.kpiTrendUp {
+  color: var(--color-success);
+}
+
+.kpiTrendDown {
+  color: var(--color-error);
+}
+
+.rangeTabs {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: -0.2rem;
+}
+
+.rangeButton {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  height: 2.75rem;
+  padding: 0 0.6rem;
+  border-radius: 0.75rem;
+}
+
+.rangeButtonActive {
+  background: color-mix(in srgb, var(--surface-default) 86%, var(--color-primary-light));
+  border-color: var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  padding: 0 1rem;
+}
+
+.trafficCard {
+  padding: 0;
+  overflow: hidden;
+}
+
+.sectionHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 1.5rem;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.sectionHint {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.chartBody {
+  padding: 1.2rem 1.5rem 1.5rem;
+}
+
+.barTrack {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0.4rem;
+  align-items: end;
+  min-height: 8.2rem;
+}
+
+.bar {
+  width: 100%;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--color-secondary-base) 70%, var(--color-info));
+}
+
+.axis {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.usersSection {
+  display: grid;
+  gap: 1rem;
+}
+
+.usersHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.usersTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.searchUsers {
+  width: min(35rem, 100%);
+}
+
+.userTable {
+  min-width: 76rem;
+}
+
+.headerCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.rowName {
+  font-weight: 500;
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg, 0.875rem);
+  background: var(--surface-default);
+  padding: 1rem 1.5rem;
+}
+
+.metaText {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.pageButton,
+.pageButtonPrimary {
+  min-width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.62rem;
+  border: 1px solid var(--border-default);
+  background: var(--surface-elevated);
+  color: var(--text-secondary);
+  font-size: 0.94rem;
+  font-weight: 600;
+  padding: 0 0.8rem;
+}
+
+.pageButtonActive {
+  background: color-mix(in srgb, var(--color-primary-light) 30%, var(--surface-elevated));
+  border-color: color-mix(in srgb, var(--color-primary-base) 45%, var(--border-default));
+  color: var(--color-primary-base);
+}
+
+.pageButtonPrimary {
+  border-color: color-mix(in srgb, var(--color-primary-base) 55%, var(--border-default));
+  color: var(--color-primary-base);
+}
+
+@media (max-width: 72rem) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rangeTabs {
+    justify-self: start;
+  }
+
+  .usersHead {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchUsers {
+    width: 100%;
+  }
+}
+
+@media (max-width: 40rem) {
+  .kpiGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metaRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

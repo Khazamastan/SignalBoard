@@ -1,0 +1,169 @@
+.field {
+  display: grid;
+  gap: var(--space-xs, 0.5rem);
+}
+
+.label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: 600;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs, 0.5rem);
+  min-height: 3rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md, 0.625rem);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  transition:
+    border-color var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    box-shadow var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    background-color var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease);
+}
+
+.inputWrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  padding: var(--space-sm, 0.75rem) var(--space-md, 1rem);
+  font-size: 1.125rem;
+  line-height: 1.2;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.inputFloating {
+  padding-top: 1.2rem;
+  padding-bottom: 0.45rem;
+}
+
+.floatingLabel {
+  position: absolute;
+  left: var(--space-sm, 0.75rem);
+  top: 50%;
+  transform: translateY(-50%);
+  transform-origin: left center;
+  color: var(--text-muted);
+  font-size: var(--font-size-md, 1rem);
+  line-height: 1;
+  pointer-events: none;
+  transition:
+    transform var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    top var(--motion-duration-fast, 160ms) var(--motion-ease-standard, ease),
+    font-size var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    color var(--motion-duration-fast, 160ms) var(--motion-ease-standard, ease);
+}
+
+.floatActive .floatingLabel {
+  top: var(--space-xs, 0.5rem);
+  transform: translateY(0);
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-secondary);
+}
+
+.field:focus-within .control {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-focus, 0 0 0 3px currentColor);
+}
+
+.hasError .control {
+  border-color: var(--color-error);
+}
+
+.hasError:focus-within .control {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-error) 26%, transparent);
+}
+
+.disabled .control {
+  background: var(--surface-muted);
+  border-color: var(--border-subtle);
+}
+
+.disabled .input,
+.disabled .label,
+.disabled .floatingLabel,
+.disabled .affix,
+.disabled .helperText,
+.disabled .counter {
+  color: var(--text-muted);
+}
+
+.disabled .input {
+  cursor: not-allowed;
+}
+
+.readOnly .control {
+  background: var(--surface-muted);
+}
+
+.readOnly .input {
+  cursor: default;
+}
+
+.affix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  align-self: stretch;
+  min-width: 4.5rem;
+  padding-inline: var(--space-md, 1rem);
+  background: var(--surface-muted);
+}
+
+.affixPrefix {
+  border-right: 1px solid var(--border-default);
+}
+
+.affixSuffix {
+  border-left: 1px solid var(--border-default);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm, 0.75rem);
+}
+
+.metaStart {
+  min-width: 0;
+}
+
+.helperText,
+.error,
+.counter {
+  margin: 0;
+  font-size: var(--font-size-xs, 0.75rem);
+}
+
+.helperText {
+  color: var(--text-secondary);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.counter {
+  color: var(--text-muted);
+  white-space: nowrap;
+}

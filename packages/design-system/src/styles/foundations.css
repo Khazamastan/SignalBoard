@@ -11,11 +11,11 @@ body {
 }
 
 body {
-  font-family: var(--font-family-body, "Nunito Sans", "Segoe UI", sans-serif);
-  font-size: var(--font-size-md, 1rem);
-  line-height: 1.5;
+  font-family: var(--font-family-body, "Inter", "Segoe UI", sans-serif);
+  font-size: var(--font-size-sm, 1rem);
+  line-height: 1.45;
   color: var(--text-primary);
-  background: var(--surface-canvas);
+  background: var(--surface-background);
 }
 
 h1,
@@ -25,9 +25,13 @@ h4,
 h5,
 h6 {
   margin: 0;
-  font-family: var(--font-family-heading, "Avenir Next", "Segoe UI", sans-serif);
-  line-height: 1.2;
+  font-family: var(--font-family-heading, "Inter", "Segoe UI", sans-serif);
   color: var(--text-primary);
+  line-height: 1.15;
+}
+
+p {
+  margin: 0;
 }
 
 input,
@@ -71,7 +75,7 @@ textarea {
 .ds-rowBetween {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-md, 1rem);
 }
 
@@ -81,7 +85,7 @@ textarea {
 
 .ds-card {
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg, 0.75rem);
+  border-radius: var(--radius-lg, 0.875rem);
   background: var(--surface-default);
   color: var(--text-primary);
   box-shadow: var(--shadow-xs, 0 0 0 transparent);
@@ -100,52 +104,13 @@ textarea {
   color: var(--text-inverse);
 }
 
-.ds-button {
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md, 0.5rem);
-  background: var(--surface-elevated);
-  color: var(--text-primary);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.ds-button--sm {
-  padding: var(--space-xs, 0.5rem) var(--space-sm, 0.75rem);
-  font-size: var(--font-size-sm, 0.875rem);
-}
-
-.ds-button--md {
-  padding: var(--space-sm, 0.75rem) var(--space-md, 1rem);
-  font-size: var(--font-size-md, 1rem);
-}
-
-.ds-button--ghost {
-  background: var(--surface-elevated);
-}
-
-.ds-button--primary {
-  border-color: var(--color-primary-base);
-  background: var(--color-primary-base);
-  color: var(--color-primary-contrast, #ffffff);
-}
-
-.ds-button:hover {
-  border-color: var(--border-strong);
-  background: var(--surface-muted);
-}
-
-.ds-button--primary:hover {
-  border-color: var(--color-primary-dark);
-  background: var(--color-primary-dark);
-}
-
 .ds-badge {
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-pill, 9999px);
-  padding: 0.125rem 0.5rem;
-  font-size: var(--font-size-xs, 0.75rem);
-  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  font-size: var(--font-size-xs, 0.875rem);
+  font-weight: 600;
   border: 1px solid transparent;
 }
 
@@ -157,41 +122,33 @@ textarea {
 
 .ds-badge--success {
   color: var(--color-success);
-  background: color-mix(in srgb, var(--color-success) 18%, transparent);
-  border-color: color-mix(in srgb, var(--color-success) 34%, transparent);
+  background: color-mix(in srgb, var(--color-success) 14%, var(--surface-elevated));
+  border-color: color-mix(in srgb, var(--color-success) 22%, transparent);
 }
 
 .ds-badge--warning {
   color: var(--color-warning);
-  background: color-mix(in srgb, var(--color-warning) 18%, transparent);
-  border-color: color-mix(in srgb, var(--color-warning) 34%, transparent);
+  background: color-mix(in srgb, var(--color-warning) 14%, var(--surface-elevated));
+  border-color: color-mix(in srgb, var(--color-warning) 22%, transparent);
 }
 
 .ds-badge--error {
   color: var(--color-error);
-  background: color-mix(in srgb, var(--color-error) 18%, transparent);
-  border-color: color-mix(in srgb, var(--color-error) 34%, transparent);
+  background: color-mix(in srgb, var(--color-error) 14%, var(--surface-elevated));
+  border-color: color-mix(in srgb, var(--color-error) 22%, transparent);
 }
 
 .ds-badge--info {
   color: var(--color-info);
-  background: color-mix(in srgb, var(--color-info) 18%, transparent);
-  border-color: color-mix(in srgb, var(--color-info) 34%, transparent);
-}
-
-.ds-input {
-  width: 100%;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md, 0.5rem);
-  background: var(--surface-elevated);
-  color: var(--text-primary);
-  padding: var(--space-sm, 0.75rem);
+  background: color-mix(in srgb, var(--color-info) 14%, var(--surface-elevated));
+  border-color: color-mix(in srgb, var(--color-info) 22%, transparent);
 }
 
 .ds-tableWrap {
   overflow-x: auto;
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-md, 0.5rem);
+  border-radius: var(--radius-lg, 0.875rem);
+  background: var(--surface-default);
 }
 
 .ds-table {
@@ -199,25 +156,36 @@ textarea {
   min-width: 50rem;
   border-collapse: separate;
   border-spacing: 0;
-  background: var(--surface-default);
+  background: transparent;
 }
 
 .ds-table th,
 .ds-table td {
-  padding: var(--space-sm, 0.75rem) var(--space-md, 1rem);
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--border-subtle);
   text-align: left;
   white-space: nowrap;
+  font-size: var(--font-size-sm, 1rem);
+}
+
+.ds-table tbody tr:last-child td,
+.ds-table tbody tr:last-child th {
+  border-bottom: 0;
 }
 
 .ds-table thead th {
-  background: var(--surface-table-header, var(--surface-muted));
+  background: var(--surface-table-header);
   color: var(--text-primary);
+  font-weight: 600;
 }
 
 .ds-table tbody th {
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 500;
+}
+
+.ds-table tbody td {
+  color: var(--text-primary);
 }
 
 .ds-table--sticky thead th {
@@ -236,5 +204,5 @@ textarea {
 
 .ds-table--sticky thead th:first-child {
   z-index: 3;
-  background: var(--surface-table-header, var(--surface-muted));
+  background: var(--surface-table-header);
 }

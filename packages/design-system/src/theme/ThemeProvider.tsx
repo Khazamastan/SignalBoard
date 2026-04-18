@@ -3,6 +3,7 @@
 import * as React from "react";
 
 export type ThemeMode = "light" | "dark";
+const THEME_STORAGE_KEY = "dashboard-theme";
 
 type ThemeContextValue = {
   theme: ThemeMode;
@@ -11,14 +12,32 @@ type ThemeContextValue = {
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 
+function parseTheme(value: string | null): ThemeMode | null {
+  return value === "light" || value === "dark" ? value : null;
+}
+
 function readTheme(): ThemeMode {
   if (typeof document === "undefined") {
     return "light";
   }
 
-  return document.documentElement.getAttribute("data-theme") === "dark"
-    ? "dark"
-    : "light";
+  const htmlTheme = parseTheme(document.documentElement.getAttribute("data-theme"));
+  if (htmlTheme) {
+    return htmlTheme;
+  }
+
+  if (typeof window !== "undefined") {
+    const storedTheme = parseTheme(window.localStorage.getItem(THEME_STORAGE_KEY));
+    if (storedTheme) {
+      return storedTheme;
+    }
+
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+  }
+
+  return "light";
 }
 
 function applyTheme(theme: ThemeMode): void {
@@ -27,6 +46,10 @@ function applyTheme(theme: ThemeMode): void {
   }
 
   document.documentElement.setAttribute("data-theme", theme);
+
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

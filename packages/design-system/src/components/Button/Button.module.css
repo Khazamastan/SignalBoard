@@ -1,0 +1,167 @@
+.button {
+  --button-fg: var(--text-primary);
+  --button-fg-hover: var(--text-primary);
+  --button-fg-active: var(--text-primary);
+  --button-bg: var(--surface-elevated);
+  --button-bg-hover: var(--surface-muted);
+  --button-bg-active: var(--surface-muted);
+  --button-border: var(--border-default);
+  --button-border-hover: var(--border-strong);
+  --button-border-active: var(--border-strong);
+  --button-fg-disabled: var(--text-muted);
+  --button-bg-disabled: var(--surface-muted);
+  --button-border-disabled: var(--border-subtle);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs, 0.5rem);
+  border: 1px solid var(--button-border);
+  border-radius: var(--radius-md, 0.5rem);
+  background: var(--button-bg);
+  color: var(--button-fg);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+  transform: translateY(0);
+  transition:
+    transform var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    color var(--motion-duration-fast, 160ms) var(--motion-ease-standard, ease),
+    background-color var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    border-color var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease),
+    box-shadow var(--motion-duration-fast, 160ms)
+      var(--motion-ease-standard, ease);
+}
+
+.button:hover:not(:disabled) {
+  color: var(--button-fg-hover);
+  background: var(--button-bg-hover);
+  border-color: var(--button-border-hover);
+  box-shadow: var(--shadow-sm, 0 2px 6px currentColor);
+}
+
+.button:active:not(:disabled) {
+  color: var(--button-fg-active);
+  background: var(--button-bg-active);
+  border-color: var(--button-border-active);
+  transform: translateY(var(--space-2xs, 0.25rem));
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  color: var(--button-fg-disabled);
+  background: var(--button-bg-disabled);
+  border-color: var(--button-border-disabled);
+  box-shadow: none;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.sizeSmall {
+  min-height: 2rem;
+  padding: var(--space-xs, 0.5rem) var(--space-sm, 0.75rem);
+  font-size: var(--font-size-xs, 0.75rem);
+}
+
+.sizeMedium {
+  min-height: 2.5rem;
+  padding: var(--space-sm, 0.75rem) var(--space-md, 1rem);
+  font-size: var(--font-size-sm, 0.875rem);
+}
+
+.sizeLarge {
+  min-height: 3rem;
+  padding: var(--space-sm, 0.75rem) var(--space-lg, 1.5rem);
+  font-size: var(--font-size-md, 1rem);
+}
+
+.variantPrimary {
+  --button-fg: var(--color-primary-contrast);
+  --button-fg-hover: var(--color-primary-contrast);
+  --button-fg-active: var(--color-primary-contrast);
+  --button-bg: var(--color-primary-base);
+  --button-bg-hover: var(--color-primary-dark);
+  --button-bg-active: var(--color-primary-dark);
+  --button-border: var(--color-primary-base);
+  --button-border-hover: var(--color-primary-dark);
+  --button-border-active: var(--color-primary-dark);
+  --button-fg-disabled: color-mix(in srgb, var(--color-primary-contrast) 72%, transparent);
+  --button-bg-disabled: color-mix(in srgb, var(--color-primary-base) 54%, var(--surface-muted));
+  --button-border-disabled: color-mix(in srgb, var(--color-primary-base) 54%, var(--surface-muted));
+}
+
+.variantSecondary {
+  --button-fg: var(--text-inverse);
+  --button-fg-hover: var(--text-inverse);
+  --button-fg-active: var(--text-inverse);
+  --button-bg: var(--color-secondary-base);
+  --button-bg-hover: var(--color-secondary-dark);
+  --button-bg-active: var(--color-secondary-dark);
+  --button-border: var(--color-secondary-base);
+  --button-border-hover: var(--color-secondary-dark);
+  --button-border-active: var(--color-secondary-dark);
+  --button-fg-disabled: color-mix(in srgb, var(--text-inverse) 72%, transparent);
+  --button-bg-disabled: color-mix(in srgb, var(--color-secondary-base) 54%, var(--surface-muted));
+  --button-border-disabled: color-mix(in srgb, var(--color-secondary-base) 54%, var(--surface-muted));
+}
+
+.variantGhost {
+  --button-fg: var(--text-primary);
+  --button-fg-hover: var(--text-primary);
+  --button-fg-active: var(--text-primary);
+  --button-bg: transparent;
+  --button-bg-hover: var(--surface-muted);
+  --button-bg-active: var(--surface-muted);
+  --button-border: var(--border-default);
+  --button-border-hover: var(--border-strong);
+  --button-border-active: var(--border-strong);
+  --button-fg-disabled: var(--text-muted);
+  --button-bg-disabled: transparent;
+  --button-border-disabled: var(--border-subtle);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 9999px;
+  animation: spin var(--motion-duration-slow, 360ms) linear infinite;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
