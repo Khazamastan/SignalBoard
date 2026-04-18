@@ -22,6 +22,27 @@
   flex-wrap: wrap;
 }
 
+.navigationViewport {
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.navigationTrack {
+  width: max-content;
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.navigationControls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  flex-wrap: nowrap;
+}
+
 .pageSizeControl {
   display: inline-flex;
   align-items: center;
@@ -77,4 +98,29 @@
 
 .pageMarker:disabled {
   cursor: default;
+}
+
+@media (max-width: 48rem) {
+  .container {
+    align-items: stretch;
+    gap: var(--space-xs);
+  }
+
+  .controls {
+    width: 100%;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .pageSizeControl {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .navigationViewport {
+    width: 100%;
+    min-width: 0;
+    padding-inline: var(--space-2xs);
+    padding-bottom: var(--space-2xs);
+  }
 }

@@ -94,40 +94,46 @@ export function Pagination({
           </label>
         ) : null}
 
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={() => onChangePage(Math.max(1, safeCurrentPage - 1))}
-          disabled={safeCurrentPage <= 1 || isLoading}
-        >
-          {previousLabel}
-        </Button>
+        <div className={styles.navigationViewport}>
+          <div className={styles.navigationTrack}>
+            <div className={styles.navigationControls}>
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() => onChangePage(Math.max(1, safeCurrentPage - 1))}
+                disabled={safeCurrentPage <= 1 || isLoading}
+              >
+                {previousLabel}
+              </Button>
 
-        {visiblePageMarkers.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            type="button"
-            className={classNames(
-              styles.pageMarker,
-              pageNumber === safeCurrentPage && styles.activeMarker,
-            )}
-            onClick={() => onChangePage(pageNumber)}
-            disabled={pageNumber === safeCurrentPage || isLoading}
-            aria-current={pageNumber === safeCurrentPage ? "page" : undefined}
-            aria-label={`${goToPageLabelPrefix} ${pageNumber}`}
-          >
-            {pageNumber}
-          </button>
-        ))}
+              {visiblePageMarkers.map((pageNumber) => (
+                <button
+                  key={pageNumber}
+                  type="button"
+                  className={classNames(
+                    styles.pageMarker,
+                    pageNumber === safeCurrentPage && styles.activeMarker,
+                  )}
+                  onClick={() => onChangePage(pageNumber)}
+                  disabled={pageNumber === safeCurrentPage || isLoading}
+                  aria-current={pageNumber === safeCurrentPage ? "page" : undefined}
+                  aria-label={`${goToPageLabelPrefix} ${pageNumber}`}
+                >
+                  {pageNumber}
+                </button>
+              ))}
 
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={() => onChangePage(Math.min(safeTotalPages, safeCurrentPage + 1))}
-          disabled={safeCurrentPage >= safeTotalPages || isLoading}
-        >
-          {nextLabel}
-        </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() => onChangePage(Math.min(safeTotalPages, safeCurrentPage + 1))}
+                disabled={safeCurrentPage >= safeTotalPages || isLoading}
+              >
+                {nextLabel}
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   );

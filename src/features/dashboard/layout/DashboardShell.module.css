@@ -19,9 +19,37 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: var(--space-lg);
+  padding-bottom: calc(var(--space-lg) + max(var(--space-sm), env(safe-area-inset-bottom)));
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--color-primary-base) 12%, transparent),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 100% 22%,
+      color-mix(in srgb, var(--color-secondary-base) 10%, transparent),
+      transparent 38%
+    ),
+    var(--color-surface-background);
   display: grid;
   gap: var(--space-lg);
   align-content: start;
+}
+
+[data-theme='dark'] .main {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--color-primary-base) 8%, transparent),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 100% 22%,
+      color-mix(in srgb, var(--color-secondary-base) 7%, transparent),
+      transparent 44%
+    ),
+    var(--color-surface-background);
 }
 
 .backdrop {
@@ -29,9 +57,16 @@
 }
 
 @media (max-width: 64rem) {
+  .shell {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
   .body {
     grid-template-columns: 1fr;
     position: relative;
+    overflow: visible;
   }
 
   .backdrop {
@@ -45,5 +80,7 @@
 
   .main {
     padding: var(--space-md);
+    padding-bottom: calc(var(--space-md) + max(var(--space-md), env(safe-area-inset-bottom)));
+    overflow-y: visible;
   }
 }

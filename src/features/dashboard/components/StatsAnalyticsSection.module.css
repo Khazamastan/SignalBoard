@@ -25,10 +25,6 @@
   width: 100%;
 }
 
-.activeRange > * {
-  box-shadow: var(--shadow-sm);
-}
-
 .skeletonBar {
   display: block;
   border-radius: var(--radius-xs);

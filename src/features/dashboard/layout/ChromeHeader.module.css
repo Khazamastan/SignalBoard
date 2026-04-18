@@ -7,6 +7,7 @@
   align-items: center;
   gap: var(--space-md);
   padding: var(--space-sm) var(--space-md);
+  padding-top: calc(var(--space-sm) + env(safe-area-inset-top));
   border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
   background: color-mix(in srgb, var(--color-surface-card) 90%, transparent);
   backdrop-filter: blur(var(--space-sm));
@@ -85,6 +86,7 @@
     grid-template-columns: auto minmax(0, 1fr) auto;
     gap: var(--space-sm);
     padding: var(--space-sm);
+    padding-top: calc(var(--space-sm) + env(safe-area-inset-top));
   }
 
   .hamburger {
@@ -97,5 +99,20 @@
 
   .searchSlot {
     width: 100%;
+  }
+}
+
+@media (max-width: 52rem) {
+  .searchSlot {
+    display: none;
+  }
+
+  .brand {
+    grid-column: 1;
+  }
+
+  .rightActions {
+    grid-column: 3;
+    justify-self: end;
   }
 }

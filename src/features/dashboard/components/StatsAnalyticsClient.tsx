@@ -34,21 +34,23 @@ export function StatsAnalyticsClient({ initialAnalytics }: StatsAnalyticsClientP
   return (
     <>
       <div className={styles.rangeRow}>
-        {ranges.map((rangeOption) => (
-          <div
-            key={rangeOption}
-            className={classNames(styles.rangeButton, rangeOption === range && styles.activeRange)}
-          >
-            <Button
-              variant="ghost"
-              size="small"
-              onClick={() => rangeOption !== range && setRange(rangeOption)}
-              disabled={isAnalyticsLoading && rangeOption === range}
-            >
-              {rangeOption}
-            </Button>
-          </div>
-        ))}
+        {ranges.map((rangeOption) => {
+          const isActive = rangeOption === range;
+
+          return (
+            <div key={rangeOption} className={styles.rangeButton}>
+              <Button
+                variant={isActive ? 'secondary' : 'ghost'}
+                size="small"
+                aria-pressed={isActive}
+                onClick={() => !isActive && setRange(rangeOption)}
+                disabled={isAnalyticsLoading && isActive}
+              >
+                {rangeOption}
+              </Button>
+            </div>
+          );
+        })}
       </div>
 
       <div className={styles.analyticsShell}>
