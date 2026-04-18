@@ -11,16 +11,13 @@ import {
 import { classNames } from '@/shared/utils/class-names';
 
 import { AnalyticsPanel } from './AnalyticsPanel';
-import { StatsGrid } from './StatsGrid';
-import { STATS_ANALYTICS_SECTION_ARIA_LABEL } from './stats-analytics/constants';
 import type { StatsAnalyticsClientProps } from './stats-analytics/types';
 import { useStatsAnalyticsQuery } from './stats-analytics/useStatsAnalyticsQuery';
-import { useStatsCardsQuery } from './stats-analytics/useStatsCardsQuery';
 import styles from './StatsAnalyticsSection.module.css';
 
 const ranges: RangeKey[] = DASHBOARD_RANGE_OPTIONS;
 
-export function StatsAnalyticsClient({ initialStats, initialAnalytics }: StatsAnalyticsClientProps) {
+export function StatsAnalyticsClient({ initialAnalytics }: StatsAnalyticsClientProps) {
   const [range, setRange] = useState<RangeKey>(initialAnalytics.range);
   const {
     data: analyticsData,
@@ -30,17 +27,11 @@ export function StatsAnalyticsClient({ initialStats, initialAnalytics }: StatsAn
     range,
     initialAnalytics,
   });
-  const { data: statsData, error: statsError } = useStatsCardsQuery({
-    initialStats,
-  });
 
-  const stats = statsData ?? initialStats;
   const analytics = analyticsData ?? initialAnalytics;
 
   return (
-    <section className={styles.section} aria-label={STATS_ANALYTICS_SECTION_ARIA_LABEL}>
-      <StatsGrid stats={stats} />
-
+    <>
       <div className={styles.rangeRow}>
         {ranges.map((rangeOption) => (
           <div
@@ -99,8 +90,7 @@ export function StatsAnalyticsClient({ initialStats, initialAnalytics }: StatsAn
         ) : null}
       </div>
 
-      {statsError ? <p className={styles.error}>{statsError}</p> : null}
       {analyticsError ? <p className={styles.error}>{analyticsError}</p> : null}
-    </section>
+    </>
   );
 }
