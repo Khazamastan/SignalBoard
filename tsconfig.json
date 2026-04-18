@@ -7,16 +7,15 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
       ],
       "@design-system": [
-        "packages/design-system/src/index.ts"
+        "./packages/design-system/src/index.ts"
       ],
       "@design-system/*": [
-        "packages/design-system/src/*"
+        "./packages/design-system/src/*"
       ]
     },
     "types": [
