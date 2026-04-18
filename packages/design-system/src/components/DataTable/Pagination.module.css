@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background: color-mix(in srgb, var(--color-neutral-100) 62%, transparent);
+}
+
+.pageInfo {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.pageMarker {
+  min-width: calc(var(--space-lg) + var(--space-xs));
+  min-height: calc(var(--space-lg) + var(--space-xs));
+  border-radius: var(--radius-sm);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background: var(--color-surface-card);
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.activeMarker {
+  background: color-mix(in srgb, var(--color-primary-base) 15%, transparent);
+  color: var(--color-primary-base);
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-base) 40%,
+    var(--color-border-subtle)
+  );
+}
+
+.pageMarker:disabled {
+  cursor: default;
+}

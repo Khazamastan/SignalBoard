@@ -1,11 +1,43 @@
-export { ThemeProvider, useTheme, type ThemeMode } from "./theme";
-export { ThemeToggle, type ThemeToggleProps } from "./theme/ThemeToggle";
+export { Button } from "./components/Button/Button";
+export type { ButtonProps } from "./components/Button/Button";
 
-export { Button, type ButtonProps } from "./components/Button";
-export { Card, type CardProps } from "./components/Card";
-export { Badge, type BadgeProps } from "./components/Badge";
-export { DataTable, type DataTableProps } from "./components/DataTable";
-export { InputField, type InputFieldProps } from "./components/InputField";
-export * from "./icons";
+export { Badge } from "./components/Badge/Badge";
+export type { BadgeProps } from "./components/Badge/Badge";
 
-export { classNames } from "./utils/classNames";
+export { InputField } from "./components/InputField/InputField";
+
+export { Card } from "./components/Card/Card";
+
+export { DataTable } from "./components/DataTable/DataTable";
+export type {
+  DataTableColumn,
+  DataTableProps,
+  DataTableSortDirection as DataTableSortOrder,
+} from "./components/DataTable/DataTable";
+
+export { Pagination } from "./components/DataTable/Pagination";
+export type { PaginationProps } from "./components/DataTable/Pagination";
+
+export { ThemeProvider, useTheme } from "./theme/ThemeProvider";
+export { ThemeToggle } from "./theme/ThemeToggle";
+
+export type { IconProps } from "./icons";
+export {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ChartBarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ConversionIcon,
+  ExternalLinkIcon,
+  FlaskIcon,
+  FolderChartIcon,
+  MenuIcon,
+  RevenueIcon,
+  SearchIcon,
+  SessionsIcon,
+  SettingsIcon,
+  SortIcon,
+  ThemeIcon,
+  UsersIcon,
+} from "./icons";

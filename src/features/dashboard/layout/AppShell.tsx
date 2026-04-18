@@ -79,7 +79,7 @@ export function AppShell({ children }: AppShellProps) {
           <div className={styles.navHeader}>
             <h2 className={styles.navTitle}>Navigation</h2>
             <div className={styles.collapse}>
-              <ChevronLeftIcon size={18} />
+              <ChevronLeftIcon size={16} />
             </div>
           </div>
 
@@ -96,8 +96,8 @@ export function AppShell({ children }: AppShellProps) {
                     matchesPath(pathname, item.href) && styles.navItemActive,
                   )}
                 >
-                  <Icon className={styles.navIcon} size={18} />
-                  <span>{item.label}</span>
+                  <Icon className={styles.navIcon} size={16} />
+                  <span className={styles.navLabel}>{item.label}</span>
                 </Link>
               );
             })}

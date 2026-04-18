@@ -143,10 +143,12 @@
   gap: var(--space-sm);
   width: 100%;
   border-radius: var(--radius-sm);
-  padding: var(--space-xs);
+  min-height: calc(var(--space-lg) + var(--space-xs));
+  padding: calc(var(--space-xs) * 0.9) var(--space-sm);
   color: var(--color-text-secondary);
   text-decoration: none;
   font-size: var(--font-size-sm);
+  line-height: 1.2;
   transition:
     background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
@@ -164,10 +166,18 @@
 }
 
 .navIcon {
-  width: calc(var(--space-md) + var(--space-2xs));
-  height: calc(var(--space-md) + var(--space-2xs));
+  width: 1.125rem;
+  height: 1.125rem;
   display: inline-flex;
+  align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
 }
 
 .main {
