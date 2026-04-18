@@ -144,6 +144,18 @@ Behavior:
 - `src/features/dashboard/data/dashboard-service.ts`
   - wraps repository output into `ApiResponse<T>`
 
+### Streaming Preload/Read Layer
+
+- `src/features/dashboard/data/dashboard-streaming.ts`
+  - uses request-scoped `cache()` from React
+  - exposes preload helpers called in `src/app/page.tsx`
+  - exposes read helpers used by server sections
+
+Why this exists:
+- preserves server-first rendering
+- improves section-level streaming responsiveness under `Suspense`
+- avoids duplicate server fetch work for the same request
+
 ### Client Fetch Layer
 
 - `src/features/dashboard/api/dashboard-client.ts`
@@ -167,6 +179,7 @@ Key behavior:
 - loading skeleton rows
 - explicit empty and error states
 - optional virtualization for large datasets
+- built-in pagination rendering via `pagination` prop so feature components stay thinner
 
 Current virtualization defaults used in dashboard users table:
 - `threshold: 120`
@@ -193,6 +206,7 @@ All components consume token variables for:
 - Component styles use CSS Modules (`*.module.css`)
 - Avoid global overrides; prefer component-level tokenized styles
 - Keep selectors scoped and predictable
+- Prefer shared tokenized declarations over repeated rule blocks (for example skeleton shimmer styles)
 
 ### Theme Model
 
@@ -208,6 +222,7 @@ All components consume token variables for:
 2. Add fallback if needed
 3. Register in `dashboardFeatureRegistry`
 4. Keep interactivity in client-only child components
+5. If section has slow server work, add preload/read hooks in `dashboard-streaming.ts`
 
 ### Add a new API endpoint
 
@@ -223,6 +238,13 @@ All components consume token variables for:
 3. Export from `packages/design-system/src/index.ts`
 4. Do not import from `src/*`
 
+### Add new i18n copy
+
+1. Add keys in `src/shared/i18n/locales/en.json`
+2. Add matching keys in `src/shared/i18n/locales/es.json`
+3. Use typed key access through shared `t` from `src/shared/i18n`
+4. Translate UI copy only; do not translate dynamic API data unless explicitly required
+
 ## 10) Anti-Patterns to Avoid
 
 - Importing up the layer tree (`shared -> feature`, `feature -> app`)
@@ -230,4 +252,5 @@ All components consume token variables for:
 - Returning ad-hoc API response shapes
 - Hardcoding style values where token equivalents exist
 - Solving mobile issues with broad CSS overrides instead of component-level fixes
-
+- Reintroducing duplicated loading/skeleton CSS instead of shared primitives
+- Creating per-component translation instances when shared translator access already exists

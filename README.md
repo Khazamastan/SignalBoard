@@ -1,19 +1,19 @@
 # Frontend Engineer Assignment — SignalBoard
 
-SignalBoard is a Next.js App Router analytics dashboard built for the frontend engineer assignment.  
-The implementation is token-driven, server-first by default, and uses URL-synced table state for shareable views.
+SignalBoard is a Next.js App Router analytics dashboard built for the frontend engineer assignment.
+The app is token-driven, server-first by default, and URL-state driven for shareable table views.
 
 ## Live Demo
 
-- Live URL: `TODO: add deployed URL`
+- Live URL: `Pending deployment (add Vercel URL here)`
 
 ## Tech Stack
 
 - Framework: Next.js 16.1.6 (App Router) + React 19 + TypeScript
 - Styling: CSS Modules + CSS custom properties (design tokens)
 - State: React state + reusable custom hooks
-- Data: Next.js Route Handlers (`src/app/api/*`) with shared `ApiResponse<T>` envelope
-- Interactivity: Client islands only where required (`UsersTable`, dashboard chrome, analytics range controls, theme toggle)
+- Data: Next.js Route Handlers (`src/app/api/*`) using shared `ApiResponse<T>` contract
+- Interactivity: client islands only where required (`UsersTable`, `DashboardChrome`, analytics range switcher, theme toggle)
 
 ## Run Locally
 
@@ -32,45 +32,38 @@ npm run build
 npm run start
 ```
 
+## Architecture Highlights
+
+- Server-first composition with per-section `Suspense` boundaries in `src/app/page.tsx`
+- Request-scoped dashboard preload/read layer in `src/features/dashboard/data/dashboard-streaming.ts` for streaming-friendly initial render
+- Registry-based section composition in `src/features/dashboard/feature-registry.tsx`
+- Generic `DataTable` now owns pagination rendering via `pagination` prop
+- URL-driven users table state (`page`, `sort`, `order`, `search`) with debounced search
+- i18n with nested JSON catalogs, typed dot-path keys, and cached translators
+
 ## Assignment Coverage
 
 ### Part A — Design System
 
-- Tokens are centralized in `packages/design-system/src/styles/tokens.css`
-- Categories implemented:
-  - Colors (primary/secondary shades, neutral scale, semantic colors, surface, text)
-  - Spacing scale (fluid semantic tokens)
-  - Typography (families, sizes, weights, line-height)
-  - Shadows, radii, borders, motion durations/easing
-  - Breakpoints (`sm`, `md`, `lg`, `xl`)
-- Theme support:
-  - Light + dark via `[data-theme="dark"]` token overrides
-  - `ThemeToggle` updates `data-theme`, `localStorage`, and theme cookie
-  - SSR theme hydration uses cookie in `src/app/layout.tsx`
-- Core components:
-  - `Button` (variants, sizes, loading spinner, icon support, focus/disabled states)
-  - `InputField` (floating label, helper/error/counter, prefix/suffix, read-only/disabled)
-  - `Card` (slot-based header/body/footer, variants, hover elevation)
+- Tokens centralized in `packages/design-system/src/styles/tokens.css`
+- Token categories include color, spacing, typography, borders/radii, shadows, breakpoints, and motion
+- Light/dark theme via `[data-theme="dark"]` token overrides
+- Core components: `Button`, `InputField`, `Card`, plus reusable table/pagination primitives
 
 ### Part B — Dashboard Layout
 
-- Sticky top header with app title/breadcrumb, search, theme toggle, and user menu
-- Sidebar:
-  - Desktop collapse/expand
-  - Mobile drawer with backdrop and close controls
-- Main content:
-  - Stats cards row
-  - Analytics panel
-  - Data table with sticky header + sticky first column + pagination UI
-- Responsive behavior for desktop/tablet/mobile is implemented in dashboard layout CSS modules
+- Sticky top navigation with search, theme toggle, and user menu
+- Collapsible sidebar (desktop) + drawer behavior (mobile)
+- Main content includes stats cards, analytics panel, and users data table
+- Table supports sticky header and sticky first column with responsive overflow handling
 
 ### Part C — Data + React/Next.js
 
-- Route handlers:
+- APIs:
   - `GET /api/stats`
   - `GET /api/analytics`
   - `GET /api/users`
-- Shared API envelope:
+- Shared response envelope:
 
 ```ts
 type ApiResponse<T> = {
@@ -80,22 +73,14 @@ type ApiResponse<T> = {
 }
 ```
 
-- All handlers support randomized delay (`200–800ms`) and consistent failure payloads
-- Server components provide initial dashboard payloads:
-  - `StatsAnalyticsSection`
-  - `UsersTableSection`
-- Client components handle interactive state:
-  - server-side pagination/sort/search table flow
-  - URL state sync (`page`, `sort`, `order`, `search`)
-  - debounced search (500ms)
-  - loading skeleton rows
-  - empty state (`No results found.`)
-  - error state messaging from API failures
+- API routes implement realistic delay (`200–800ms`) and consistent error payload shape
+- Initial data is rendered server-side; client handles only interactive updates
+- Users table supports server-side sort/search/pagination, URL sync, loading skeleton rows, empty state, and error state
 
 ### Part D Challenges Completed
 
 1. Challenge 2 — Container Queries
-2. Challenge 4 — Fluid Typography and Spacing with `clamp()`
+2. Challenge 4 — Fluid Typography and Spacing (`clamp()`)
 
 ### Part E Reflection
 
@@ -103,17 +88,15 @@ type ApiResponse<T> = {
 
 ## Performance and Scalability Notes
 
-- Feature composition is registry-driven (`src/features/dashboard/feature-registry.tsx`) so sections can be added/removed cleanly.
-- Users data path is optimized for larger sets:
+- Feature composition is modular and section-driven through registry entries
+- Users query path is optimized with:
   - precomputed search index
-  - sorted result cache by field/order
-  - server-side paging/filtering/sorting
-- Client fetch layer uses:
-  - abortable requests (`AbortController`) through `useAsyncQuery`
-  - short-lived in-memory caches for users and analytics
-- DataTable virtualization is enabled for large row counts (`threshold: 120`, `rowHeight: 52`, `overscan: 8`).
+  - sorted dataset cache by field/order
+  - server-side query shaping
+- Client query hooks use `AbortController` to cancel stale requests
+- DataTable supports virtualization for large row counts (`threshold: 120`, `rowHeight: 52`, `overscan: 8`)
 
-## File Structure (Current)
+## File Structure
 
 ```text
 src/
@@ -135,6 +118,9 @@ src/
       api/
       components/
       data/
+        dashboard-repository.ts
+        dashboard-service.ts
+        dashboard-streaming.ts
       layout/
       feature-registry.tsx
       constants.ts
@@ -148,16 +134,10 @@ packages/
   design-system/
     src/
       components/
-        Badge/
-        Button/
-        Card/
-        DataTable/
-        InputField/
+      icons/
       styles/
       theme/
-      icons/
 ARCHITECTURE.md
 NOTES.md
 README.md
 ```
-
