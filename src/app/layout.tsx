@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { Manrope, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 
-import { ThemeProvider } from '@design-system';
 import { DashboardChrome } from '@/features/dashboard/layout';
-import { DEFAULT_LOCALE, I18nProvider, MESSAGES_BY_LOCALE } from '@/shared/i18n';
+import { DEFAULT_LOCALE, MESSAGES_BY_LOCALE } from '@/shared/i18n';
 import './globals.css';
 
 const themeInitializationScript = `
@@ -72,11 +71,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           {messages['a11y.skipToMainContent']}
         </a>
-        <I18nProvider locale={locale} messages={messages}>
-          <ThemeProvider>
-            <DashboardChrome>{children}</DashboardChrome>
-          </ThemeProvider>
-        </I18nProvider>
+        <DashboardChrome messages={messages}>{children}</DashboardChrome>
       </body>
     </html>
   );

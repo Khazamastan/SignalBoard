@@ -1,13 +1,14 @@
 import Link from 'next/link';
 
 import { Button, ChevronLeftIcon, ChevronRightIcon } from '@design-system';
+import type { Translate } from '@/shared/i18n';
 import { classNames } from '@/shared/utils/class-names';
-import { useI18n } from '@/shared/i18n';
 
 import styles from './ChromeSidebar.module.css';
 import { navItems } from './navigation-items';
 
 type ChromeSidebarProps = {
+  t: Translate;
   pathname: string;
   isCollapsed: boolean;
   isMobileSidebarOpen: boolean;
@@ -16,14 +17,13 @@ type ChromeSidebarProps = {
 };
 
 export function ChromeSidebar({
+  t,
   pathname,
   isCollapsed,
   isMobileSidebarOpen,
   onToggleCollapsed,
   onCloseMobileSidebar,
 }: ChromeSidebarProps) {
-  const { t } = useI18n();
-
   return (
     <aside
       className={classNames(

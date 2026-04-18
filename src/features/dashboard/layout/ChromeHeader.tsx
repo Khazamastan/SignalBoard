@@ -1,17 +1,16 @@
 import Link from 'next/link';
 import { Button, ChartBarIcon, InputField, MenuIcon, SearchIcon, ThemeToggle } from '@design-system';
-import { useI18n } from '@/shared/i18n';
+import type { Translate } from '@/shared/i18n';
 
 import styles from './ChromeHeader.module.css';
 import { UserMenuDropdown } from './UserMenuDropdown';
 
 type ChromeHeaderProps = {
+  t: Translate;
   onOpenMobileSidebar: () => void;
 };
 
-export function ChromeHeader({ onOpenMobileSidebar }: ChromeHeaderProps) {
-  const { t } = useI18n();
-
+export function ChromeHeader({ t, onOpenMobileSidebar }: ChromeHeaderProps) {
   return (
     <header className={styles.header}>
       <div className={styles.brand}>
@@ -50,7 +49,7 @@ export function ChromeHeader({ onOpenMobileSidebar }: ChromeHeaderProps) {
 
       <div className={styles.rightActions}>
         <ThemeToggle label={t('theme.label')} ariaLabel={t('theme.toggle')} />
-        <UserMenuDropdown />
+        <UserMenuDropdown t={t} />
       </div>
     </header>
   );

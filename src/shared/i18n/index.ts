@@ -1,8 +1,9 @@
-export { I18nProvider, useI18n } from './I18nProvider';
 export {
+  createTranslator,
   DEFAULT_LOCALE,
   MESSAGES_BY_LOCALE,
   type Locale,
   type MessageCatalog,
+  type Translate,
   type TranslationKey,
 } from './messages';

@@ -23,6 +23,7 @@ export const EN_MESSAGES = {
 
 export type TranslationKey = keyof typeof EN_MESSAGES;
 export type MessageCatalog = Record<TranslationKey, string>;
+export type Translate = (key: TranslationKey, fallback?: string) => string;
 
 const ES_MESSAGES: MessageCatalog = {
   'a11y.skipToMainContent': 'Saltar al contenido principal',
@@ -54,4 +55,8 @@ export const DEFAULT_LOCALE: Locale = 'en';
 export const MESSAGES_BY_LOCALE: Record<Locale, MessageCatalog> = {
   en: EN_MESSAGES,
   es: ES_MESSAGES,
+};
+
+export const createTranslator = (messages: MessageCatalog): Translate => {
+  return (key, fallback) => messages[key] ?? fallback ?? key;
 };

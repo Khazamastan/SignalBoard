@@ -1,11 +1,14 @@
 import { ChevronRightIcon, ExternalLinkIcon } from '@design-system';
-import { useI18n } from '@/shared/i18n';
+import type { Translate } from '@/shared/i18n';
 
 import styles from './UserMenuDropdown.module.css';
 import { DASHBOARD_LAYOUT_COPY } from './constants';
 
-export function UserMenuDropdown() {
-  const { t } = useI18n();
+type UserMenuDropdownProps = {
+  t: Translate;
+};
+
+export function UserMenuDropdown({ t }: UserMenuDropdownProps) {
   const userInitials = DASHBOARD_LAYOUT_COPY.userName
     .split(' ')
     .map((segment) => segment[0])
