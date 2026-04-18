@@ -6,7 +6,6 @@ import {
   Button,
   Card,
   DataTable,
-  ThemeProvider,
   useTheme,
 } from "@design-system";
 import styles from "./page.module.css";
@@ -134,13 +133,14 @@ function LabContent() {
           <h2 className={styles.sectionTitle}>Typography Preview</h2>
           <div className="ds-stack-sm">
             {typographyScale.map((item) => (
-              <Card
-                key={item.label}
-                as="article"
-                className={styles.typographyRow}
-                style={{ fontSize: `var(${item.token}, ${item.fallback})` }}
-              >
-                {item.label} - The quick brown fox jumps over the lazy dog.
+              <Card key={item.label} as="article" className={styles.typographyRow}>
+                <span className={styles.typographyLabel}>{item.label}</span>
+                <span
+                  className={styles.typographySample}
+                  style={{ fontSize: `var(${item.token}, ${item.fallback})` }}
+                >
+                  The quick brown fox jumps over the lazy dog.
+                </span>
               </Card>
             ))}
           </div>
@@ -152,11 +152,19 @@ function LabContent() {
             {spacingScale.map((item) => (
               <div key={item.label} className={styles.spacingRow}>
                 <span className={styles.spacingLabel}>{item.label}</span>
-                <div
-                  className={styles.spacingBar}
-                  style={{ width: `var(${item.token}, ${item.fallback})` }}
-                />
-                <span className={styles.spacingToken}>{item.token}</span>
+                <div className={styles.spacingPreview}>
+                  <div className={styles.spacingTrack}>
+                    <div
+                      className={styles.spacingBar}
+                      style={
+                        {
+                          "--space-preview": `var(${item.token}, ${item.fallback})`,
+                        } as React.CSSProperties
+                      }
+                    />
+                  </div>
+                  <span className={styles.spacingToken}>{item.token}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -271,9 +279,5 @@ function LabContent() {
 }
 
 export default function LabPreview() {
-  return (
-    <ThemeProvider>
-      <LabContent />
-    </ThemeProvider>
-  );
+  return <LabContent />;
 }

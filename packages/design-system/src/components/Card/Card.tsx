@@ -43,7 +43,6 @@ export function Card({
   const hasHeader = header !== undefined && header !== null;
   const hasFooter = footer !== undefined && footer !== null;
   const hasBody = children !== undefined && children !== null;
-  const hasChrome = hasHeader || hasFooter;
 
   return (
     <Component
@@ -53,18 +52,13 @@ export function Card({
         TONE_CLASS[tone],
         hoverable && styles.hoverable,
         stretch && styles.stretch,
-        hasChrome && styles.withChrome,
         className,
       )}
       {...props}
     >
       {hasHeader ? <div className={styles.header}>{header}</div> : null}
 
-      {hasChrome && hasBody ? (
-        <div className={styles.body}>{children}</div>
-      ) : (
-        children
-      )}
+      {hasBody ? <div className={styles.body}>{children}</div> : null}
 
       {hasFooter ? <div className={styles.footer}>{footer}</div> : null}
     </Component>

@@ -1,56 +1,85 @@
 .field {
   display: grid;
   gap: var(--space-2xs, 0.25rem);
+  width: 100%;
 }
 
 .label {
   color: var(--text-secondary);
   font-size: var(--font-size-xs, 0.875rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold, 600);
 }
 
 .control {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs, 0.5rem);
-  min-height: 2.625rem;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm, 0.375rem);
-  background: var(--surface-elevated);
-  color: var(--text-primary);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+  border-radius: var(--radius-sm, 0.5rem);
+  border: 1px solid var(--border-subtle, var(--border-default));
+  background: var(--surface-card, var(--surface-elevated));
+  overflow: hidden;
   transition:
-    border-color var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease),
-    box-shadow var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease),
-    background-color var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease);
+    border-color var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    box-shadow var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    background-color var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+
+.field:focus-within .control {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-base) 24%, transparent);
+}
+
+.hasError .control {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-error) 20%, transparent);
+}
+
+.disabled .control {
+  background: color-mix(in srgb, var(--surface-card) 80%, var(--color-neutral-200));
+  opacity: 0.8;
+}
+
+.readOnly .control {
+  background: color-mix(in srgb, var(--surface-card) 92%, var(--color-neutral-200));
 }
 
 .inputWrap {
   position: relative;
-  flex: 1 1 auto;
-  min-width: 0;
+  min-height: calc(var(--space-xl, 2rem) + var(--space-xs, 0.5rem));
 }
 
 .input {
   width: 100%;
+  height: 100%;
+  padding: var(--space-md, 1rem) var(--space-sm, 0.75rem) var(--space-xs, 0.5rem);
   border: 0;
   outline: 0;
   background: transparent;
-  color: inherit;
-  padding: 0.62rem 0.9rem;
-  font-size: var(--font-size-sm, 1rem);
-  line-height: 1.2;
+  color: var(--text-primary);
+  font-size: var(--font-size-md, 1.125rem);
+  line-height: var(--line-height-normal, 1.45);
+}
+
+.field:not(.floating) .input,
+.inputFloating {
+  padding: var(--space-sm, 0.75rem);
 }
 
 .input::placeholder {
-  color: var(--text-muted);
+  color: transparent;
 }
 
-.inputFloating {
-  padding-top: 1.28rem;
-  padding-bottom: 0.38rem;
+.field:not(.floating) .input::placeholder,
+.inputFloating::placeholder {
+  color: var(--text-secondary);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  color: var(--text-muted);
 }
 
 .floatingLabel {
@@ -59,14 +88,15 @@
   top: 50%;
   transform: translateY(-50%) scale(1);
   transform-origin: left center;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: var(--font-size-sm, 1rem);
   line-height: 1;
   pointer-events: none;
   transition:
-    transform var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease),
-    color var(--motion-duration-fast, 160ms) var(--motion-ease-standard, ease);
+    transform var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    color var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
 }
 
 .floatActive .floatingLabel {
@@ -74,70 +104,30 @@
   color: var(--color-primary-base);
 }
 
-.field:focus-within .control {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 2px
-    color-mix(in srgb, var(--color-primary-base) 24%, transparent);
-}
-
-.hasError .control {
-  border-color: var(--color-error);
-}
-
-.hasError:focus-within .control {
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-error) 24%, transparent);
-}
-
-.disabled .control {
-  background: var(--surface-muted);
-  border-color: var(--border-subtle);
-}
-
-.disabled .input,
-.disabled .label,
-.disabled .floatingLabel,
-.disabled .affix,
-.disabled .helperText,
-.disabled .counter {
-  color: var(--text-muted);
-}
-
-.disabled .input {
-  cursor: not-allowed;
-}
-
-.readOnly .control {
-  background: var(--surface-muted);
-}
-
-.readOnly .input {
-  cursor: default;
-}
-
 .affix {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0 var(--space-sm, 0.75rem);
   color: var(--text-secondary);
-  align-self: stretch;
-  min-width: 2.6rem;
-  padding-inline: 0.82rem;
-  background: var(--surface-muted);
+  font-size: var(--font-size-sm, 1rem);
+  background: color-mix(in srgb, var(--color-neutral-200) 36%, transparent);
 }
 
 .affixPrefix {
-  border-right: 1px solid var(--border-default);
+  border-right: 1px solid var(--border-subtle, var(--border-default));
 }
 
 .affixSuffix {
-  border-left: 1px solid var(--border-default);
+  border-left: 1px solid var(--border-subtle, var(--border-default));
 }
 
 .meta {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-sm, 0.75rem);
+  min-height: var(--space-sm, 0.75rem);
 }
 
 .metaStart {
@@ -148,7 +138,8 @@
 .error,
 .counter {
   margin: 0;
-  font-size: var(--font-size-2xs, 0.75rem);
+  font-size: var(--font-size-xs, 0.875rem);
+  line-height: var(--line-height-normal, 1.45);
 }
 
 .helperText {
@@ -160,6 +151,6 @@
 }
 
 .counter {
-  color: var(--text-muted);
-  white-space: nowrap;
+  color: var(--text-secondary);
+  font-family: var(--font-family-mono);
 }

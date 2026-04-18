@@ -1,56 +1,46 @@
 .card {
-  position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  border: 1px solid var(--border-default);
+  width: 100%;
   border-radius: var(--radius-md, 0.625rem);
-  background: var(--surface-default);
+  background: var(--surface-card, var(--surface-default));
   color: var(--text-primary);
-  box-shadow: none;
-  overflow: hidden;
+  overflow: clip;
+  transition:
+    box-shadow var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-emphasized, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-emphasized, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    transform var(--motion-duration-moderate, 220ms)
+      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
 }
 
 .variantDefault {
-  background: var(--surface-default);
+  border: 1px solid var(--border-default);
   border-color: var(--border-default);
+  box-shadow: none;
 }
 
 .variantElevated {
-  background: var(--surface-elevated);
-  border-color: transparent;
-  box-shadow: var(--shadow-sm, 0 4px 12px rgba(21, 32, 48, 0.06));
+  border: 1px solid transparent;
+  background: var(--surface-elevated, var(--surface-card));
+  box-shadow: var(--card-shadow-elevated, var(--shadow-md, 0 8px 24px rgba(21, 32, 48, 0.1)));
 }
 
 .hoverable {
-  transition:
-    transform var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease),
-    box-shadow var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease),
-    border-color var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease),
-    background-color var(--motion-duration-fast, 160ms)
-      var(--motion-ease-standard, ease);
+  cursor: default;
 }
 
 .hoverable:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md, 0 8px 24px rgba(21, 32, 48, 0.1));
-  border-color: color-mix(
-    in srgb,
-    var(--color-primary-base) 25%,
-    var(--border-default)
-  );
+  transform: translateY(calc(var(--space-2xs, 0.25rem) * -0.3));
+  box-shadow: var(--shadow-lg, 0 14px 34px rgba(21, 32, 48, 0.14));
 }
 
 .stretch {
-  display: flex;
-  flex-direction: column;
   height: 100%;
 }
-
-.withChrome {}
 
 .header,
 .body,
@@ -60,12 +50,12 @@
 
 .header {
   border-bottom: 1px solid var(--border-default);
-  background: var(--surface-default);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold, 600);
 }
 
 .body {
-  min-width: 0;
+  display: grid;
+  gap: var(--space-sm, 0.75rem);
 }
 
 .stretch .body {
@@ -74,11 +64,10 @@
 
 .footer {
   border-top: 1px solid var(--border-default);
-  background: var(--surface-default);
 }
 
 .toneMuted {
-  background: var(--surface-muted);
+  background: var(--surface-muted, color-mix(in srgb, var(--surface-card) 80%, var(--color-neutral-200)));
   border-color: var(--border-subtle);
   color: var(--text-secondary);
 }
@@ -92,7 +81,7 @@
 .toneMuted .header,
 .toneMuted .footer {
   border-color: var(--border-subtle);
-  background: color-mix(in srgb, var(--surface-default) 24%, var(--surface-muted));
+  background: color-mix(in srgb, var(--surface-card) 24%, var(--surface-muted));
 }
 
 .toneInverse .header,

@@ -2,38 +2,37 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-1, 0.25rem);
-  min-height: 1.35rem;
-  padding: 0.14rem 0.55rem;
+  min-height: auto;
+  padding: var(--space-2xs, 0.25rem) var(--space-xs, 0.5rem);
   border: 0;
   border-radius: var(--radius-pill, 9999px);
-  font-size: 0.82rem;
-  line-height: 1.2;
-  font-weight: 500;
+  font-size: var(--font-size-xs, 0.875rem);
+  line-height: var(--line-height-tight, 1.2);
+  font-weight: var(--font-weight-medium, 500);
   white-space: nowrap;
 }
 
 .toneNeutral {
+  background: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
   color: var(--text-secondary);
-  background: color-mix(in srgb, var(--surface-muted) 82%, var(--surface-elevated));
 }
 
 .toneSuccess {
+  background: color-mix(in srgb, var(--color-success) 20%, transparent);
   color: var(--color-success);
-  background: color-mix(in srgb, var(--color-success) 22%, transparent);
 }
 
 .toneWarning {
+  background: color-mix(in srgb, var(--color-warning) 20%, transparent);
   color: var(--color-warning);
-  background: color-mix(in srgb, var(--color-warning) 22%, transparent);
 }
 
 .toneError {
+  background: color-mix(in srgb, var(--color-error) 16%, transparent);
   color: var(--color-error);
-  background: color-mix(in srgb, var(--color-error) 18%, transparent);
 }
 
 .toneInfo {
+  background: color-mix(in srgb, var(--color-info) 18%, transparent);
   color: var(--color-info);
-  background: color-mix(in srgb, var(--color-info) 20%, transparent);
 }

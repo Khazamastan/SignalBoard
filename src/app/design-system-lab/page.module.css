@@ -1,6 +1,6 @@
 .page {
   min-height: 100dvh;
-  padding: var(--space-xl, 2rem);
+  padding: var(--space-lg, 1.5rem);
   color: var(--text-primary);
 }
 
@@ -11,16 +11,19 @@
 
 .header {
   align-items: center;
+  padding: var(--space-lg, 1.5rem);
 }
 
 .title {
   margin: 0;
-  font-size: var(--font-size-2xl, 1.5rem);
+  font-size: var(--font-size-xl, 2rem);
+  line-height: 1.05;
 }
 
 .sectionTitle {
   margin: 0;
-  font-size: var(--font-size-lg, 1.125rem);
+  padding: var(--space-md, 1rem) var(--space-md, 1rem) 0;
+  font-size: var(--font-size-md, 1.125rem);
 }
 
 .swatchGrid {
@@ -54,17 +57,33 @@
 }
 
 .typographyRow {
-  padding-block: var(--space-sm, 0.75rem);
+  display: grid;
+  grid-template-columns: 3.75rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-sm, 0.75rem);
+  padding: var(--space-sm, 0.75rem) var(--space-md, 1rem);
+}
+
+.typographyLabel {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs, 0.875rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.typographySample {
+  line-height: 1.2;
 }
 
 .spacingList {
   display: grid;
   gap: var(--space-sm, 0.75rem);
+  padding: 0 var(--space-md, 1rem) var(--space-md, 1rem);
 }
 
 .spacingRow {
   display: grid;
-  grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 10rem);
+  grid-template-columns: 3.75rem minmax(0, 1fr);
   align-items: center;
   gap: var(--space-sm, 0.75rem);
 }
@@ -75,16 +94,32 @@
   font-weight: 600;
 }
 
+.spacingPreview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.75rem);
+}
+
+.spacingTrack {
+  flex: 0 0 min(14rem, 100%);
+  max-width: 100%;
+  height: var(--space-sm, 0.75rem);
+  border-radius: var(--radius-pill, 9999px);
+  background: color-mix(in srgb, var(--color-primary-base) 18%, var(--surface-muted));
+}
+
 .spacingBar {
-  height: var(--space-xs, 0.5rem);
+  width: clamp(var(--space-2xs, 0.25rem), calc(var(--space-preview) * 5), 100%);
+  height: 100%;
   border-radius: var(--radius-pill, 9999px);
   background: var(--color-primary-base);
 }
 
 .spacingToken {
+  font-family: var(--font-family-mono);
   color: var(--text-muted);
   font-size: var(--font-size-xs, 0.75rem);
-  text-align: right;
+  white-space: nowrap;
 }
 
 .radiusGrid {
@@ -125,6 +160,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-md, 1rem);
+  padding: 0 var(--space-md, 1rem) var(--space-md, 1rem);
 }
 
 .kpiCard {
@@ -147,18 +183,22 @@
 
 .diagnostics {
   position: fixed;
-  right: var(--space-md, 1rem);
-  bottom: var(--space-md, 1rem);
+  right: calc(var(--space-md, 1rem) + env(safe-area-inset-right));
+  top: calc(var(--space-md, 1rem) + env(safe-area-inset-top));
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md, 0.5rem);
   background: var(--surface-elevated);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm, 0 0 0 transparent);
-  padding: var(--space-sm, 0.75rem);
-  min-width: 16rem;
-  font-size: var(--font-size-xs, 0.75rem);
+  padding: var(--space-xs, 0.5rem) var(--space-sm, 0.75rem);
+  min-width: 13rem;
+  max-width: min(18rem, calc(100vw - var(--space-xl, 2rem)));
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs, 0.75rem);
   display: grid;
   gap: var(--space-2xs, 0.25rem);
+  z-index: 10;
+  pointer-events: none;
 }
 
 .diagnostics p {
@@ -181,16 +221,38 @@
     padding: var(--space-md, 1rem);
   }
 
+  .title {
+    font-size: var(--font-size-lg, 1.5rem);
+  }
+
+  .typographyRow {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xs, 0.25rem);
+  }
+
   .kpiGrid {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .spacingRow {
-    grid-template-columns: 4rem minmax(0, 1fr);
+    grid-template-columns: 1fr;
+    gap: var(--space-2xs, 0.25rem);
+  }
+
+  .spacingPreview {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .spacingToken {
-    grid-column: 1 / -1;
-    text-align: left;
+    white-space: normal;
+    word-break: break-all;
+  }
+
+  .diagnostics {
+    right: var(--space-sm, 0.75rem);
+    top: var(--space-sm, 0.75rem);
+    min-width: auto;
+    max-width: calc(100vw - var(--space-lg, 1.5rem));
   }
 }

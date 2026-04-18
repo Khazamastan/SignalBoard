@@ -34,33 +34,33 @@
   --color-primary-contrast: #ffffff;
 
   /* Text */
-  --text-primary: var(--color-neutral-900);
-  --text-secondary: var(--color-neutral-700);
-  --text-muted: var(--color-neutral-600);
+  --text-primary: #1c2738;
+  --text-secondary: #50627a;
+  --text-muted: #8da0b6;
   --text-inverse: #ffffff;
   --color-text-primary: var(--text-primary);
 
   /* Surface + overlay */
-  --surface-background: var(--color-neutral-100);
-  --surface-canvas: #dde5ef;
-  --surface-default: #f8fafd;
+  --surface-background: #f2f5fa;
+  --surface-canvas: #f2f5fa;
+  --surface-default: #ffffff;
   --surface-elevated: #ffffff;
-  --surface-card: var(--surface-default);
-  --surface-sidebar: #f8fbff;
-  --surface-header: #f9fbff;
+  --surface-card: #ffffff;
+  --surface-sidebar: color-mix(in srgb, var(--surface-card) 86%, transparent);
+  --surface-header: var(--surface-card);
   --surface-overlay: rgba(21, 32, 48, 0.56);
   --surface-inverse: var(--color-neutral-900);
   --surface-control: var(--surface-elevated);
-  --surface-muted: #edf2f8;
+  --surface-muted: color-mix(in srgb, var(--surface-card) 80%, var(--color-neutral-200));
   --surface-highlight: color-mix(in srgb, var(--color-primary) 9%, transparent);
-  --surface-table-header: #e4ebf4;
-  --surface-table-row-alt: #f0f5fb;
+  --surface-table-header: color-mix(in srgb, var(--color-neutral-200) 72%, var(--surface-card));
+  --surface-table-row-alt: color-mix(in srgb, var(--color-neutral-100) 52%, transparent);
   --color-surface-background: var(--surface-background);
 
   /* Border */
-  --border-subtle: #d7e0ec;
-  --border-default: #c5d1e0;
-  --border-strong: #afbdd0;
+  --border-subtle: #d9e1ec;
+  --border-default: #d9e1ec;
+  --border-strong: #b8c6d8;
   --border-focus: var(--color-primary-base);
 
   /* Spacing */
@@ -168,12 +168,12 @@
   --surface-elevated: #121212;
   --surface-canvas: var(--surface-background);
   --surface-default: var(--surface-card);
-  --surface-sidebar: #090909;
-  --surface-header: #0a0a0a;
+  --surface-sidebar: color-mix(in srgb, var(--surface-card) 86%, transparent);
+  --surface-header: color-mix(in srgb, var(--surface-card) 90%, transparent);
   --surface-muted: #101010;
   --surface-highlight: color-mix(in srgb, var(--color-primary) 20%, transparent);
-  --surface-table-header: #101010;
-  --surface-table-row-alt: #0d0d0d;
+  --surface-table-header: color-mix(in srgb, var(--surface-elevated) 84%, var(--color-neutral-300));
+  --surface-table-row-alt: color-mix(in srgb, var(--color-neutral-100) 52%, transparent);
   --surface-overlay: rgba(1, 6, 13, 0.72);
 
   --text-primary: #f2f2f2;
@@ -183,7 +183,7 @@
 
   --border-subtle: #242424;
   --border-strong: #3a3a3a;
-  --border-default: var(--border-subtle);
+  --border-default: #242424;
   --border-focus: var(--color-primary-base);
 
   --shadow-xs: 0 1px 2px rgba(1, 6, 13, 0.5);
