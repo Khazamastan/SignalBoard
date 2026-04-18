@@ -1,7 +1,12 @@
-import { parseUsersPageParam, resolveUserSortState } from '@/features/dashboard/utils/users-query';
+import {
+  parseUsersLimitParam,
+  parseUsersPageParam,
+  resolveUserSortState,
+} from '@/features/dashboard/utils/users-query';
 import {
   USERS_DEFAULT_PAGE,
   USERS_DEFAULT_SEARCH_QUERY,
+  USERS_PAGE_LIMIT,
   USERS_QUERY_PARAMS,
 } from '@/features/dashboard/constants';
 
@@ -13,31 +18,42 @@ type QueryParamsReader = Pick<URLSearchParams, 'get'>;
 type QueryParamsWritable = QueryParamsReader & {
   toString(): string;
 };
+const {
+  page: pageParam,
+  limit: limitParam,
+  sort: sortParam,
+  order: orderParam,
+  search: searchParam,
+} = USERS_QUERY_PARAMS;
 
 export const resolveUsersTableQueryState = (
   searchParams: QueryParamsReader,
 ): UsersTableQueryState => {
-  const page = parseUsersPageParam(searchParams.get(USERS_QUERY_PARAMS.page), USERS_DEFAULT_PAGE);
-  const search = searchParams.get(USERS_QUERY_PARAMS.search) ?? USERS_DEFAULT_SEARCH_QUERY;
+  const page = parseUsersPageParam(searchParams.get(pageParam), USERS_DEFAULT_PAGE);
+  const limit = parseUsersLimitParam(searchParams.get(limitParam), USERS_PAGE_LIMIT);
+  const search = searchParams.get(searchParam) ?? USERS_DEFAULT_SEARCH_QUERY;
   const sortState = resolveUserSortState(
-    searchParams.get(USERS_QUERY_PARAMS.sort),
-    searchParams.get(USERS_QUERY_PARAMS.order),
+    searchParams.get(sortParam),
+    searchParams.get(orderParam),
   );
 
   return {
     page,
-    sort: sortState.sort,
-    order: sortState.order,
+    limit,
     search,
+    ...sortState,
   };
 };
 
 export const toUsersTableQueryKey = (query: UsersTableQueryState): string => {
+  const { page, limit, sort, order, search } = query;
+
   return [
-    query.page,
-    query.sort,
-    query.order,
-    query.search,
+    page,
+    limit,
+    sort,
+    order,
+    search,
   ].join(USERS_TABLE_QUERY_KEY_SEPARATOR);
 };
 

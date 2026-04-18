@@ -4,45 +4,47 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { DataTable, InputField, SearchIcon } from '@design-system';
-import type { DataTableSortOrder } from '@design-system';
-import type { UserSortField } from '@/features/dashboard/types';
 import { t } from '@/shared/i18n';
 import {
+  USERS_PAGE_LIMIT,
+  USERS_PAGE_SIZE_OPTIONS,
   USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
   USERS_QUERY_PARAMS,
   USERS_RESET_PAGE_PARAM_VALUE,
   USERS_SEARCH_DEBOUNCE_MS,
-  USERS_TABLE_SKELETON_ROW_COUNT_MIN,
 } from '@/features/dashboard/constants';
 
 import { createUsersTableColumns } from './users-table/columns';
 import {
   USERS_TABLE_MAX_BODY_HEIGHT,
   USERS_TABLE_SEARCH_ICON_SIZE,
-  USERS_TABLE_VIRTUALIZATION,
 } from './users-table/constants';
-import type { UsersTableProps } from './users-table/types';
+import type { UsersTableProps, UsersTableQueryState } from './users-table/types';
 import { useUsersTableQuery } from './users-table/useUsersTableQuery';
 import { applySearchParamsPatch, resolveUsersTableQueryState } from './users-table/utils';
 
 type QueryPatch = Record<string, string | null>;
 type UsersDataTableSortState = {
-  key: UserSortField;
-  direction: DataTableSortOrder;
+  key: UsersTableQueryState['sort'];
+  direction: UsersTableQueryState['order'];
 } | null;
 
 const USERS_TABLE_COLUMNS = createUsersTableColumns(t);
+const USERS_TABLE_PAGE_SIZE_OPTIONS = [...USERS_PAGE_SIZE_OPTIONS];
+const USERS_TABLE_QUERY_KEYS = ['page', 'limit', 'sort', 'order', 'search'] as const;
+const {
+  page: pageParam,
+  limit: limitParam,
+  sort: sortParam,
+  order: orderParam,
+  search: searchParam,
+} = USERS_QUERY_PARAMS;
 
 const isSameQueryState = (
-  first: { page: number; sort: UserSortField; order: DataTableSortOrder; search: string },
-  second: { page: number; sort: UserSortField; order: DataTableSortOrder; search: string },
+  first: UsersTableQueryState,
+  second: UsersTableQueryState,
 ): boolean => {
-  return (
-    first.page === second.page &&
-    first.sort === second.sort &&
-    first.order === second.order &&
-    first.search === second.search
-  );
+  return USERS_TABLE_QUERY_KEYS.every((key) => first[key] === second[key]);
 };
 
 export function UsersTable({ initialData }: UsersTableProps) {
@@ -60,13 +62,12 @@ export function UsersTable({ initialData }: UsersTableProps) {
     query: queryState,
     initialData,
   });
-
+  const { page, limit, sort, order } = queryState;
   const rows = data?.rows ?? [];
-  const meta = data?.meta ?? {
-      page: queryState.page,
-      totalItems: rows.length,
-      totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
-    };
+  const { totalItems, totalPages } = data?.meta ?? {
+    totalItems: rows.length,
+    totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
+  };
 
   const updateParams = useCallback(
     (patch: QueryPatch) => {
@@ -97,8 +98,8 @@ export function UsersTable({ initialData }: UsersTableProps) {
         const normalizedSearch = value.trim();
 
         updateParams({
-          [USERS_QUERY_PARAMS.search]: normalizedSearch ? normalizedSearch : null,
-          [USERS_QUERY_PARAMS.page]: USERS_RESET_PAGE_PARAM_VALUE,
+          [searchParam]: normalizedSearch || null,
+          [pageParam]: USERS_RESET_PAGE_PARAM_VALUE,
         });
       }, USERS_SEARCH_DEBOUNCE_MS);
     },
@@ -109,23 +110,22 @@ export function UsersTable({ initialData }: UsersTableProps) {
     (nextSort: UsersDataTableSortState) => {
       if (!nextSort) {
         updateParams({
-          [USERS_QUERY_PARAMS.sort]: null,
-          [USERS_QUERY_PARAMS.order]: null,
-          [USERS_QUERY_PARAMS.page]: USERS_RESET_PAGE_PARAM_VALUE,
+          [sortParam]: null,
+          [orderParam]: null,
+          [pageParam]: USERS_RESET_PAGE_PARAM_VALUE,
         });
         return;
       }
+      const { key, direction } = nextSort;
 
       updateParams({
-        [USERS_QUERY_PARAMS.sort]: nextSort.key,
-        [USERS_QUERY_PARAMS.order]: nextSort.direction,
-        [USERS_QUERY_PARAMS.page]: USERS_RESET_PAGE_PARAM_VALUE,
+        [sortParam]: key,
+        [orderParam]: direction,
+        [pageParam]: USERS_RESET_PAGE_PARAM_VALUE,
       });
     },
     [updateParams],
   );
-
-  const loadingSkeletonRowCount = Math.max(rows.length || 0, USERS_TABLE_SKELETON_ROW_COUNT_MIN);
 
   useEffect(() => {
     const onPopState = () => {
@@ -151,48 +151,38 @@ export function UsersTable({ initialData }: UsersTableProps) {
     <DataTable
       rows={rows}
       columns={USERS_TABLE_COLUMNS}
-      getRowId={(row) => row.id}
       title={t('table.users.title')}
       actions={
         <InputField
           placeholder={t('table.users.searchLabel')}
           aria-label={t('table.users.searchLabel')}
-          floatingLabel={false}
           value={searchInputValue}
-          onChange={(event) => {
-            const nextValue = event.target.value;
-            setSearchInputValue(nextValue);
-            queueSearchUpdate(nextValue);
+          onChange={({ target: { value } }) => {
+            setSearchInputValue(value);
+            queueSearchUpdate(value);
           }}
-          hideMeta
           prefix={<SearchIcon size={USERS_TABLE_SEARCH_ICON_SIZE} />}
         />
       }
       errorMessage={error ?? undefined}
-      caption={t('table.users.caption')}
       loading={isLoading}
-      skeletonRowCount={loadingSkeletonRowCount}
-      sort={{ key: queryState.sort, direction: queryState.order }}
+      sort={{ key: sort, direction: order }}
       onSortChange={onSortChange}
-      emptyMessage={t('table.users.empty')}
       maxBodyHeight={USERS_TABLE_MAX_BODY_HEIGHT}
-      stickyFirstColumn
-      virtualization={USERS_TABLE_VIRTUALIZATION}
       pagination={{
-        currentPage: queryState.page,
-        totalPages: meta.totalPages,
-        totalItems: meta.totalItems,
-        ariaLabel: t('table.users.pagination.ariaLabel'),
-        pageLabel: t('table.users.pagination.page'),
-        ofLabel: t('table.users.pagination.of'),
-        itemsLabel: t('table.users.pagination.items'),
-        previousLabel: t('table.users.pagination.previous'),
-        nextLabel: t('table.users.pagination.next'),
-        goToPageLabelPrefix: t('table.users.pagination.goToPage'),
-        isLoading,
-        onChangePage: (page) =>
+        currentPage: page,
+        totalPages,
+        totalItems,
+        pageSize: limit,
+        pageSizeOptions: USERS_TABLE_PAGE_SIZE_OPTIONS,
+        onChangePage: (nextPage) =>
           updateParams({
-            [USERS_QUERY_PARAMS.page]: String(page),
+            [pageParam]: String(nextPage),
+          }),
+        onChangePageSize: (nextLimit) =>
+          updateParams({
+            [limitParam]: nextLimit === USERS_PAGE_LIMIT ? null : String(nextLimit),
+            [pageParam]: USERS_RESET_PAGE_PARAM_VALUE,
           }),
       }}
     />

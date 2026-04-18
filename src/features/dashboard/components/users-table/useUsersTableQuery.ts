@@ -14,15 +14,15 @@ const toInitialTableData = (initialData: UsersTableInitialData | undefined): Use
   if (!initialData) {
     return undefined;
   }
+  const { rows, meta } = initialData;
 
   return {
-    rows: initialData.rows,
-    meta: initialData.meta,
+    rows,
+    meta,
   };
 };
 
 export const useUsersTableQuery = ({ query, initialData }: UseUsersTableQueryOptions) => {
-  const { page, sort, order, search } = query;
   const queryKey = toUsersTableQueryKey(query);
   const initialQueryKey = initialData ? toUsersTableQueryKey(initialData.query) : null;
   const skipInitialRequest = Boolean(initialData) && initialQueryKey === queryKey;
@@ -30,10 +30,10 @@ export const useUsersTableQuery = ({ query, initialData }: UseUsersTableQueryOpt
   const queryFn = useCallback(
     ({ signal }: { signal: AbortSignal }) =>
       fetchUsersTableData({
-        query: { page, sort, order, search },
+        query,
         signal,
       }),
-    [order, page, search, sort],
+    [query],
   );
 
   return useAsyncQuery<UsersTableData>({

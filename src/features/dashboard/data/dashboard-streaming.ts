@@ -2,7 +2,7 @@ import { cache } from 'react';
 
 import type { RangeKey, SortOrder } from '@/shared/types/api';
 import type { UserSortField } from '@/features/dashboard/types';
-import { DEFAULT_ANALYTICS_RANGE, USERS_PAGE_LIMIT } from '@/features/dashboard/constants';
+import { DEFAULT_ANALYTICS_RANGE } from '@/features/dashboard/constants';
 import {
   parseUsersSearchParams,
   toUrlSearchParams,
@@ -11,13 +11,11 @@ import {
 
 import { dashboardService } from './dashboard-service';
 
-const getStatsResponseCached = cache(async () => {
-  return dashboardService.getStatsResponse();
-});
+const getStatsResponseCached = cache(async () => dashboardService.getStatsResponse());
 
-const getAnalyticsResponseCached = cache(async (range: RangeKey) => {
-  return dashboardService.getAnalyticsResponse(range);
-});
+const getAnalyticsResponseCached = cache(
+  async (range: RangeKey) => dashboardService.getAnalyticsResponse(range),
+);
 
 const getUsersPageResponseCached = cache(
   async (
@@ -43,23 +41,21 @@ export const preloadStatsAnalyticsSection = () => {
 };
 
 export const preloadUsersTableSection = (searchParams: RouteSearchParams) => {
-  const usersQuery = parseUsersSearchParams(toUrlSearchParams(searchParams));
+  const { page, limit, sort, order, search } = parseUsersSearchParams(
+    toUrlSearchParams(searchParams),
+  );
   void getUsersPageResponseCached(
-    usersQuery.page,
-    USERS_PAGE_LIMIT,
-    usersQuery.sort,
-    usersQuery.order,
-    usersQuery.search,
+    page,
+    limit,
+    sort,
+    order,
+    search,
   );
 };
 
-export const readStatsResponse = () => {
-  return getStatsResponseCached();
-};
+export const readStatsResponse = () => getStatsResponseCached();
 
-export const readAnalyticsResponse = (range: RangeKey) => {
-  return getAnalyticsResponseCached(range);
-};
+export const readAnalyticsResponse = (range: RangeKey) => getAnalyticsResponseCached(range);
 
 export const readUsersPageResponse = (
   page: number,

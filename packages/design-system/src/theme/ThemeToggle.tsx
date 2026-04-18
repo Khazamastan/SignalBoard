@@ -20,6 +20,7 @@ export function ThemeToggle({
   ariaLabel = "Toggle theme",
 }: ThemeToggleProps) {
   const [theme, setTheme] = React.useState<ThemeMode>(() => readThemeFromBrowser());
+  const nextTheme = theme === "dark" ? "light" : "dark";
 
   React.useEffect(() => {
     applyTheme(theme);
@@ -30,9 +31,7 @@ export function ThemeToggle({
       type="button"
       aria-label={ariaLabel}
       className={styles.toggle}
-      onClick={() => {
-        setTheme((current) => (current === "dark" ? "light" : "dark"));
-      }}
+      onClick={() => setTheme(nextTheme)}
     >
       <ThemeIcon className={styles.icon} size={16} />
       <span className={styles.label}>{label}</span>

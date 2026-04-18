@@ -28,7 +28,8 @@ export function readThemeFromBrowser(): ThemeMode {
     return DEFAULT_THEME;
   }
 
-  const htmlTheme = parseTheme(document.documentElement.getAttribute("data-theme"));
+  const { documentElement } = document;
+  const htmlTheme = parseTheme(documentElement.getAttribute("data-theme"));
 
   if (htmlTheme) {
     return htmlTheme;
@@ -54,11 +55,11 @@ export function applyTheme(theme: ThemeMode): void {
     return;
   }
 
-  document.documentElement.setAttribute("data-theme", theme);
+  const { documentElement } = document;
+  documentElement.setAttribute("data-theme", theme);
 
   if (typeof window !== "undefined") {
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
     document.cookie = `${THEME_COOKIE_NAME}=${theme}; ${resolveThemeCookieAttributes()}`;
   }
 }
-

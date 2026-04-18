@@ -114,8 +114,10 @@ const validateCatalogShape = (
   const localePaths = new Set(collectLeafPaths(catalog as Record<string, unknown>));
   const missingPaths = [...basePaths].filter((path) => !localePaths.has(path));
   const extraPaths = [...localePaths].filter((path) => !basePaths.has(path));
+  const { length: missingCount } = missingPaths;
+  const { length: extraCount } = extraPaths;
 
-  if (missingPaths.length === 0 && extraPaths.length === 0) {
+  if (missingCount === 0 && extraCount === 0) {
     return;
   }
 
@@ -147,9 +149,7 @@ export const resolveLocale = (
 
 export const getMessagesForLocale = (
   locale: Locale = DEFAULT_LOCALE,
-): MessageCatalog => {
-  return MESSAGES_BY_LOCALE[locale];
-};
+): MessageCatalog => MESSAGES_BY_LOCALE[locale];
 
 export const createTranslator = (
   messages: MessageCatalog,
@@ -160,10 +160,8 @@ export const createTranslator = (
   }
 
   const flatMessages = getFlatMessages(messages);
-  const translator: Translate = (key, fallback, values) => {
-    const template = flatMessages[key] ?? fallback ?? key;
-    return formatMessage(template, values);
-  };
+  const translator: Translate = (key, fallback, values) =>
+    formatMessage(flatMessages[key] ?? fallback ?? key, values);
 
   TRANSLATOR_CACHE.set(messages, translator);
   return translator;
@@ -171,8 +169,6 @@ export const createTranslator = (
 
 export const getTranslator = (
   locale: Locale = DEFAULT_LOCALE,
-): Translate => {
-  return createTranslator(getMessagesForLocale(locale));
-};
+): Translate => createTranslator(getMessagesForLocale(locale));
 
 export const t: Translate = getTranslator();

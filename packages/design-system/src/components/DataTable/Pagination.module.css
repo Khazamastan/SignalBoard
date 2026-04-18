@@ -19,6 +19,34 @@
   display: flex;
   align-items: center;
   gap: var(--space-2xs);
+  flex-wrap: wrap;
+}
+
+.pageSizeControl {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.pageSizeLabel {
+  white-space: nowrap;
+}
+
+.pageSizeSelect {
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-card);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  min-height: calc(var(--space-lg) + var(--space-xs));
+  padding: 0 var(--space-sm);
+  font-family: inherit;
+}
+
+.pageSizeSelect:disabled {
+  cursor: default;
 }
 
 .pageMarker {

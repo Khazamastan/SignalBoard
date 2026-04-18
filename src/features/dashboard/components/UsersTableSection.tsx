@@ -4,7 +4,6 @@ import {
   type RouteSearchParams,
 } from '@/features/dashboard/api/query-parsers';
 import {
-  USERS_PAGE_LIMIT,
   USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
 } from '@/features/dashboard/constants';
 import { readUsersPageResponse } from '@/features/dashboard/data/dashboard-streaming';
@@ -16,31 +15,39 @@ type UsersTableSectionProps = {
 };
 
 export async function UsersTableSection({ searchParams }: UsersTableSectionProps) {
-  const usersQuery = parseUsersSearchParams(toUrlSearchParams(searchParams));
+  const {
+    page,
+    limit,
+    sort,
+    order,
+    search,
+  } = parseUsersSearchParams(toUrlSearchParams(searchParams));
   const initialUsers = await readUsersPageResponse(
-    usersQuery.page,
-    USERS_PAGE_LIMIT,
-    usersQuery.sort,
-    usersQuery.order,
-    usersQuery.search,
+    page,
+    limit,
+    sort,
+    order,
+    search,
   );
+  const { data, meta } = initialUsers;
 
-  const initialUsersMeta = initialUsers.meta ?? {
-    page: usersQuery.page,
+  const initialUsersMeta = meta ?? {
+    page,
     totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
-    totalItems: initialUsers.data.length,
+    totalItems: data.length,
   };
 
   return (
     <UsersTable
       initialData={{
-        rows: initialUsers.data,
+        rows: data,
         meta: initialUsersMeta,
         query: {
-          page: usersQuery.page,
-          sort: usersQuery.sort,
-          order: usersQuery.order,
-          search: usersQuery.search,
+          page,
+          limit,
+          sort,
+          order,
+          search,
         },
       }}
     />

@@ -50,7 +50,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const themePreference = parseTheme(cookieStore.get(THEME_COOKIE_NAME)?.value) ?? DEFAULT_THEME;
+  const { value: themeCookie } = cookieStore.get(THEME_COOKIE_NAME) ?? {};
+  const themePreference = parseTheme(themeCookie) ?? DEFAULT_THEME;
   const locale = DEFAULT_LOCALE;
   const messages = MESSAGES_BY_LOCALE[locale];
   const translate = createTranslator(messages);

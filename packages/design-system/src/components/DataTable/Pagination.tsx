@@ -21,33 +21,55 @@ export type PaginationProps = {
   currentPage: number;
   totalPages: number;
   totalItems?: number;
+  pageSize?: number;
+  pageSizeOptions?: number[];
   ariaLabel?: string;
   pageLabel?: string;
   ofLabel?: string;
   itemsLabel?: string;
+  itemsPerPageLabel?: string;
   previousLabel?: string;
   nextLabel?: string;
   goToPageLabelPrefix?: string;
+  pageSizeSelectorAriaLabel?: string;
   isLoading?: boolean;
   onChangePage: (page: number) => void;
+  onChangePageSize?: (pageSize: number) => void;
 };
 
 export function Pagination({
   currentPage,
   totalPages,
   totalItems,
+  pageSize,
+  pageSizeOptions,
   ariaLabel = "Pagination",
   pageLabel = "Page",
   ofLabel = "of",
   itemsLabel = "items",
+  itemsPerPageLabel = "Items per page",
   previousLabel = "Previous",
   nextLabel = "Next",
   goToPageLabelPrefix = "Go to page",
+  pageSizeSelectorAriaLabel = "Select items per page",
   isLoading = false,
   onChangePage,
+  onChangePageSize,
 }: PaginationProps) {
   const safeTotalPages = Math.max(1, totalPages);
   const safeCurrentPage = Math.min(Math.max(1, currentPage), safeTotalPages);
+  const normalizedPageSizeOptions = Array.from(
+    new Set(
+      [
+        ...(pageSizeOptions?.filter((option) => Number.isFinite(option) && option > 0) ?? []),
+        ...(typeof pageSize === "number" && pageSize > 0 ? [pageSize] : []),
+      ].sort((first, second) => first - second),
+    ),
+  );
+  const hasPageSizeControl =
+    typeof pageSize === "number" &&
+    normalizedPageSizeOptions.length > 0 &&
+    typeof onChangePageSize === "function";
   const visiblePageMarkers = resolveVisiblePageMarkers(
     safeCurrentPage,
     safeTotalPages,
@@ -61,6 +83,33 @@ export function Pagination({
       </span>
 
       <div className={styles.controls}>
+        {hasPageSizeControl ? (
+          <label className={styles.pageSizeControl}>
+            <span className={styles.pageSizeLabel}>{itemsPerPageLabel}</span>
+            <select
+              className={styles.pageSizeSelect}
+              value={String(pageSize)}
+              aria-label={pageSizeSelectorAriaLabel}
+              disabled={isLoading}
+              onChange={(event) => {
+                const nextPageSize = Number.parseInt(event.target.value, 10);
+
+                if (Number.isNaN(nextPageSize)) {
+                  return;
+                }
+
+                onChangePageSize(nextPageSize);
+              }}
+            >
+              {normalizedPageSizeOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
+
         <Button
           variant="secondary"
           size="small"

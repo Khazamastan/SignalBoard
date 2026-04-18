@@ -3,6 +3,7 @@ import type { UserRow, UserSortField } from '@/features/dashboard/types';
 
 export type UsersTableQueryState = {
   page: number;
+  limit: number;
   sort: UserSortField;
   order: SortOrder;
   search: string;

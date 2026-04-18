@@ -19,9 +19,9 @@ export async function GET(request: Request) {
   }
 
   try {
-    const statsData = await dashboardService.getStatsResponse();
+    const data = await dashboardService.getStatsResponse();
 
-    return NextResponse.json(statsData, {
+    return NextResponse.json(data, {
       headers: {
         'Cache-Control': API_SUCCESS_CACHE_CONTROL,
       },

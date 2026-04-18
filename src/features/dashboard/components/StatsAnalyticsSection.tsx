@@ -14,11 +14,13 @@ export async function StatsAnalyticsSection() {
     readStatsResponse(),
     readAnalyticsResponse(DEFAULT_ANALYTICS_RANGE),
   ]);
+  const { data: statsData } = stats;
+  const { data: analyticsData } = analytics;
 
   return (
     <section className={styles.section} aria-label={t('dashboard.stats.sectionAria')}>
-      <StatsGrid stats={stats.data} />
-      <StatsAnalyticsClient initialAnalytics={analytics.data} />
+      <StatsGrid stats={statsData} />
+      <StatsAnalyticsClient initialAnalytics={analyticsData} />
     </section>
   );
 }

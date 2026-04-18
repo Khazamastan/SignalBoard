@@ -184,12 +184,25 @@ function resolveCellValue<TRow extends Record<string, unknown>>(
   return null;
 }
 
+function resolveDefaultRowId<TRow extends Record<string, unknown>>(
+  row: TRow,
+  rowIndex: number,
+): React.Key {
+  const candidateId = row.id;
+
+  if (typeof candidateId === "string" || typeof candidateId === "number") {
+    return candidateId;
+  }
+
+  return rowIndex;
+}
+
 function DataTableLegacy(props: DataTableLegacyProps) {
   const {
     className,
     sticky = true,
     stickyHeader,
-    stickyFirstColumn = false,
+    stickyFirstColumn = true,
     title,
     actions,
     pagination,
@@ -253,7 +266,7 @@ function DataTableGenericImpl<
     loading = false,
     skeletonRowCount = 6,
     stickyHeader = true,
-    stickyFirstColumn = false,
+    stickyFirstColumn = true,
     title,
     actions,
     pagination,
@@ -408,9 +421,7 @@ function DataTableGenericImpl<
 
   const resolveRowId =
     getRowId ??
-    ((_: TRow, rowIndex: number) => {
-      return rowIndex;
-    });
+    resolveDefaultRowId;
 
   return (
     <section className={classNames(styles.root, containerClassName)}>
@@ -634,7 +645,12 @@ function DataTableGenericImpl<
         </table>
       </div>
 
-      {pagination ? <Pagination {...pagination} /> : null}
+      {pagination ? (
+        <Pagination
+          {...pagination}
+          isLoading={pagination.isLoading ?? loading}
+        />
+      ) : null}
     </section>
   );
 }

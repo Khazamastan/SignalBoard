@@ -31,14 +31,15 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       </section>
 
       {dashboardFeatureRegistry.map((feature) => {
-        const suspenseKey = feature.resolveSuspenseKey?.({
+        const { id, fallback, render, resolveSuspenseKey } = feature;
+        const suspenseKey = resolveSuspenseKey?.({
           searchParams: resolvedSearchParams,
         });
-        const key = suspenseKey ? `${feature.id}:${suspenseKey}` : feature.id;
+        const key = suspenseKey ? `${id}:${suspenseKey}` : id;
 
         return (
-          <Suspense key={key} fallback={feature.fallback}>
-            {feature.render({ searchParams: resolvedSearchParams })}
+          <Suspense key={key} fallback={fallback}>
+            {render({ searchParams: resolvedSearchParams })}
           </Suspense>
         );
       })}

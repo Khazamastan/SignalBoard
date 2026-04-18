@@ -7,10 +7,12 @@ export const createApiResponse = <T,>(
     error?: string;
   },
 ): ApiResponse<T> => {
+  const { meta, error } = options ?? {};
+
   return {
     data,
-    ...(options?.meta ? { meta: options.meta } : {}),
-    ...(options?.error ? { error: options.error } : {}),
+    ...(meta ? { meta } : {}),
+    ...(error ? { error } : {}),
   };
 };
 
@@ -43,11 +45,11 @@ export const readApiResponseData = async <T,>(
   response: Response,
   fallbackErrorMessage: string,
 ): Promise<T> => {
-  const payload = await parseApiResponse<T>(response, fallbackErrorMessage);
+  const { data, error } = await parseApiResponse<T>(response, fallbackErrorMessage);
 
-  if (payload.error) {
-    throw new Error(payload.error);
+  if (error) {
+    throw new Error(error);
   }
 
-  return payload.data;
+  return data;
 };

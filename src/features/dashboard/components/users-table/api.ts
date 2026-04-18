@@ -1,6 +1,5 @@
 import {
   USERS_CLIENT_CACHE_TTL_MS,
-  USERS_PAGE_LIMIT,
   USERS_TABLE_CACHE_MAX_ENTRIES,
 } from '@/features/dashboard/constants';
 import { dashboardApiClient } from '@/features/dashboard/api/dashboard-client';
@@ -37,6 +36,7 @@ const pruneUsersTableCache = (now: number): void => {
 };
 
 export const fetchUsersTableData = async ({ query, signal }: QueryOptions): Promise<UsersTableData> => {
+  const { page, limit, sort, order, search } = query;
   const now = Date.now();
   pruneUsersTableCache(now);
 
@@ -49,11 +49,11 @@ export const fetchUsersTableData = async ({ query, signal }: QueryOptions): Prom
 
   const result = await dashboardApiClient.getUsersPage(
     {
-      page: query.page,
-      limit: USERS_PAGE_LIMIT,
-      sort: query.sort,
-      order: query.order,
-      search: query.search,
+      page,
+      limit,
+      sort,
+      order,
+      search,
     },
     { signal },
   );

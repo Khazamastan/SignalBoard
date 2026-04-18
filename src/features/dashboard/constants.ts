@@ -2,9 +2,10 @@ import type { RangeKey, SortOrder } from '@/shared/types/api';
 import type { UserSortField } from '@/features/dashboard/types';
 
 export const USERS_PAGE_LIMIT = 8;
+export const USERS_PAGE_SIZE_OPTIONS = [4, 8, 12, 16, 20, 50, 100] as const;
 export const USERS_TABLE_SKELETON_ROW_COUNT_MIN = 12;
 export const USERS_PAGE_LIMIT_MIN = 4;
-export const USERS_PAGE_LIMIT_MAX = 20;
+export const USERS_PAGE_LIMIT_MAX = 100;
 export const USERS_SEARCH_DEBOUNCE_MS = 300;
 export const USERS_DEFAULT_PAGE = 1;
 export const USERS_DEFAULT_SEARCH_QUERY = '';
@@ -65,7 +66,7 @@ export const DASHBOARD_API_QUERY_PARAMS = {
 export const ANALYTICS_CLIENT_CACHE_TTL_MS = 60000;
 export const USERS_CLIENT_CACHE_TTL_MS = 30000;
 
-export const MOCK_USERS_TOTAL = 64;
+export const MOCK_USERS_TOTAL = 1000;
 export const MOCK_REFERENCE_DATE = '2026-01-31';
 
 export const ANALYTICS_CHART_SKELETON_BAR_HEIGHTS = [44, 62, 52, 68, 60, 74, 58, 82, 66, 76, 63, 72];

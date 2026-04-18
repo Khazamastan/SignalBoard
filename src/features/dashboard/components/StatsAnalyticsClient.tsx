@@ -18,7 +18,8 @@ import styles from './StatsAnalyticsSection.module.css';
 const ranges: RangeKey[] = DASHBOARD_RANGE_OPTIONS;
 
 export function StatsAnalyticsClient({ initialAnalytics }: StatsAnalyticsClientProps) {
-  const [range, setRange] = useState<RangeKey>(initialAnalytics.range);
+  const { range: initialRange } = initialAnalytics;
+  const [range, setRange] = useState<RangeKey>(initialRange);
   const {
     data: analyticsData,
     isLoading: isAnalyticsLoading,
@@ -41,11 +42,7 @@ export function StatsAnalyticsClient({ initialAnalytics }: StatsAnalyticsClientP
             <Button
               variant="ghost"
               size="small"
-              onClick={() => {
-                if (rangeOption !== range) {
-                  setRange(rangeOption);
-                }
-              }}
+              onClick={() => rangeOption !== range && setRange(rangeOption)}
               disabled={isAnalyticsLoading && rangeOption === range}
             >
               {rangeOption}

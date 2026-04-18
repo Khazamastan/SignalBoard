@@ -16,17 +16,17 @@ import { createApiResponse } from '@/shared/utils/api-response';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const range = parseRangeKey(url.searchParams.get(DASHBOARD_API_QUERY_PARAMS.range));
+  const { searchParams } = new URL(request.url);
+  const range = parseRangeKey(searchParams.get(DASHBOARD_API_QUERY_PARAMS.range));
 
   if (!shouldBypassDelay(request)) {
     await randomDelay();
   }
 
   try {
-    const analyticsData = await dashboardService.getAnalyticsResponse(range);
+    const data = await dashboardService.getAnalyticsResponse(range);
 
-    return NextResponse.json(analyticsData, {
+    return NextResponse.json(data, {
       headers: {
         'Cache-Control': API_SUCCESS_CACHE_CONTROL,
       },

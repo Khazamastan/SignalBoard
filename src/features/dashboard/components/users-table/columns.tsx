@@ -34,30 +34,30 @@ export const createUsersTableColumns = (
     header: t('table.users.columns.name'),
     sortable: true,
     sortKey: 'name',
-    cell: (row: UserRow) => row.name,
+    cell: ({ name }: UserRow) => name,
   },
   {
     id: 'email',
     header: t('table.users.columns.email'),
     sortable: true,
     sortKey: 'email',
-    cell: (row: UserRow) => row.email,
+    cell: ({ email }: UserRow) => email,
   },
   {
     id: 'role',
     header: t('table.users.columns.role'),
     sortable: true,
     sortKey: 'role',
-    cell: (row: UserRow) => t(roleKeyByValue[row.role], row.role),
+    cell: ({ role }: UserRow) => t(roleKeyByValue[role], role),
   },
   {
     id: 'status',
     header: t('table.users.columns.status'),
     sortable: true,
     sortKey: 'status',
-    cell: (row: UserRow) => (
-      <Badge tone={toStatusTone(row.status)}>
-        {t(statusKeyByValue[row.status], row.status)}
+    cell: ({ status }: UserRow) => (
+      <Badge tone={toStatusTone(status)}>
+        {t(statusKeyByValue[status], status)}
       </Badge>
     ),
   },
@@ -66,14 +66,14 @@ export const createUsersTableColumns = (
     header: t('table.users.columns.country'),
     sortable: true,
     sortKey: 'country',
-    cell: (row: UserRow) => row.country,
+    cell: ({ country }: UserRow) => country,
   },
   {
     id: 'lastActive',
     header: t('table.users.columns.lastActive'),
     sortable: true,
     sortKey: 'lastActive',
-    cell: (row: UserRow) => row.lastActive,
+    cell: ({ lastActive }: UserRow) => lastActive,
   },
   {
     id: 'spend',
@@ -81,6 +81,6 @@ export const createUsersTableColumns = (
     sortable: true,
     sortKey: 'spend',
     align: 'right',
-    cell: (row: UserRow) => `$${row.spend.toLocaleString()}`,
+    cell: ({ spend }: UserRow) => `$${spend.toLocaleString()}`,
   },
 ];

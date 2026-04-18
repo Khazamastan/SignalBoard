@@ -30,7 +30,8 @@ const UNKNOWN_QUERY_ERROR_MESSAGE = t('app.error.unknown');
 
 const resolveErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {
-    return error.message;
+    const { message } = error;
+    return message;
   }
 
   return UNKNOWN_QUERY_ERROR_MESSAGE;
@@ -91,7 +92,8 @@ export function useAsyncQuery<TData>({
   }, [preserveDataOnError, queryFn, queryKey]);
 
   const isLoading = resolvedQueryKey !== queryKey;
-  const error = errorState?.queryKey === queryKey ? errorState.message : null;
+  const { queryKey: errorQueryKey, message: errorMessage } = errorState ?? {};
+  const error = errorQueryKey === queryKey ? errorMessage ?? null : null;
 
   return {
     data,

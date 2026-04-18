@@ -18,6 +18,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: import('next/server').NextRequest) {
   const query = parseUsersSearchParams(request.nextUrl.searchParams);
+  const { page } = query;
 
   if (!shouldBypassDelay(request)) {
     await randomDelay();
@@ -37,7 +38,7 @@ export async function GET(request: import('next/server').NextRequest) {
         [],
         {
           meta: {
-            page: query.page,
+            page,
             totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
             totalItems: USERS_PAGINATION_FALLBACK_TOTAL_ITEMS,
           },

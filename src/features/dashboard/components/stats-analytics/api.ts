@@ -21,15 +21,16 @@ export const fetchAnalyticsDataByRange = async ({
 }: QueryOptions): Promise<AnalyticsSeries> => {
   const cached = analyticsCache.get(range);
   if (cached && cached.expiresAt > Date.now()) {
-    return cached.value;
+    const { value } = cached;
+    return value;
   }
 
-  const response = await dashboardApiClient.getAnalytics(range, { signal });
+  const value = await dashboardApiClient.getAnalytics(range, { signal });
 
   analyticsCache.set(range, {
-    value: response,
+    value,
     expiresAt: Date.now() + ANALYTICS_CLIENT_CACHE_TTL_MS,
   });
 
-  return response;
+  return value;
 };
