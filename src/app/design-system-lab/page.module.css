@@ -1,0 +1,196 @@
+.page {
+  min-height: 100dvh;
+  padding: var(--space-xl, 2rem);
+  color: var(--text-primary);
+}
+
+.lab {
+  --color-surface-background: var(--surface-canvas);
+  --color-text-primary: var(--text-primary);
+}
+
+.header {
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-2xl, 1.5rem);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: var(--font-size-lg, 1.125rem);
+}
+
+.swatchGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-sm, 0.75rem);
+}
+
+.swatchCard {
+  padding: 0;
+  overflow: hidden;
+}
+
+.swatchColor {
+  height: 4rem;
+  width: 100%;
+}
+
+.swatchName {
+  margin: var(--space-xs, 0.5rem) var(--space-sm, 0.75rem) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: 600;
+}
+
+.swatchToken {
+  margin: var(--space-2xs, 0.25rem) var(--space-sm, 0.75rem)
+    var(--space-sm, 0.75rem);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs, 0.75rem);
+}
+
+.typographyRow {
+  padding-block: var(--space-sm, 0.75rem);
+}
+
+.spacingList {
+  display: grid;
+  gap: var(--space-sm, 0.75rem);
+}
+
+.spacingRow {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 10rem);
+  align-items: center;
+  gap: var(--space-sm, 0.75rem);
+}
+
+.spacingLabel {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: 600;
+}
+
+.spacingBar {
+  height: var(--space-xs, 0.5rem);
+  border-radius: var(--radius-pill, 9999px);
+  background: var(--color-primary-base);
+}
+
+.spacingToken {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs, 0.75rem);
+  text-align: right;
+}
+
+.radiusGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-md, 1rem);
+}
+
+.radiusCard {
+  min-height: 7rem;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-weight: 600;
+}
+
+.surfaceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-md, 1rem);
+}
+
+.surfaceCard {
+  padding: var(--space-md, 1rem);
+}
+
+.surfaceHeading {
+  margin: 0;
+  font-weight: 700;
+}
+
+.surfaceBody {
+  margin: var(--space-xs, 0.5rem) 0 0;
+  font-size: var(--font-size-sm, 0.875rem);
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-md, 1rem);
+}
+
+.kpiCard {
+  padding: var(--space-md, 1rem);
+}
+
+.kpiLabel {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs, 0.75rem);
+  text-transform: uppercase;
+}
+
+.kpiValue {
+  margin: var(--space-xs, 0.5rem) 0;
+  font-size: var(--font-size-xl, 1.25rem);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.diagnostics {
+  position: fixed;
+  right: var(--space-md, 1rem);
+  bottom: var(--space-md, 1rem);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md, 0.5rem);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm, 0 0 0 transparent);
+  padding: var(--space-sm, 0.75rem);
+  min-width: 16rem;
+  font-size: var(--font-size-xs, 0.75rem);
+  display: grid;
+  gap: var(--space-2xs, 0.25rem);
+}
+
+.diagnostics p {
+  margin: 0;
+}
+
+@media (max-width: 64rem) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 40rem) {
+  .page {
+    padding: var(--space-md, 1rem);
+  }
+
+  .kpiGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .spacingRow {
+    grid-template-columns: 4rem minmax(0, 1fr);
+  }
+
+  .spacingToken {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}

@@ -1,0 +1,116 @@
+:root {
+  /* Primary */
+  --color-primary-light: #5fa8ff;
+  --color-primary-base: #1f7ae0;
+  --color-primary-dark: #155cb0;
+
+  /* Secondary */
+  --color-secondary-light: #7bdcc4;
+  --color-secondary-base: #22a38a;
+  --color-secondary-dark: #16715f;
+
+  /* Neutral */
+  --color-neutral-50: #f6f8fb;
+  --color-neutral-100: #ebeff5;
+  --color-neutral-200: #dce3ed;
+  --color-neutral-300: #c7d1df;
+  --color-neutral-400: #9cabc0;
+  --color-neutral-500: #7588a0;
+  --color-neutral-600: #586b83;
+  --color-neutral-700: #3f5167;
+  --color-neutral-800: #29384b;
+  --color-neutral-900: #152030;
+
+  /* Semantic */
+  --color-success: #2b9a59;
+  --color-warning: #cf8b18;
+  --color-error: #c84545;
+  --color-info: #2f76cf;
+
+  /* SignalBoard aliases */
+  --color-primary: var(--color-primary-base);
+  --color-primary-hover: var(--color-primary-dark);
+  --color-primary-active: var(--color-primary-dark);
+  --color-primary-contrast: #ffffff;
+
+  /* Text */
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-700);
+  --text-muted: var(--color-neutral-500);
+  --text-inverse: #ffffff;
+
+  /* Surface + overlay */
+  --surface-canvas: var(--color-neutral-50);
+  --surface-default: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-overlay: rgba(21, 32, 48, 0.56);
+  --surface-inverse: var(--color-neutral-900);
+  --surface-control: var(--surface-default);
+  --surface-muted: color-mix(in srgb, var(--surface-canvas) 62%, var(--surface-default));
+  --surface-highlight: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  --surface-table-header: color-mix(in srgb, var(--surface-canvas) 88%, var(--surface-default));
+  --surface-table-row-alt: color-mix(in srgb, var(--surface-canvas) 40%, transparent);
+
+  /* Border */
+  --border-subtle: var(--color-neutral-200);
+  --border-default: var(--color-neutral-300);
+  --border-strong: var(--color-neutral-500);
+  --border-focus: var(--color-primary-base);
+}
+
+[data-theme='dark'] {
+  /* Primary + secondary */
+  --color-primary-base: #4c94eb;
+  --color-secondary-base: #45ac98;
+
+  /* Neutral */
+  --color-neutral-50: #050505;
+  --color-neutral-100: #0a0a0a;
+  --color-neutral-200: #121212;
+  --color-neutral-300: #1a1a1a;
+  --color-neutral-400: #282828;
+  --color-neutral-500: #3b3b3b;
+  --color-neutral-600: #5a5a5a;
+  --color-neutral-700: #888888;
+  --color-neutral-800: #b5b5b5;
+  --color-neutral-900: #e6e6e6;
+
+  /* Semantic */
+  --color-success: #49b878;
+  --color-warning: #dba542;
+  --color-error: #e96a6a;
+  --color-info: #67a3e8;
+
+  /* Surface */
+  --surface-background: #000000;
+  --surface-card: #0a0a0a;
+  --surface-elevated: #121212;
+  --surface-canvas: var(--surface-background);
+  --surface-default: var(--surface-card);
+  --surface-overlay: rgba(1, 6, 13, 0.72);
+
+  /* Text */
+  --text-primary: #f2f2f2;
+  --text-secondary: #b0b0b0;
+  --text-disabled: #6f6f6f;
+  --text-muted: var(--text-disabled);
+  --text-inverse: #090909;
+
+  /* Border */
+  --border-subtle: #242424;
+  --border-strong: #3a3a3a;
+  --border-default: var(--border-subtle);
+
+  /* Alias consistency */
+  --color-primary: var(--color-primary-base);
+  --color-primary-hover: var(--color-primary-base);
+  --color-primary-active: var(--color-primary-base);
+
+  /* Dark shadows (current app values) */
+  --shadow-xs: 0 1px 2px rgba(1, 6, 13, 0.5);
+  --shadow-sm: 0 2px 6px rgba(1, 6, 13, 0.52);
+  --shadow-md: 0 10px 24px rgba(1, 6, 13, 0.56);
+  --shadow-lg: 0 18px 40px rgba(1, 6, 13, 0.62);
+  --shadow-xl: 0 28px 64px rgba(1, 6, 13, 0.68);
+  --shadow-focus: 0 0 0 3px rgba(95, 158, 255, 0.35);
+}
