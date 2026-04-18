@@ -1,55 +1,40 @@
 .page {
   display: grid;
-  gap: 1.6rem;
+  gap: var(--space-lg, 1.5rem);
 }
 
 .hero {
   display: grid;
-  gap: 0.7rem;
+  gap: var(--space-xs, 0.5rem);
 }
 
 .title {
-  font-size: clamp(2.8rem, 4vw, 4rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
+  font-size: var(--font-size-2xl, 2.875rem);
 }
 
 .subtitle {
-  max-width: 68rem;
-  font-size: clamp(1.2rem, 1.8vw, 1.85rem);
-  line-height: 1.4;
   color: var(--text-secondary);
+  max-width: 64ch;
 }
 
 .grid {
   display: grid;
+  gap: var(--space-md, 1rem);
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
 }
 
-.panel {
-  padding: 0;
-  overflow: hidden;
+.cardContent {
+  display: grid;
+  gap: var(--space-xs, 0.5rem);
 }
 
-.panelTitle {
+.meta {
   margin: 0;
-  padding: 1.4rem 1.5rem;
-  border-bottom: 1px solid var(--border-default);
-  font-size: clamp(2rem, 2.6vw, 3rem);
-  letter-spacing: -0.015em;
-  color: var(--text-primary);
-}
-
-.panelBody {
-  padding: 1.2rem 1.5rem;
-  font-size: clamp(1.2rem, 1.7vw, 1.8rem);
   color: var(--text-secondary);
 }
 
-@media (max-width: 72rem) {
+@media (max-width: 64rem) {
   .grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 1fr;
   }
 }

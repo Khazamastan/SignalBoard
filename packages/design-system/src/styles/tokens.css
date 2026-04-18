@@ -1,15 +1,99 @@
 :root {
-  /* Primary */
+  color-scheme: light;
+
+  /* Breakpoints: sm=640px, md=768px, lg=1024px, xl=1280px */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+
+  /* Fluid typography formula: clamp(min, base + vw, max) */
+  --font-size-2xs: 0.75rem;
+  --font-size-xs: clamp(0.875rem, 0.84rem + 0.18vw, 1rem);
+  --font-size-sm: clamp(0.9375rem, 0.88rem + 0.28vw, 1.0625rem);
+  --font-size-md: clamp(1rem, 0.94rem + 0.33vw, 1.1875rem);
+  --font-size-lg: clamp(1.125rem, 1.02rem + 0.5vw, 1.5rem);
+  --font-size-xl: clamp(1.375rem, 1.2rem + 0.9vw, 2rem);
+  --font-size-2xl: clamp(1.75rem, 1.45rem + 1.6vw, 2.875rem);
+  --font-size-3xl: clamp(2.25rem, 1.9rem + 2vw, 3.5rem);
+  --font-size-4xl: clamp(2.75rem, 2.4rem + 2.5vw, 4rem);
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --font-family-heading: var(--font-heading), "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  --font-family-body: var(--font-body), "Manrope", "Nunito Sans", "Segoe UI", sans-serif;
+  --font-family-mono: var(--font-mono), "JetBrains Mono", "SF Mono", monospace;
+
+  /* Fluid spacing with a 4px-base spirit */
+  --space-2xs: clamp(0.25rem, 0.22rem + 0.08vw, 0.375rem);
+  --space-xs: clamp(0.5rem, 0.45rem + 0.16vw, 0.75rem);
+  --space-sm: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
+  --space-md: clamp(1rem, 0.9rem + 0.35vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 1.35rem + 0.5vw, 2rem);
+  --space-xl: clamp(2rem, 1.8rem + 0.7vw, 3rem);
+  --space-2xl: clamp(3rem, 2.6rem + 1vw, 4rem);
+  --space-3xl: clamp(4rem, 3.4rem + 1.4vw, 5rem);
+
+  /* Numeric spacing aliases */
+  --space-0: 0;
+  --space-1: var(--space-2xs);
+  --space-2: var(--space-xs);
+  --space-3: var(--space-sm);
+  --space-4: var(--space-md);
+  --space-5: clamp(1.25rem, 1.1rem + 0.45vw, 1.75rem);
+  --space-6: var(--space-lg);
+  --space-8: var(--space-xl);
+  --space-10: clamp(2.5rem, 2.2rem + 0.85vw, 3.25rem);
+  --space-12: clamp(3rem, 2.6rem + 1vw, 4rem);
+  --space-16: clamp(4rem, 3.4rem + 1.4vw, 5rem);
+  --space-20: clamp(5rem, 4.25rem + 1.75vw, 6rem);
+  --space-24: clamp(6rem, 5.1rem + 2vw, 7rem);
+
+  --radius-none: 0;
+  --radius-xxs: 0.125rem;
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-pill: 9999px;
+
+  --border-width-thin: 0.0625rem;
+  --border-width-thick: 0.125rem;
+
+  --duration-fast: 120ms;
+  --duration-normal: 220ms;
+  --duration-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --shadow-xs: 0 1px 2px rgba(21, 32, 48, 0.04);
+  --shadow-sm: 0 0.125rem 0.375rem
+    color-mix(in srgb, var(--color-neutral-900) 12%, transparent);
+  --shadow-md: 0 0.5rem 1rem
+    color-mix(in srgb, var(--color-neutral-900) 15%, transparent);
+  --shadow-lg: 0 0.75rem 1.5rem
+    color-mix(in srgb, var(--color-neutral-900) 20%, transparent);
+  --shadow-xl: 0 1.5rem 2.5rem
+    color-mix(in srgb, var(--color-neutral-900) 28%, transparent);
+
+  /* Colors */
   --color-primary-light: #5fa8ff;
   --color-primary-base: #1f7ae0;
   --color-primary-dark: #155cb0;
 
-  /* Secondary */
   --color-secondary-light: #7bdcc4;
   --color-secondary-base: #22a38a;
   --color-secondary-dark: #16715f;
 
-  /* Neutral */
   --color-neutral-50: #f6f8fb;
   --color-neutral-100: #ebeff5;
   --color-neutral-200: #dce3ed;
@@ -21,128 +105,86 @@
   --color-neutral-800: #29384b;
   --color-neutral-900: #152030;
 
-  /* Semantic */
   --color-success: #2b9a59;
   --color-warning: #cf8b18;
   --color-error: #c84545;
   --color-info: #2f76cf;
 
-  /* Core aliases */
+  --color-surface-background: #f2f5fa;
+  --color-surface-card: #ffffff;
+  --color-surface-elevated: #ffffff;
+
+  --color-text-primary: #1c2738;
+  --color-text-secondary: #50627a;
+  --color-text-disabled: #8da0b6;
+  --color-text-inverse: #ffffff;
+
+  --color-border-subtle: #d9e1ec;
+  --color-border-strong: #b8c6d8;
+  --color-overlay: color-mix(in srgb, var(--color-neutral-900) 58%, transparent);
+
+  /* Motion aliases */
+  --motion-duration-instant: 80ms;
+  --motion-duration-fast: var(--duration-fast);
+  --motion-duration-moderate: var(--duration-normal);
+  --motion-duration-slow: var(--duration-slow);
+  --motion-duration-deliberate: 420ms;
+
+  --motion-ease-standard: var(--ease-standard);
+  --motion-ease-emphasized: var(--ease-emphasized);
+  --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --motion-ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --shadow-focus: 0 0 0 3px rgba(31, 122, 224, 0.3);
+
+  /* Legacy aliases for existing styles */
   --color-primary: var(--color-primary-base);
   --color-primary-hover: var(--color-primary-dark);
   --color-primary-active: var(--color-primary-dark);
   --color-primary-contrast: #ffffff;
 
-  /* Text */
-  --text-primary: #1c2738;
-  --text-secondary: #50627a;
-  --text-muted: #8da0b6;
-  --text-inverse: #ffffff;
-  --color-text-primary: var(--text-primary);
+  --text-primary: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --text-muted: var(--color-text-disabled);
+  --text-inverse: var(--color-text-inverse);
 
-  /* Surface + overlay */
-  --surface-background: #f2f5fa;
-  --surface-canvas: #f2f5fa;
-  --surface-default: #ffffff;
-  --surface-elevated: #ffffff;
-  --surface-card: #ffffff;
-  --surface-sidebar: color-mix(in srgb, var(--surface-card) 86%, transparent);
-  --surface-header: var(--surface-card);
-  --surface-overlay: rgba(21, 32, 48, 0.56);
+  --surface-background: var(--color-surface-background);
+  --surface-canvas: var(--color-surface-background);
+  --surface-default: var(--color-surface-card);
+  --surface-elevated: var(--color-surface-elevated);
+  --surface-card: var(--color-surface-card);
+  --surface-sidebar: color-mix(in srgb, var(--color-surface-card) 86%, transparent);
+  --surface-header: color-mix(in srgb, var(--color-surface-card) 90%, transparent);
+  --surface-overlay: var(--color-overlay);
   --surface-inverse: var(--color-neutral-900);
-  --surface-control: var(--surface-elevated);
-  --surface-muted: color-mix(in srgb, var(--surface-card) 80%, var(--color-neutral-200));
-  --surface-highlight: color-mix(in srgb, var(--color-primary) 9%, transparent);
-  --surface-table-header: color-mix(in srgb, var(--color-neutral-200) 72%, var(--surface-card));
+  --surface-control: var(--color-surface-elevated);
+  --surface-muted: color-mix(in srgb, var(--color-surface-card) 80%, var(--color-neutral-200));
+  --surface-highlight: color-mix(in srgb, var(--color-primary-base) 9%, transparent);
+  --surface-table-header: color-mix(
+    in srgb,
+    var(--color-neutral-200) 72%,
+    var(--color-surface-card)
+  );
   --surface-table-row-alt: color-mix(in srgb, var(--color-neutral-100) 52%, transparent);
-  --color-surface-background: var(--surface-background);
 
-  /* Border */
-  --border-subtle: #d9e1ec;
-  --border-default: #d9e1ec;
-  --border-strong: #b8c6d8;
+  --border-subtle: var(--color-border-subtle);
+  --border-default: var(--color-border-subtle);
+  --border-strong: var(--color-border-strong);
   --border-focus: var(--color-primary-base);
-
-  /* Spacing */
-  --space-0: 0;
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
-  --space-2xs: 0.25rem;
-  --space-xs: 0.5rem;
-  --space-sm: 0.75rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-2xl: 2.5rem;
-  --space-3xl: 3rem;
-
-  /* Typography */
-  --font-family-heading: var(--font-heading, "Space Grotesk"), "Segoe UI", sans-serif;
-  --font-family-body: var(--font-body, "Manrope"), "Segoe UI", sans-serif;
-  --font-family-mono: var(--font-mono, "JetBrains Mono"), "SF Mono", monospace;
-
-  --font-size-2xs: 0.75rem;
-  --font-size-xs: 0.875rem;
-  --font-size-sm: 1rem;
-  --font-size-md: 1.125rem;
-  --font-size-lg: 1.5rem;
-  --font-size-xl: 2rem;
-  --font-size-2xl: 2.875rem;
-  --font-size-3xl: 3.5rem;
-  --font-size-4xl: 4rem;
-
-  /* Radius */
-  --radius-none: 0;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-pill: 9999px;
-
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(21, 32, 48, 0.04);
-  --shadow-sm: 0 4px 12px rgba(21, 32, 48, 0.06);
-  --shadow-md: 0 8px 24px rgba(21, 32, 48, 0.1);
-  --shadow-lg: 0 14px 34px rgba(21, 32, 48, 0.14);
-  --shadow-xl: 0 24px 60px rgba(21, 32, 48, 0.2);
-  --shadow-focus: 0 0 0 3px rgba(31, 122, 224, 0.3);
-
-  /* Motion */
-  --motion-duration-instant: 80ms;
-  --motion-duration-fast: 160ms;
-  --motion-duration-moderate: 240ms;
-  --motion-duration-slow: 360ms;
-  --motion-duration-deliberate: 480ms;
-
-  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --motion-ease-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
-  --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
-  --motion-ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Breakpoints */
-  --breakpoint-xs: 30rem;
-  --breakpoint-sm: 40rem;
-  --breakpoint-md: 48rem;
-  --breakpoint-lg: 64rem;
-  --breakpoint-xl: 80rem;
-  --breakpoint-2xl: 96rem;
 }
 
 [data-theme="dark"] {
-  --color-primary-base: #4c94eb;
-  --color-secondary-base: #45ac98;
+  color-scheme: dark;
 
+  --color-primary-light: #7db8ff;
+  --color-primary-base: #4c94eb;
+  --color-primary-dark: #2e6fbf;
+
+  --color-secondary-light: #75d4c0;
+  --color-secondary-base: #45ac98;
+  --color-secondary-dark: #2f7f6f;
+
+  /* Black-based neutral scale for dark mode */
   --color-neutral-50: #050505;
   --color-neutral-100: #0a0a0a;
   --color-neutral-200: #121212;
@@ -159,32 +201,18 @@
   --color-error: #e96a6a;
   --color-info: #67a3e8;
 
-  --color-primary: var(--color-primary-base);
-  --color-primary-hover: var(--color-primary-base);
-  --color-primary-active: var(--color-primary-base);
+  --color-surface-background: #000000;
+  --color-surface-card: #0a0a0a;
+  --color-surface-elevated: #121212;
 
-  --surface-background: #000000;
-  --surface-card: #0a0a0a;
-  --surface-elevated: #121212;
-  --surface-canvas: var(--surface-background);
-  --surface-default: var(--surface-card);
-  --surface-sidebar: color-mix(in srgb, var(--surface-card) 86%, transparent);
-  --surface-header: color-mix(in srgb, var(--surface-card) 90%, transparent);
-  --surface-muted: #101010;
-  --surface-highlight: color-mix(in srgb, var(--color-primary) 20%, transparent);
-  --surface-table-header: color-mix(in srgb, var(--surface-elevated) 84%, var(--color-neutral-300));
-  --surface-table-row-alt: color-mix(in srgb, var(--color-neutral-100) 52%, transparent);
-  --surface-overlay: rgba(1, 6, 13, 0.72);
+  --color-text-primary: #f2f2f2;
+  --color-text-secondary: #b0b0b0;
+  --color-text-disabled: #6f6f6f;
+  --color-text-inverse: #090909;
 
-  --text-primary: #f2f2f2;
-  --text-secondary: #b0b0b0;
-  --text-muted: #6f6f6f;
-  --text-inverse: #090909;
-
-  --border-subtle: #242424;
-  --border-strong: #3a3a3a;
-  --border-default: #242424;
-  --border-focus: var(--color-primary-base);
+  --color-border-subtle: #242424;
+  --color-border-strong: #3a3a3a;
+  --color-overlay: rgba(1, 6, 13, 0.72);
 
   --shadow-xs: 0 1px 2px rgba(1, 6, 13, 0.5);
   --shadow-sm: 0 2px 6px rgba(1, 6, 13, 0.52);

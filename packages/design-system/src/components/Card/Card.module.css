@@ -2,31 +2,30 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-radius: var(--radius-md, 0.625rem);
-  background: var(--surface-card, var(--surface-default));
-  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-card);
+  color: var(--color-text-primary);
   overflow: clip;
   transition:
-    box-shadow var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-emphasized, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    border-color var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-emphasized, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    background-color var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-    transform var(--motion-duration-moderate, 220ms)
-      var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+    box-shadow var(--duration-normal) var(--ease-emphasized),
+    border-color var(--duration-normal) var(--ease-emphasized),
+    background-color var(--duration-normal) var(--ease-standard),
+    transform var(--duration-normal) var(--ease-standard);
+}
+
+.stretch {
+  height: 100%;
 }
 
 .variantDefault {
-  border: 1px solid var(--border-default);
-  border-color: var(--border-default);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
   box-shadow: none;
 }
 
 .variantElevated {
-  border: 1px solid transparent;
-  background: var(--surface-elevated, var(--surface-card));
-  box-shadow: var(--card-shadow-elevated, var(--shadow-md, 0 8px 24px rgba(21, 32, 48, 0.1)));
+  border: var(--border-width-thin) solid transparent;
+  background: var(--color-surface-elevated);
+  box-shadow: var(--card-shadow-elevated, var(--shadow-md));
 }
 
 .hoverable {
@@ -34,28 +33,24 @@
 }
 
 .hoverable:hover {
-  transform: translateY(calc(var(--space-2xs, 0.25rem) * -0.3));
-  box-shadow: var(--shadow-lg, 0 14px 34px rgba(21, 32, 48, 0.14));
-}
-
-.stretch {
-  height: 100%;
+  transform: translateY(calc(var(--space-2xs) * -0.3));
+  box-shadow: var(--shadow-lg);
 }
 
 .header,
 .body,
 .footer {
-  padding: var(--space-md, 1rem);
+  padding: var(--space-md);
 }
 
 .header {
-  border-bottom: 1px solid var(--border-default);
-  font-weight: var(--font-weight-semibold, 600);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  font-weight: var(--font-weight-semibold);
 }
 
 .body {
   display: grid;
-  gap: var(--space-sm, 0.75rem);
+  gap: var(--space-sm);
 }
 
 .stretch .body {
@@ -63,33 +58,29 @@
 }
 
 .footer {
-  border-top: 1px solid var(--border-default);
+  border-top: var(--border-width-thin) solid var(--color-border-subtle);
 }
 
 .toneMuted {
-  background: var(--surface-muted, color-mix(in srgb, var(--surface-card) 80%, var(--color-neutral-200)));
-  border-color: var(--border-subtle);
-  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--color-surface-card) 80%, var(--color-neutral-200));
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-secondary);
 }
 
 .toneInverse {
-  background: var(--surface-inverse);
-  border-color: var(--border-strong);
-  color: var(--text-inverse);
+  background: var(--color-neutral-900);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-inverse);
 }
 
 .toneMuted .header,
 .toneMuted .footer {
-  border-color: var(--border-subtle);
-  background: color-mix(in srgb, var(--surface-card) 24%, var(--surface-muted));
+  border-color: var(--color-border-subtle);
+  background: color-mix(in srgb, var(--color-surface-card) 24%, transparent);
 }
 
 .toneInverse .header,
 .toneInverse .footer {
-  border-color: color-mix(in srgb, var(--border-strong) 65%, transparent);
-  background: color-mix(
-    in srgb,
-    var(--surface-elevated) 10%,
-    var(--surface-inverse)
-  );
+  border-color: color-mix(in srgb, var(--color-border-strong) 65%, transparent);
+  background: color-mix(in srgb, var(--color-surface-elevated) 10%, var(--color-neutral-900));
 }

@@ -23,7 +23,7 @@ export function ThemeToggle({
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       <ThemeIcon className={styles.icon} size={16} />
-      <span>{label}</span>
+      <span className={styles.label}>{label}</span>
     </button>
   );
 }

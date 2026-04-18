@@ -5,27 +5,29 @@ import styles from "./page.module.css";
 export default function ReportsPage() {
   return (
     <AppShell>
-      <section className={styles.page}>
-        <header className={styles.hero}>
+      <div className={styles.page}>
+        <section className={styles.hero}>
           <h1 className={styles.title}>Reports</h1>
           <p className={styles.subtitle}>
             This is a lightweight reports area placeholder for future export and
             scheduled reporting workflows.
           </p>
-        </header>
+        </section>
 
-        <div className={styles.grid}>
-          <Card className={styles.panel}>
-            <h2 className={styles.panelTitle}>Recent Reports</h2>
-            <div className={styles.panelBody}>No generated reports yet.</div>
+        <section className={styles.grid}>
+          <Card variant="default" header={<h2>Recent Reports</h2>}>
+            <div className={styles.cardContent}>
+              <p className={styles.meta}>No generated reports yet.</p>
+            </div>
           </Card>
 
-          <Card className={styles.panel}>
-            <h2 className={styles.panelTitle}>Scheduled Reports</h2>
-            <div className={styles.panelBody}>No schedules configured.</div>
+          <Card variant="default" header={<h2>Scheduled Reports</h2>}>
+            <div className={styles.cardContent}>
+              <p className={styles.meta}>No schedules configured.</p>
+            </div>
           </Card>
-        </div>
-      </section>
+        </section>
+      </div>
     </AppShell>
   );
 }

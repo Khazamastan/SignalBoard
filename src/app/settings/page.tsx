@@ -2,41 +2,44 @@ import { Card } from "@design-system";
 import { AppShell } from "@/features/dashboard/layout/AppShell";
 import styles from "./page.module.css";
 
-const SETTINGS_BLOCKS = [
-  {
-    title: "Profile",
-    description: "Update name, email, and organization details.",
-  },
-  {
-    title: "Notifications",
-    description: "Manage report and system alerts.",
-  },
-];
-
 export default function SettingsPage() {
   return (
     <AppShell>
-      <section className={styles.page}>
-        <header className={styles.hero}>
+      <div className={styles.page}>
+        <section className={styles.hero}>
           <h1 className={styles.title}>Settings</h1>
           <p className={styles.subtitle}>
             Basic settings placeholders are ready here for profile, preferences,
             and notification controls.
           </p>
-        </header>
+        </section>
 
-        <div className={styles.blocks}>
-          {SETTINGS_BLOCKS.map((block) => (
-            <Card key={block.title} className={styles.settingCard}>
-              <div className={styles.settingBody}>
-                <h2 className={styles.settingTitle}>{block.title}</h2>
-                <p className={styles.settingDescription}>{block.description}</p>
+        <section className={styles.stack}>
+          <Card variant="default">
+            <div className={styles.row}>
+              <div>
+                <h2>Profile</h2>
+                <p className={styles.description}>
+                  Update name, email, and organization details.
+                </p>
               </div>
-              <p className={styles.settingMeta}>Coming soon</p>
-            </Card>
-          ))}
-        </div>
-      </section>
+              <span className={styles.badge}>Coming soon</span>
+            </div>
+          </Card>
+
+          <Card variant="default">
+            <div className={styles.row}>
+              <div>
+                <h2>Notifications</h2>
+                <p className={styles.description}>
+                  Manage report and system alerts.
+                </p>
+              </div>
+              <span className={styles.badge}>Coming soon</span>
+            </div>
+          </Card>
+        </section>
+      </div>
     </AppShell>
   );
 }

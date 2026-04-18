@@ -1,30 +1,21 @@
 import {
-  ArrowDownIcon,
   ArrowUpIcon,
   Badge,
-  Card,
-  ConversionIcon,
   DataTable,
   InputField,
-  RevenueIcon,
   SearchIcon,
-  SessionsIcon,
   SortIcon,
-  UsersIcon,
 } from "@design-system";
+import {
+  AnalyticsPanel,
+  type AnalyticsSeries,
+} from "@/features/dashboard/components/AnalyticsPanel";
+import { StatsGrid } from "@/features/dashboard/components/StatsGrid";
+import type { StatCardData } from "@/features/dashboard/components/StatsCard";
 import { AppShell } from "@/features/dashboard/layout/AppShell";
 import styles from "./page.module.css";
 
-type TrendDirection = "up" | "down";
 type UserStatus = "Active" | "Pending" | "Inactive";
-
-type KpiItem = {
-  label: string;
-  value: string;
-  change: string;
-  trend: TrendDirection;
-  icon: React.ComponentType<{ className?: string; size?: number }>;
-};
 
 type UserRow = {
   name: string;
@@ -36,38 +27,52 @@ type UserRow = {
   spend: string;
 };
 
-const KPI_ITEMS: KpiItem[] = [
+const STATS: StatCardData[] = [
   {
-    label: "Total Users",
+    id: "total-users",
+    metric: "Total Users",
     value: "48,392",
-    change: "12.4%",
-    trend: "up",
-    icon: UsersIcon,
+    trend: { direction: "up", percentage: 12.4 },
+    icon: "users",
   },
   {
-    label: "Monthly Revenue",
+    id: "monthly-revenue",
+    metric: "Monthly Revenue",
     value: "$1.24M",
-    change: "8.1%",
-    trend: "up",
-    icon: RevenueIcon,
+    trend: { direction: "up", percentage: 8.1 },
+    icon: "revenue",
   },
   {
-    label: "Avg. Sessions",
+    id: "avg-sessions",
+    metric: "Avg. Sessions",
     value: "6.8",
-    change: "1.7%",
-    trend: "down",
-    icon: SessionsIcon,
+    trend: { direction: "down", percentage: 1.7 },
+    icon: "sessions",
   },
   {
-    label: "Conversion Rate",
+    id: "conversion-rate",
+    metric: "Conversion Rate",
     value: "4.92%",
-    change: "3.6%",
-    trend: "up",
-    icon: ConversionIcon,
+    trend: { direction: "up", percentage: 3.6 },
+    icon: "conversion",
   },
 ];
 
-const TRAFFIC_POINTS = [42, 48, 54, 50, 56, 62, 58, 64, 69, 66];
+const ANALYTICS: AnalyticsSeries = {
+  range: "30d",
+  points: [
+    { label: "1", value: 42 },
+    { label: "2", value: 48 },
+    { label: "3", value: 54 },
+    { label: "4", value: 50 },
+    { label: "5", value: 56 },
+    { label: "6", value: 62 },
+    { label: "7", value: 58 },
+    { label: "8", value: 64 },
+    { label: "9", value: 69 },
+    { label: "10", value: 66 },
+  ],
+};
 
 const USER_ROWS: UserRow[] = [
   {
@@ -160,53 +165,23 @@ export default function HomePage() {
   return (
     <AppShell>
       <section className={styles.page}>
-        <header className={styles.hero}>
+        <section className={styles.hero}>
           <h1 className={styles.title}>Analytics Dashboard</h1>
           <p className={styles.subtitle}>
             A token-driven design system with server-first rendering, URL-synced
             table interactions, and container-aware components.
           </p>
-        </header>
-
-        <section className={styles.kpiGrid} aria-label="Key metrics">
-          {KPI_ITEMS.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <Card key={item.label} className={styles.kpiCard}>
-                <div className={styles.kpiIconWrap}>
-                  <Icon size={28} />
-                </div>
-
-                <div>
-                  <p className={styles.kpiLabel}>{item.label}</p>
-                  <p className={styles.kpiValue}>{item.value}</p>
-                </div>
-
-                <p
-                  className={`${styles.kpiTrend} ${
-                    item.trend === "up" ? styles.kpiTrendUp : styles.kpiTrendDown
-                  }`}
-                >
-                  {item.trend === "up" ? (
-                    <ArrowUpIcon size={16} />
-                  ) : (
-                    <ArrowDownIcon size={16} />
-                  )}
-                  {item.change}
-                </p>
-              </Card>
-            );
-          })}
         </section>
 
-        <div className={styles.rangeTabs} role="group" aria-label="Date range">
+        <StatsGrid stats={STATS} />
+
+        <div className={styles.rangeRow} role="group" aria-label="Date range">
           <button type="button" className={styles.rangeButton}>
             7d
           </button>
           <button
             type="button"
-            className={`${styles.rangeButton} ${styles.rangeButtonActive}`}
+            className={`${styles.rangeButton} ${styles.activeRange}`}
             aria-current="true"
           >
             30d
@@ -216,30 +191,7 @@ export default function HomePage() {
           </button>
         </div>
 
-        <Card className={styles.trafficCard}>
-          <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Traffic Overview</h2>
-            <p className={styles.sectionHint}>Range: 30d</p>
-          </div>
-
-          <div className={styles.chartBody}>
-            <div className={styles.barTrack}>
-              {TRAFFIC_POINTS.map((height, index) => (
-                <span
-                  key={index}
-                  className={styles.bar}
-                  style={{ height: `${height}%` }}
-                />
-              ))}
-            </div>
-
-            <div className={styles.axis}>
-              <span>1</span>
-              <span>6</span>
-              <span>10</span>
-            </div>
-          </div>
-        </Card>
+        <AnalyticsPanel series={ANALYTICS} />
 
         <section className={styles.usersSection} aria-label="Users table">
           <div className={styles.usersHead}>
@@ -250,6 +202,7 @@ export default function HomePage() {
               placeholder="Search users"
               prefix={<SearchIcon size={20} />}
               aria-label="Search users"
+              floatingLabel={false}
             />
           </div>
 
@@ -258,7 +211,7 @@ export default function HomePage() {
               <tr>
                 <th scope="col">
                   <span className={styles.headerCell}>
-                    Name <SortIcon size={16} />
+                    Name <ArrowUpIcon size={16} />
                   </span>
                 </th>
                 <th scope="col">

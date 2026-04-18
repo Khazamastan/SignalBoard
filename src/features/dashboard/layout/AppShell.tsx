@@ -48,28 +48,29 @@ export function AppShell({ children }: AppShellProps) {
       <header className={styles.topbar}>
         <div className={styles.brandArea}>
           <div className={styles.logoMark}>
-            <ChartBarIcon size={20} />
+            <ChartBarIcon size={18} />
           </div>
 
           <div className={styles.brandText}>
             <p className={styles.brandTitle}>SignalBoard</p>
-            <p className={styles.brandSub}>Dashboard &gt; Analytics</p>
+            <p className={styles.brandSub}>Dashboard &#8250; Analytics</p>
           </div>
         </div>
 
-        <div className={styles.tools}>
+        <div className={styles.searchArea}>
           <InputField
             className={styles.search}
             hideMeta
             placeholder="Search dashboard"
             prefix={<SearchIcon size={20} />}
+            floatingLabel={false}
             aria-label="Search dashboard"
           />
+        </div>
 
-          <div className={styles.rightTools}>
-            <ThemeToggle label="Theme" />
-            <div className={styles.avatar}>KB</div>
-          </div>
+        <div className={styles.rightTools}>
+          <ThemeToggle label="Theme" />
+          <div className={styles.avatar}>KB</div>
         </div>
       </header>
 
@@ -95,7 +96,7 @@ export function AppShell({ children }: AppShellProps) {
                     matchesPath(pathname, item.href) && styles.navItemActive,
                   )}
                 >
-                  <Icon className={styles.navIcon} size={20} />
+                  <Icon className={styles.navIcon} size={18} />
                   <span>{item.label}</span>
                 </Link>
               );
