@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { randomDelay, shouldBypassDelay } from '@/features/dashboard/api/http-effects';
-import { API_CACHE_MAX_AGE_SECONDS } from '@/features/dashboard/constants';
 import { parseUsersSearchParams } from '@/features/dashboard/api/query-parsers';
 import { dashboardService } from '@/features/dashboard/data/dashboard-service';
 import type { UserRow } from '@/features/dashboard/types';
@@ -11,7 +10,8 @@ const USERS_FALLBACK_ERROR_MESSAGE = 'Unable to fetch users.';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: import('next/server').NextRequest) {
-  const cacheControlValue = `public, max-age=${Math.max(10, Math.floor(API_CACHE_MAX_AGE_SECONDS / 2))}, stale-while-revalidate=60`;
+  const cacheControlValue = 'private, no-store, max-age=0';
+  const errorCacheControlValue = 'no-store, max-age=0';
   const query = parseUsersSearchParams(request.nextUrl.searchParams);
 
   if (!shouldBypassDelay(request)) {
@@ -42,7 +42,7 @@ export async function GET(request: import('next/server').NextRequest) {
       {
         status: 500,
         headers: {
-          'Cache-Control': cacheControlValue,
+          'Cache-Control': errorCacheControlValue,
         },
       },
     );

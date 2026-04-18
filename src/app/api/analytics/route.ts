@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { randomDelay, shouldBypassDelay } from '@/features/dashboard/api/http-effects';
-import {
-  API_CACHE_MAX_AGE_SECONDS,
-  API_CACHE_STALE_WHILE_REVALIDATE_SECONDS,
-} from '@/features/dashboard/constants';
 import { parseRangeKey } from '@/features/dashboard/api/query-parsers';
 import { dashboardService } from '@/features/dashboard/data/dashboard-service';
 import type { AnalyticsSeries } from '@/features/dashboard/types';
@@ -14,7 +10,8 @@ const ANALYTICS_FALLBACK_ERROR_MESSAGE = 'Unable to load dashboard data.';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
-  const cacheControlValue = `public, max-age=${API_CACHE_MAX_AGE_SECONDS}, stale-while-revalidate=${API_CACHE_STALE_WHILE_REVALIDATE_SECONDS}`;
+  const cacheControlValue = 'private, no-store, max-age=0';
+  const errorCacheControlValue = 'no-store, max-age=0';
   const url = new URL(request.url);
   const range = parseRangeKey(url.searchParams.get('range'));
 
@@ -44,7 +41,7 @@ export async function GET(request: Request) {
       {
         status: 500,
         headers: {
-          'Cache-Control': cacheControlValue,
+          'Cache-Control': errorCacheControlValue,
         },
       },
     );

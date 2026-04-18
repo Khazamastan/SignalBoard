@@ -3,48 +3,12 @@
 import * as React from "react";
 import { ThemeIcon } from "../icons";
 import styles from "./ThemeToggle.module.css";
-
-export type ThemeMode = "light" | "dark";
-
-const THEME_STORAGE_KEY = "dashboard-theme";
-
-function parseTheme(value: string | null): ThemeMode | null {
-  return value === "light" || value === "dark" ? value : null;
-}
-
-function readTheme(): ThemeMode {
-  if (typeof document === "undefined") {
-    return "light";
-  }
-
-  const htmlTheme = parseTheme(document.documentElement.getAttribute("data-theme"));
-  if (htmlTheme) {
-    return htmlTheme;
-  }
-
-  if (typeof window !== "undefined") {
-    const storedTheme = parseTheme(window.localStorage.getItem(THEME_STORAGE_KEY));
-    if (storedTheme) {
-      return storedTheme;
-    }
-
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
-  }
-
-  return "light";
-}
-
-function applyTheme(theme: ThemeMode): void {
-  if (typeof document !== "undefined") {
-    document.documentElement.setAttribute("data-theme", theme);
-  }
-
-  if (typeof window !== "undefined") {
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }
-}
+import {
+  applyTheme,
+  readThemeFromBrowser,
+  type ThemeMode,
+} from "./theme-preferences";
+export type { ThemeMode } from "./theme-preferences";
 
 export type ThemeToggleProps = {
   label?: string;
@@ -55,7 +19,7 @@ export function ThemeToggle({
   label = "Theme",
   ariaLabel = "Toggle theme",
 }: ThemeToggleProps) {
-  const [theme, setTheme] = React.useState<ThemeMode>(() => readTheme());
+  const [theme, setTheme] = React.useState<ThemeMode>(() => readThemeFromBrowser());
 
   React.useEffect(() => {
     applyTheme(theme);

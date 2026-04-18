@@ -5,7 +5,6 @@ import { usePathname, useSearchParams } from 'next/navigation';
 
 import { DataTable, InputField, Pagination, SearchIcon } from '@design-system';
 import type { DataTableSortOrder } from '@design-system';
-import type { SortOrder } from '@/shared/types/api';
 import type { UserSortField } from '@/features/dashboard/types';
 import {
   USERS_SEARCH_DEBOUNCE_MS,
@@ -59,9 +58,9 @@ export function UsersTable({ initialData }: UsersTableProps) {
       const queryString = params.toString();
       const nextUrl = queryString ? `${pathname}?${queryString}` : pathname;
       const nextQueryState = resolveUsersTableQueryState(params);
+
       window.history.replaceState(window.history.state, '', nextUrl);
       setQueryState(nextQueryState);
-      setSearchInputValue(nextQueryState.search);
     },
     [pathname],
   );
@@ -84,52 +83,43 @@ export function UsersTable({ initialData }: UsersTableProps) {
     [updateParams],
   );
 
-  const onSort = useCallback(
-    (column: UserSortField) => {
-      const nextOrder: SortOrder =
-        queryState.sort === column && queryState.order === 'asc'
-          ? 'desc'
-          : 'asc';
+  const onSortChange = useCallback(
+    (nextSort: UsersDataTableSortState) => {
+      if (!nextSort) {
+        updateParams({
+          sort: null,
+          order: null,
+          page: '1',
+        });
+        return;
+      }
 
       updateParams({
-        sort: column,
-        order: nextOrder,
+        sort: nextSort.key,
+        order: nextSort.direction,
         page: '1',
       });
     },
-    [queryState.order, queryState.sort, updateParams],
-  );
-
-  const onSortChange = useCallback(
-    (nextSort: UsersDataTableSortState) => {
-      const resolvedSort: { key: UserSortField; direction: SortOrder } =
-        nextSort ?? {
-          key: queryState.sort,
-          direction: 'asc',
-        };
-
-      onSort(resolvedSort.key);
-    },
-    [onSort, queryState.sort],
+    [updateParams],
   );
 
   const loadingSkeletonRowCount = Math.max(rows.length || 0, USERS_TABLE_SKELETON_ROW_COUNT_MIN);
 
   useEffect(() => {
-    const handlePopState = () => {
+    const onPopState = () => {
       const nextQueryState = resolveUsersTableQueryState(new URLSearchParams(window.location.search));
       setQueryState(nextQueryState);
       setSearchInputValue(nextQueryState.search);
     };
 
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', onPopState);
 
     return () => {
       if (searchDebounceTimeoutRef.current) {
         clearTimeout(searchDebounceTimeoutRef.current);
       }
 
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('popstate', onPopState);
     };
   }, []);
 

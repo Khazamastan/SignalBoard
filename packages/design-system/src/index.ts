@@ -20,6 +20,15 @@ export type { PaginationProps } from "./components/DataTable/Pagination";
 
 export { ThemeToggle } from "./theme/ThemeToggle";
 export type { ThemeMode } from "./theme/ThemeToggle";
+export {
+  DEFAULT_THEME,
+  THEME_COOKIE_NAME,
+  THEME_STORAGE_KEY,
+  applyTheme,
+  parseTheme,
+  readThemeFromBrowser,
+  resolveThemeFromCookie,
+} from "./theme/theme-preferences";
 
 export type { IconProps } from "./icons";
 export {

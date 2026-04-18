@@ -9,7 +9,10 @@ import {
   USERS_PAGE_LIMIT_MAX,
   USERS_PAGE_LIMIT_MIN,
 } from '@/features/dashboard/constants';
-import { parseNumberOrFallback, parsePositiveNumberOrFallback } from '@/shared/utils/number';
+import {
+  parseIntegerOrFallback,
+  parsePositiveIntegerOrFallback,
+} from '@/shared/utils/number';
 
 const fallbackSortState = {
   sort: DEFAULT_USER_SORT_FIELD,
@@ -39,7 +42,7 @@ export const resolveUserSortState = (
 };
 
 export const parseUsersPageParam = (value: string | null, fallback = 1): number => {
-  return parsePositiveNumberOrFallback(value, fallback);
+  return parsePositiveIntegerOrFallback(value, fallback);
 };
 
 export const parseUsersLimitParam = (
@@ -48,6 +51,6 @@ export const parseUsersLimitParam = (
 ): number => {
   return Math.min(
     USERS_PAGE_LIMIT_MAX,
-    Math.max(USERS_PAGE_LIMIT_MIN, parseNumberOrFallback(value, fallback)),
+    Math.max(USERS_PAGE_LIMIT_MIN, parseIntegerOrFallback(value, fallback)),
   );
 };

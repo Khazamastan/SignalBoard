@@ -2,53 +2,15 @@
 
 import * as React from "react";
 import {
+  applyTheme,
   Badge,
   Button,
   Card,
   DataTable,
+  readThemeFromBrowser,
+  type ThemeMode,
 } from "@design-system";
 import styles from "./page.module.css";
-
-type ThemeMode = "light" | "dark";
-const THEME_STORAGE_KEY = "dashboard-theme";
-
-function parseTheme(value: string | null): ThemeMode | null {
-  return value === "light" || value === "dark" ? value : null;
-}
-
-function readTheme(): ThemeMode {
-  if (typeof document === "undefined") {
-    return "light";
-  }
-
-  const htmlTheme = parseTheme(document.documentElement.getAttribute("data-theme"));
-  if (htmlTheme) {
-    return htmlTheme;
-  }
-
-  if (typeof window !== "undefined") {
-    const storedTheme = parseTheme(window.localStorage.getItem(THEME_STORAGE_KEY));
-    if (storedTheme) {
-      return storedTheme;
-    }
-
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
-  }
-
-  return "light";
-}
-
-function applyTheme(theme: ThemeMode): void {
-  if (typeof document !== "undefined") {
-    document.documentElement.setAttribute("data-theme", theme);
-  }
-
-  if (typeof window !== "undefined") {
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }
-}
 
 const colorTokens = [
   { name: "Primary Light", token: "--color-primary-light" },
@@ -110,7 +72,7 @@ function trendTone(trend: string): "success" | "warning" {
 }
 
 function LabContent() {
-  const [theme, setTheme] = React.useState<ThemeMode>(() => readTheme());
+  const [theme, setTheme] = React.useState<ThemeMode>(() => readThemeFromBrowser());
   const rootRef = React.useRef<HTMLDivElement>(null);
   const [diagnostics, setDiagnostics] = React.useState({
     primary: "",
