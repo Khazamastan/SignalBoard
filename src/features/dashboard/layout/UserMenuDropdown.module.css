@@ -1,0 +1,100 @@
+.avatarMenu {
+  position: relative;
+}
+
+.avatarSummary {
+  list-style: none;
+  width: calc(var(--space-lg) + var(--space-sm));
+  aspect-ratio: 1;
+  border-radius: var(--radius-pill);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background: color-mix(in srgb, var(--color-secondary-base) 28%, transparent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.avatarSummary:focus-visible {
+  outline: var(--border-width-thick) solid
+    color-mix(in srgb, var(--color-primary-base) 36%, transparent);
+  outline-offset: var(--space-2xs);
+}
+
+.avatarInitials {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.04em;
+  color: var(--color-text-primary);
+}
+
+.avatarSummary::-webkit-details-marker {
+  display: none;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--space-2xs));
+  min-width: 14rem;
+  border-radius: var(--radius-sm);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-sm);
+  display: grid;
+  gap: var(--space-xs);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(var(--space-2xs));
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.avatarMenu[open] .dropdown,
+.avatarMenu:hover .dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.userName {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.userEmail {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.dropdownLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  border-radius: var(--radius-xs);
+  padding: var(--space-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdownLabel {
+  flex: 1;
+}
+
+.dropdownLink:hover {
+  background: color-mix(in srgb, var(--color-primary-base) 10%, transparent);
+}
+
+.dropdownLink:focus-visible {
+  outline: var(--border-width-thick) solid
+    color-mix(in srgb, var(--color-primary-base) 30%, transparent);
+  outline-offset: var(--space-2xs);
+}
