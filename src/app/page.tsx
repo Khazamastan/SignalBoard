@@ -1,6 +1,7 @@
 import {
   ArrowUpIcon,
   Badge,
+  Button,
   DataTable,
   InputField,
   SearchIcon,
@@ -149,6 +150,9 @@ const USER_ROWS: UserRow[] = [
   },
 ];
 
+const DASHBOARD_RANGE_OPTIONS = ["7d", "30d", "90d"] as const;
+const ACTIVE_RANGE = "30d";
+
 function statusTone(status: UserStatus): "success" | "warning" | "error" {
   if (status === "Active") {
     return "success";
@@ -164,132 +168,131 @@ function statusTone(status: UserStatus): "success" | "warning" | "error" {
 export default function HomePage() {
   return (
     <AppShell>
-      <section className={styles.page}>
-        <section className={styles.hero}>
-          <h1 className={styles.title}>Analytics Dashboard</h1>
-          <p className={styles.subtitle}>
-            A token-driven design system with server-first rendering, URL-synced
-            table interactions, and container-aware components.
-          </p>
-        </section>
+      <section className={styles.hero}>
+        <h1 className={styles.title}>Analytics Dashboard</h1>
+        <p className={styles.subtitle}>
+          A token-driven design system with server-first rendering, URL-synced
+          table interactions, and container-aware components.
+        </p>
+      </section>
 
+      <section className={styles.statsAnalytics} aria-label="Stats and analytics">
         <StatsGrid stats={STATS} />
 
         <div className={styles.rangeRow} role="group" aria-label="Date range">
-          <button type="button" className={styles.rangeButton}>
-            7d
-          </button>
-          <button
-            type="button"
-            className={`${styles.rangeButton} ${styles.activeRange}`}
-            aria-current="true"
-          >
-            30d
-          </button>
-          <button type="button" className={styles.rangeButton}>
-            90d
-          </button>
+          {DASHBOARD_RANGE_OPTIONS.map((rangeOption) => (
+            <div
+              key={rangeOption}
+              className={`${styles.rangeButton} ${
+                rangeOption === ACTIVE_RANGE ? styles.activeRange : ""
+              }`}
+            >
+              <Button variant="ghost" size="small">
+                {rangeOption}
+              </Button>
+            </div>
+          ))}
         </div>
 
         <AnalyticsPanel series={ANALYTICS} />
+      </section>
 
-        <section className={styles.usersSection} aria-label="Users table">
-          <div className={styles.usersHead}>
-            <h2 className={styles.usersTitle}>Users</h2>
-            <InputField
-              className={styles.searchUsers}
-              hideMeta
-              placeholder="Search users"
-              prefix={<SearchIcon size={20} />}
-              aria-label="Search users"
-              floatingLabel={false}
-            />
-          </div>
+      <section className={styles.usersSection} aria-label="Users table">
+        <div className={styles.usersHead}>
+          <h2 className={styles.usersTitle}>Users</h2>
+          <InputField
+            className={styles.searchUsers}
+            hideMeta
+            placeholder="Search users"
+            prefix={<SearchIcon size={24} />}
+            aria-label="Search users"
+            floatingLabel={false}
+          />
+        </div>
 
-          <DataTable className={styles.userTable}>
-            <thead>
-              <tr>
-                <th scope="col">
-                  <span className={styles.headerCell}>
-                    Name <ArrowUpIcon size={16} />
-                  </span>
+        <DataTable className={styles.userTable}>
+          <thead>
+            <tr>
+              <th scope="col">
+                <span className={styles.headerCell}>
+                  Name <ArrowUpIcon size={16} />
+                </span>
+              </th>
+              <th scope="col">
+                <span className={styles.headerCell}>
+                  Email <SortIcon size={16} />
+                </span>
+              </th>
+              <th scope="col">
+                <span className={styles.headerCell}>
+                  Role <SortIcon size={16} />
+                </span>
+              </th>
+              <th scope="col">
+                <span className={styles.headerCell}>
+                  Status <SortIcon size={16} />
+                </span>
+              </th>
+              <th scope="col">
+                <span className={styles.headerCell}>
+                  Country <SortIcon size={16} />
+                </span>
+              </th>
+              <th scope="col">
+                <span className={styles.headerCell}>
+                  Last Active <SortIcon size={16} />
+                </span>
+              </th>
+              <th scope="col">
+                <span className={styles.headerCell}>
+                  Spend <SortIcon size={16} />
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {USER_ROWS.map((user) => (
+              <tr key={user.email}>
+                <th scope="row" className={styles.rowName}>
+                  {user.name}
                 </th>
-                <th scope="col">
-                  <span className={styles.headerCell}>
-                    Email <SortIcon size={16} />
-                  </span>
-                </th>
-                <th scope="col">
-                  <span className={styles.headerCell}>
-                    Role <SortIcon size={16} />
-                  </span>
-                </th>
-                <th scope="col">
-                  <span className={styles.headerCell}>
-                    Status <SortIcon size={16} />
-                  </span>
-                </th>
-                <th scope="col">
-                  <span className={styles.headerCell}>
-                    Country <SortIcon size={16} />
-                  </span>
-                </th>
-                <th scope="col">
-                  <span className={styles.headerCell}>
-                    Last Active <SortIcon size={16} />
-                  </span>
-                </th>
-                <th scope="col">
-                  <span className={styles.headerCell}>
-                    Spend <SortIcon size={16} />
-                  </span>
-                </th>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td>
+                  <Badge tone={statusTone(user.status)}>{user.status}</Badge>
+                </td>
+                <td>{user.country}</td>
+                <td>{user.lastActive}</td>
+                <td>{user.spend}</td>
               </tr>
-            </thead>
-            <tbody>
-              {USER_ROWS.map((user) => (
-                <tr key={user.email}>
-                  <th scope="row" className={styles.rowName}>
-                    {user.name}
-                  </th>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>
-                    <Badge tone={statusTone(user.status)}>{user.status}</Badge>
-                  </td>
-                  <td>{user.country}</td>
-                  <td>{user.lastActive}</td>
-                  <td>{user.spend}</td>
-                </tr>
-              ))}
-            </tbody>
-          </DataTable>
+            ))}
+          </tbody>
+        </DataTable>
 
-          <div className={styles.metaRow}>
-            <p className={styles.metaText}>Page 1 of 8 - 64 items</p>
-            <div className={styles.pagination}>
-              <button type="button" className={styles.pageButtonPrimary}>
-                Previous
-              </button>
-              <button
-                type="button"
-                className={`${styles.pageButton} ${styles.pageButtonActive}`}
-                aria-current="page"
-              >
-                1
-              </button>
-              <button type="button" className={styles.pageButton}>
-                2
-              </button>
-              <button type="button" className={styles.pageButton}>
-                8
-              </button>
-              <button type="button" className={styles.pageButtonPrimary}>
-                Next
-              </button>
-            </div>
+        <div className={styles.metaRow}>
+          <p className={styles.metaText}>Page 1 of 8 - 64 items</p>
+          <div className={styles.pagination}>
+            <button type="button" className={styles.pageButtonPrimary}>
+              Previous
+            </button>
+            <button
+              type="button"
+              className={`${styles.pageButton} ${styles.pageButtonActive}`}
+              aria-current="page"
+            >
+              1
+            </button>
+            <button type="button" className={styles.pageButton}>
+              2
+            </button>
+            <button type="button" className={styles.pageButton}>
+              8
+            </button>
+            <button type="button" className={styles.pageButtonPrimary}>
+              Next
+            </button>
           </div>
-        </section>
+        </div>
       </section>
     </AppShell>
   );

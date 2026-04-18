@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Button,
   ChartBarIcon,
   ChevronLeftIcon,
   FlaskIcon,
@@ -47,13 +48,15 @@ export function AppShell({ children }: AppShellProps) {
     <div className={styles.app}>
       <header className={styles.topbar}>
         <div className={styles.brandArea}>
-          <div className={styles.logoMark}>
-            <ChartBarIcon size={18} />
-          </div>
+          <Link href="/" className={styles.logoLink} aria-label="Go to home">
+            <span className={styles.logoMark} aria-hidden>
+              <ChartBarIcon size={18} />
+            </span>
+          </Link>
 
           <div className={styles.brandText}>
-            <p className={styles.brandTitle}>SignalBoard</p>
-            <p className={styles.brandSub}>Dashboard &#8250; Analytics</p>
+            <span className={styles.brandTitle}>SignalBoard</span>
+            <span className={styles.brandSub}>Dashboard &#8250; Analytics</span>
           </div>
         </div>
 
@@ -62,7 +65,7 @@ export function AppShell({ children }: AppShellProps) {
             className={styles.search}
             hideMeta
             placeholder="Search dashboard"
-            prefix={<SearchIcon size={20} />}
+            prefix={<SearchIcon size={24} />}
             floatingLabel={false}
             aria-label="Search dashboard"
           />
@@ -77,10 +80,14 @@ export function AppShell({ children }: AppShellProps) {
       <div className={styles.body}>
         <aside className={styles.sidebar}>
           <div className={styles.navHeader}>
-            <h2 className={styles.navTitle}>Navigation</h2>
-            <span className={styles.collapse} aria-hidden>
+            <span className={styles.navTitle}>Navigation</span>
+            <Button
+              variant="ghost"
+              size="small"
+              aria-label="Collapse sidebar"
+            >
               <ChevronLeftIcon size={18} />
-            </span>
+            </Button>
           </div>
 
           <nav aria-label="Primary">
