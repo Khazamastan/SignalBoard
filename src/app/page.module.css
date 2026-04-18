@@ -1,125 +1,13 @@
-.statsAnalytics {
-  display: grid;
-  gap: var(--space-md, 1rem);
-}
-
 .hero {
   display: grid;
-  gap: var(--space-xs, 0.5rem);
+  gap: var(--space-xs);
 }
 
 .title {
-  font-size: var(--font-size-2xl, 2.875rem);
+  font-size: var(--font-size-2xl);
 }
 
 .subtitle {
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   max-width: 64ch;
-}
-
-.rangeRow {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-2xs, 0.25rem);
-  flex-wrap: wrap;
-}
-
-.rangeButton {
-  min-width: calc(var(--space-xl, 2rem) + var(--space-xs, 0.5rem));
-  display: inline-flex;
-}
-
-.rangeButton > * {
-  width: 100%;
-}
-
-.activeRange > * {
-  box-shadow: var(--shadow-sm);
-}
-
-.usersSection {
-  display: grid;
-  gap: var(--space-md, 1rem);
-}
-
-.usersHead {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md, 1rem);
-  flex-wrap: wrap;
-}
-
-.usersTitle {
-  margin: 0;
-  font-size: var(--font-size-lg, 1.5rem);
-}
-
-.searchUsers {
-  width: min(100%, 26rem);
-}
-
-.userTable {
-  min-width: 58rem;
-}
-
-.headerCell {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2xs, 0.25rem);
-}
-
-.rowName {
-  font-weight: 500;
-}
-
-.metaRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-sm, 0.75rem);
-  border: 1px solid var(--border-subtle, var(--border-default));
-  border-radius: var(--radius-md, 0.75rem);
-  background: var(--surface-card, var(--surface-default));
-  padding: var(--space-md, 1rem);
-}
-
-.metaText {
-  color: var(--text-secondary);
-  font-size: var(--font-size-sm, 1rem);
-}
-
-.pagination {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2xs, 0.25rem);
-}
-
-.pageButton,
-.pageButtonPrimary {
-  min-width: 2.5rem;
-  height: 2.5rem;
-  border-radius: var(--radius-sm, 0.5rem);
-  border: 1px solid var(--border-subtle, var(--border-default));
-  background: var(--surface-card, var(--surface-elevated));
-  color: var(--text-secondary);
-  font-size: var(--font-size-sm, 1rem);
-  font-weight: var(--font-weight-semibold, 600);
-  padding: 0 var(--space-sm, 0.75rem);
-}
-
-.pageButtonActive {
-  background: color-mix(
-    in srgb,
-    var(--color-primary-light) 30%,
-    var(--surface-card, var(--surface-elevated))
-  );
-  border-color: color-mix(in srgb, var(--color-primary-base) 45%, var(--border-default));
-  color: var(--color-primary-base);
-}
-
-.pageButtonPrimary {
-  border-color: color-mix(in srgb, var(--color-primary-base) 55%, var(--border-default));
-  color: var(--color-primary-base);
 }

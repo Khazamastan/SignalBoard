@@ -1,36 +1,36 @@
 .page {
   display: grid;
-  gap: var(--space-lg, 1.5rem);
+  gap: var(--space-lg);
 }
 
 .hero {
   display: grid;
-  gap: var(--space-xs, 0.5rem);
+  gap: var(--space-xs);
 }
 
 .title {
-  font-size: var(--font-size-2xl, 2.875rem);
+  font-size: var(--font-size-2xl);
 }
 
 .subtitle {
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   max-width: 64ch;
 }
 
 .grid {
   display: grid;
-  gap: var(--space-md, 1rem);
+  gap: var(--space-md);
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .cardContent {
   display: grid;
-  gap: var(--space-xs, 0.5rem);
+  gap: var(--space-xs);
 }
 
 .meta {
   margin: 0;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 @media (max-width: 64rem) {
