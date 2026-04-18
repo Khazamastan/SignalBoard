@@ -10,22 +10,15 @@ type UseUsersTableQueryOptions = {
   initialData?: UsersTableInitialData;
 };
 
-const toInitialTableData = (initialData: UsersTableInitialData | undefined): UsersTableData | undefined => {
-  if (!initialData) {
-    return undefined;
-  }
-  const { rows, meta } = initialData;
-
-  return {
-    rows,
-    meta,
-  };
-};
-
 export const useUsersTableQuery = ({ query, initialData }: UseUsersTableQueryOptions) => {
   const queryKey = toUsersTableQueryKey(query);
-  const initialQueryKey = initialData ? toUsersTableQueryKey(initialData.query) : null;
-  const skipInitialRequest = Boolean(initialData) && initialQueryKey === queryKey;
+  const initialQueryKey = initialData && toUsersTableQueryKey(initialData.query);
+  const skipInitialRequest = initialQueryKey === queryKey;
+  const initialTableData: UsersTableData | undefined =
+    initialData && {
+      rows: initialData.rows,
+      meta: initialData.meta,
+    };
 
   const queryFn = useCallback(
     ({ signal }: { signal: AbortSignal }) =>
@@ -39,7 +32,7 @@ export const useUsersTableQuery = ({ query, initialData }: UseUsersTableQueryOpt
   return useAsyncQuery<UsersTableData>({
     queryKey,
     queryFn,
-    initialData: toInitialTableData(initialData),
+    initialData: initialTableData,
     skipInitialRequest,
     preserveDataOnError: false,
   });

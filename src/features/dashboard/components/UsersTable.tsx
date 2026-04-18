@@ -3,11 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { DataTable, InputField, SearchIcon } from '@design-system';
+import { DataTable, InputField } from '@design-system';
 import { t } from '@/shared/i18n';
 import {
   USERS_PAGE_LIMIT,
-  USERS_PAGE_SIZE_OPTIONS,
   USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
   USERS_QUERY_PARAMS,
   USERS_RESET_PAGE_PARAM_VALUE,
@@ -15,13 +14,13 @@ import {
 } from '@/features/dashboard/constants';
 
 import { createUsersTableColumns } from './users-table/columns';
-import {
-  USERS_TABLE_MAX_BODY_HEIGHT,
-  USERS_TABLE_SEARCH_ICON_SIZE,
-} from './users-table/constants';
 import type { UsersTableProps, UsersTableQueryState } from './users-table/types';
 import { useUsersTableQuery } from './users-table/useUsersTableQuery';
-import { applySearchParamsPatch, resolveUsersTableQueryState } from './users-table/utils';
+import {
+  applySearchParamsPatch,
+  resolveUsersTableQueryState,
+  toUsersTableQueryKey,
+} from './users-table/utils';
 
 type QueryPatch = Record<string, string | null>;
 type UsersDataTableSortState = {
@@ -30,8 +29,6 @@ type UsersDataTableSortState = {
 } | null;
 
 const USERS_TABLE_COLUMNS = createUsersTableColumns(t);
-const USERS_TABLE_PAGE_SIZE_OPTIONS = [...USERS_PAGE_SIZE_OPTIONS];
-const USERS_TABLE_QUERY_KEYS = ['page', 'limit', 'sort', 'order', 'search'] as const;
 const {
   page: pageParam,
   limit: limitParam,
@@ -40,34 +37,34 @@ const {
   search: searchParam,
 } = USERS_QUERY_PARAMS;
 
-const isSameQueryState = (
-  first: UsersTableQueryState,
-  second: UsersTableQueryState,
-): boolean => {
-  return USERS_TABLE_QUERY_KEYS.every((key) => first[key] === second[key]);
-};
-
 export function UsersTable({ initialData }: UsersTableProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const searchDebounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const resolveInitialQueryState = useCallback(
+  const [queryState, setQueryState] = useState(
     () => initialData?.query ?? resolveUsersTableQueryState(searchParams),
-    [initialData?.query, searchParams],
   );
-  const [queryState, setQueryState] = useState(resolveInitialQueryState);
-  const [searchInputValue, setSearchInputValue] = useState(() => resolveInitialQueryState().search);
+  const [searchInputValue, setSearchInputValue] = useState(
+    () => (initialData?.query ?? resolveUsersTableQueryState(searchParams)).search,
+  );
 
   const { data, isLoading, error } = useUsersTableQuery({
     query: queryState,
     initialData,
   });
   const { page, limit, sort, order } = queryState;
-  const rows = data?.rows ?? [];
-  const { totalItems, totalPages } = data?.meta ?? {
-    totalItems: rows.length,
-    totalPages: USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
-  };
+  const { rows = [], meta } = data ?? {};
+  const {
+    totalItems = rows.length,
+    totalPages = USERS_PAGINATION_FALLBACK_TOTAL_PAGES,
+  } = meta ?? {};
+
+  const syncQueryState = useCallback((nextQueryState: UsersTableQueryState) => {
+    const nextQueryKey = toUsersTableQueryKey(nextQueryState);
+    setQueryState((current) =>
+      toUsersTableQueryKey(current) === nextQueryKey ? current : nextQueryState,
+    );
+  }, []);
 
   const updateParams = useCallback(
     (patch: QueryPatch) => {
@@ -81,11 +78,9 @@ export function UsersTable({ initialData }: UsersTableProps) {
       const nextQueryState = resolveUsersTableQueryState(params);
 
       window.history.replaceState(window.history.state, '', nextUrl);
-      setQueryState((current) =>
-        isSameQueryState(current, nextQueryState) ? current : nextQueryState,
-      );
+      syncQueryState(nextQueryState);
     },
-    [pathname],
+    [pathname, syncQueryState],
   );
 
   const queueSearchUpdate = useCallback(
@@ -108,21 +103,18 @@ export function UsersTable({ initialData }: UsersTableProps) {
 
   const onSortChange = useCallback(
     (nextSort: UsersDataTableSortState) => {
-      if (!nextSort) {
-        updateParams({
-          [sortParam]: null,
-          [orderParam]: null,
-          [pageParam]: USERS_RESET_PAGE_PARAM_VALUE,
-        });
-        return;
-      }
-      const { key, direction } = nextSort;
-
-      updateParams({
-        [sortParam]: key,
-        [orderParam]: direction,
-        [pageParam]: USERS_RESET_PAGE_PARAM_VALUE,
-      });
+      const patch = nextSort
+        ? {
+            [sortParam]: nextSort.key,
+            [orderParam]: nextSort.direction,
+            [pageParam]: USERS_RESET_PAGE_PARAM_VALUE,
+          }
+        : {
+            [sortParam]: null,
+            [orderParam]: null,
+            [pageParam]: USERS_RESET_PAGE_PARAM_VALUE,
+          };
+      updateParams(patch);
     },
     [updateParams],
   );
@@ -130,9 +122,7 @@ export function UsersTable({ initialData }: UsersTableProps) {
   useEffect(() => {
     const onPopState = () => {
       const nextQueryState = resolveUsersTableQueryState(new URLSearchParams(window.location.search));
-      setQueryState((current) =>
-        isSameQueryState(current, nextQueryState) ? current : nextQueryState,
-      );
+      syncQueryState(nextQueryState);
       setSearchInputValue(nextQueryState.search);
     };
 
@@ -145,7 +135,7 @@ export function UsersTable({ initialData }: UsersTableProps) {
 
       window.removeEventListener('popstate', onPopState);
     };
-  }, []);
+  }, [syncQueryState]);
 
   return (
     <DataTable
@@ -154,27 +144,22 @@ export function UsersTable({ initialData }: UsersTableProps) {
       title={t('table.users.title')}
       actions={
         <InputField
-          placeholder={t('table.users.searchLabel')}
-          aria-label={t('table.users.searchLabel')}
           value={searchInputValue}
           onChange={({ target: { value } }) => {
             setSearchInputValue(value);
             queueSearchUpdate(value);
           }}
-          prefix={<SearchIcon size={USERS_TABLE_SEARCH_ICON_SIZE} />}
         />
       }
-      errorMessage={error ?? undefined}
+      errorMessage={error}
       loading={isLoading}
       sort={{ key: sort, direction: order }}
       onSortChange={onSortChange}
-      maxBodyHeight={USERS_TABLE_MAX_BODY_HEIGHT}
       pagination={{
         currentPage: page,
         totalPages,
         totalItems,
         pageSize: limit,
-        pageSizeOptions: USERS_TABLE_PAGE_SIZE_OPTIONS,
         onChangePage: (nextPage) =>
           updateParams({
             [pageParam]: String(nextPage),

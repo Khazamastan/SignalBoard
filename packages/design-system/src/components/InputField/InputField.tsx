@@ -1,6 +1,15 @@
 import * as React from "react";
+import { SearchIcon } from "../../icons";
 import { classNames } from "../../utils/classNames";
+import {
+  resolveInputFieldMeta,
+  resolveInputId,
+  resolveInputPlaceholder,
+} from "./utils";
 import styles from "./InputField.module.css";
+
+const INPUT_FIELD_DEFAULT_SEARCH_PLACEHOLDER = "Search";
+const INPUT_FIELD_DEFAULT_SEARCH_ICON_SIZE = 24;
 
 export type InputFieldProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -16,20 +25,6 @@ export type InputFieldProps = Omit<
   floatingLabel?: boolean;
 };
 
-function normalizeIdSeed(label?: string): string {
-  if (!label) {
-    return "input-field";
-  }
-
-  const normalized = label
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-  return normalized || "input-field";
-}
-
 export function InputField({
   id,
   className,
@@ -39,6 +34,7 @@ export function InputField({
   counter,
   prefix,
   suffix,
+  "aria-label": ariaLabel,
   hideMeta = false,
   floatingLabel = false,
   disabled,
@@ -47,16 +43,24 @@ export function InputField({
   ...props
 }: InputFieldProps) {
   const reactId = React.useId().replace(/:/g, "");
-  const generatedId = `${normalizeIdSeed(label)}-${reactId}`;
-  const inputId = id ?? generatedId;
+  const inputId = resolveInputId(id, label, reactId);
 
   const showMeta = !hideMeta;
-  const hasCounter = counter !== undefined && counter !== null && counter !== false;
-  const helperId = showMeta && helperText ? `${inputId}-helper` : undefined;
-  const errorId = showMeta && error ? `${inputId}-error` : undefined;
-  const counterId = showMeta && hasCounter ? `${inputId}-counter` : undefined;
-  const describedBy = [helperId, errorId, counterId].filter(Boolean).join(" ") || undefined;
-  const resolvedPlaceholder = floatingLabel ? placeholder ?? " " : placeholder;
+  const { hasCounter, helperId, errorId, counterId, describedBy } =
+    resolveInputFieldMeta({
+      showMeta,
+      helperText,
+      error,
+      counter,
+      inputId,
+    });
+  const resolvedPrefix =
+    prefix ?? <SearchIcon size={INPUT_FIELD_DEFAULT_SEARCH_ICON_SIZE} />;
+  const resolvedAriaLabel = ariaLabel ?? label ?? INPUT_FIELD_DEFAULT_SEARCH_PLACEHOLDER;
+  const resolvedPlaceholder = resolveInputPlaceholder(
+    floatingLabel,
+    placeholder ?? INPUT_FIELD_DEFAULT_SEARCH_PLACEHOLDER,
+  );
 
   return (
     <div
@@ -76,9 +80,9 @@ export function InputField({
       ) : null}
 
       <div className={styles.control}>
-        {prefix ? (
+        {resolvedPrefix ? (
           <span className={classNames(styles.affix, styles.affixPrefix)}>
-            {prefix}
+            {resolvedPrefix}
           </span>
         ) : null}
 
@@ -88,6 +92,7 @@ export function InputField({
             disabled={disabled}
             readOnly={readOnly}
             placeholder={resolvedPlaceholder}
+            aria-label={resolvedAriaLabel}
             aria-invalid={!!error || undefined}
             aria-describedby={describedBy}
             className={styles.input}

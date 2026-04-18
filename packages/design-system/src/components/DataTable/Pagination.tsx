@@ -1,28 +1,19 @@
 import { Button } from "../Button/Button";
 import { classNames } from "../../utils/classNames";
+import {
+  normalizePageSizeOptions,
+  resolveVisiblePageMarkers,
+} from "./pagination-utils";
 import styles from "./Pagination.module.css";
 
-const resolveVisiblePageMarkers = (
-  currentPage: number,
-  totalPages: number,
-): number[] => {
-  const pages = new Set<number>([1, totalPages, currentPage]);
-
-  for (let page = currentPage - 1; page <= currentPage + 1; page += 1) {
-    if (page >= 1 && page <= totalPages) {
-      pages.add(page);
-    }
-  }
-
-  return [...pages].sort((first, second) => first - second);
-};
+const DEFAULT_PAGINATION_PAGE_SIZE_OPTIONS = [4, 8, 12, 16, 20, 50, 100] as const;
 
 export type PaginationProps = {
   currentPage: number;
   totalPages: number;
   totalItems?: number;
   pageSize?: number;
-  pageSizeOptions?: number[];
+  pageSizeOptions?: readonly number[];
   ariaLabel?: string;
   pageLabel?: string;
   ofLabel?: string;
@@ -42,7 +33,7 @@ export function Pagination({
   totalPages,
   totalItems,
   pageSize,
-  pageSizeOptions,
+  pageSizeOptions = DEFAULT_PAGINATION_PAGE_SIZE_OPTIONS,
   ariaLabel = "Pagination",
   pageLabel = "Page",
   ofLabel = "of",
@@ -58,14 +49,7 @@ export function Pagination({
 }: PaginationProps) {
   const safeTotalPages = Math.max(1, totalPages);
   const safeCurrentPage = Math.min(Math.max(1, currentPage), safeTotalPages);
-  const normalizedPageSizeOptions = Array.from(
-    new Set(
-      [
-        ...(pageSizeOptions?.filter((option) => Number.isFinite(option) && option > 0) ?? []),
-        ...(typeof pageSize === "number" && pageSize > 0 ? [pageSize] : []),
-      ].sort((first, second) => first - second),
-    ),
-  );
+  const normalizedPageSizeOptions = normalizePageSizeOptions(pageSizeOptions, pageSize);
   const hasPageSizeControl =
     typeof pageSize === "number" &&
     normalizedPageSizeOptions.length > 0 &&

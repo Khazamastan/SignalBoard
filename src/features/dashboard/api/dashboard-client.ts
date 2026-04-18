@@ -9,7 +9,6 @@ import {
 import type { AnalyticsSeries, StatCardData, UserRow, UsersQuery } from '@/features/dashboard/types';
 import { t } from '@/shared/i18n';
 
-
 type RequestOptions = {
   signal: AbortSignal;
 };
@@ -24,23 +23,28 @@ const readApiData = async <T,>(
   fallbackErrorMessage: string,
 ): Promise<ApiResponse<T>> => {
   const payload = await parseApiResponse<T>(response, fallbackErrorMessage);
+  const { error } = payload;
 
-  if (payload.error) {
-    throw new Error(payload.error);
+  if (error) {
+    throw new Error(error);
   }
 
   return payload;
 };
 
-const resolveUsersMeta = (meta: ApiMeta | undefined, rows: UserRow[], query: UsersQuery): ApiMeta => {
+const resolveUsersMeta = (
+  meta: ApiMeta | undefined,
+  rows: UserRow[],
+  { page, limit }: UsersQuery,
+): ApiMeta => {
   if (meta) {
     return meta;
   }
-  const { page, limit } = query;
+  const safeLimit = Math.max(1, limit || USERS_PAGE_LIMIT);
 
   return {
     page,
-    totalPages: Math.max(1, Math.ceil(rows.length / Math.max(1, limit || USERS_PAGE_LIMIT))),
+    totalPages: Math.max(1, Math.ceil(rows.length / safeLimit)),
     totalItems: rows.length,
   };
 };

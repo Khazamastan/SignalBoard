@@ -1,7 +1,7 @@
 import { cache } from 'react';
 
-import type { RangeKey, SortOrder } from '@/shared/types/api';
-import type { UserSortField } from '@/features/dashboard/types';
+import type { RangeKey } from '@/shared/types/api';
+import type { UsersQuery } from '@/features/dashboard/types';
 import { DEFAULT_ANALYTICS_RANGE } from '@/features/dashboard/constants';
 import {
   parseUsersSearchParams,
@@ -17,22 +17,8 @@ const getAnalyticsResponseCached = cache(
   async (range: RangeKey) => dashboardService.getAnalyticsResponse(range),
 );
 
-const getUsersPageResponseCached = cache(
-  async (
-    page: number,
-    limit: number,
-    sort: UserSortField,
-    order: SortOrder,
-    search: string,
-  ) => {
-    return dashboardService.getUsersPageResponse({
-      page,
-      limit,
-      sort,
-      order,
-      search,
-    });
-  },
+const getUsersPageResponseCached = cache(async (query: UsersQuery) =>
+  dashboardService.getUsersPageResponse(query),
 );
 
 export const preloadStatsAnalyticsSection = () => {
@@ -41,16 +27,8 @@ export const preloadStatsAnalyticsSection = () => {
 };
 
 export const preloadUsersTableSection = (searchParams: RouteSearchParams) => {
-  const { page, limit, sort, order, search } = parseUsersSearchParams(
-    toUrlSearchParams(searchParams),
-  );
-  void getUsersPageResponseCached(
-    page,
-    limit,
-    sort,
-    order,
-    search,
-  );
+  const query = parseUsersSearchParams(toUrlSearchParams(searchParams));
+  void getUsersPageResponseCached(query);
 };
 
 export const readStatsResponse = () => getStatsResponseCached();
@@ -58,11 +36,5 @@ export const readStatsResponse = () => getStatsResponseCached();
 export const readAnalyticsResponse = (range: RangeKey) => getAnalyticsResponseCached(range);
 
 export const readUsersPageResponse = (
-  page: number,
-  limit: number,
-  sort: UserSortField,
-  order: SortOrder,
-  search: string,
-) => {
-  return getUsersPageResponseCached(page, limit, sort, order, search);
-};
+  query: UsersQuery,
+) => getUsersPageResponseCached(query);

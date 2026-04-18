@@ -4,7 +4,16 @@ import * as React from "react";
 import { ArrowDownIcon, ArrowUpIcon, SortIcon } from "../../icons";
 import { classNames } from "../../utils/classNames";
 import { Pagination, type PaginationProps } from "./Pagination";
+import {
+  nextSortState,
+  resolveCellValue,
+  resolveDefaultRowId,
+  resolveVirtualRowWindow,
+  toCssSize,
+} from "./utils";
 import styles from "./DataTable.module.css";
+
+const DATA_TABLE_DEFAULT_MAX_BODY_HEIGHT = "34rem";
 
 export type DataTableSortDirection = "asc" | "desc";
 
@@ -108,14 +117,6 @@ function isGenericProps<
   return "columns" in props && "rows" in props;
 }
 
-function toCssSize(value: number | string | undefined): string | undefined {
-  if (value === undefined) {
-    return undefined;
-  }
-
-  return typeof value === "number" ? `${value}px` : value;
-}
-
 function getAlignClass(align: "left" | "center" | "right" | undefined): string {
   if (align === "center") {
     return styles.alignCenter;
@@ -140,63 +141,6 @@ function renderSortIcon(direction: DataTableSortDirection | undefined) {
   return <SortIcon size={16} />;
 }
 
-function nextSortState<TSortKey extends string>(
-  current: DataTableSortState<TSortKey>,
-  key: TSortKey,
-): DataTableSortState<TSortKey> {
-  if (!current || current.key !== key) {
-    return { key, direction: "asc" };
-  }
-
-  if (current.direction === "asc") {
-    return { key, direction: "desc" };
-  }
-
-  return null;
-}
-
-function resolveCellValue<TRow extends Record<string, unknown>>(
-  column: DataTableColumn<TRow, string>,
-  row: TRow,
-  rowIndex: number,
-): React.ReactNode {
-  if (column.cell) {
-    return column.cell(row, rowIndex);
-  }
-
-  if (column.accessor !== undefined) {
-    const value = row[column.accessor];
-
-    if (
-      value === null ||
-      value === undefined ||
-      typeof value === "string" ||
-      typeof value === "number" ||
-      typeof value === "boolean" ||
-      React.isValidElement(value)
-    ) {
-      return value as React.ReactNode;
-    }
-
-    return String(value);
-  }
-
-  return null;
-}
-
-function resolveDefaultRowId<TRow extends Record<string, unknown>>(
-  row: TRow,
-  rowIndex: number,
-): React.Key {
-  const candidateId = row.id;
-
-  if (typeof candidateId === "string" || typeof candidateId === "number") {
-    return candidateId;
-  }
-
-  return rowIndex;
-}
-
 function DataTableLegacy(props: DataTableLegacyProps) {
   const {
     className,
@@ -206,7 +150,7 @@ function DataTableLegacy(props: DataTableLegacyProps) {
     title,
     actions,
     pagination,
-    maxBodyHeight,
+    maxBodyHeight = DATA_TABLE_DEFAULT_MAX_BODY_HEIGHT,
     containerClassName,
     caption,
     ...tableProps
@@ -260,7 +204,7 @@ function DataTableGenericImpl<
   const {
     columns,
     rows,
-    getRowId,
+    getRowId = resolveDefaultRowId,
     sort = null,
     onSortChange,
     loading = false,
@@ -270,7 +214,7 @@ function DataTableGenericImpl<
     title,
     actions,
     pagination,
-    maxBodyHeight,
+    maxBodyHeight = DATA_TABLE_DEFAULT_MAX_BODY_HEIGHT,
     emptyMessage = "No data available.",
     errorMessage,
     className,
@@ -366,50 +310,25 @@ function DataTableGenericImpl<
     };
   }, [shouldVirtualizeRows]);
 
-  const rowWindow = React.useMemo(() => {
-    if (!shouldVirtualizeRows) {
-      return {
-        startIndex: 0,
-        endIndex: rows.length,
-        topSpacerHeight: 0,
-        bottomSpacerHeight: 0,
-      };
-    }
-
-    const safeViewportHeight =
-      virtualViewportHeight > 0 ? virtualViewportHeight : virtualRowHeight * 10;
-    const estimatedVisibleCount = Math.max(
-      1,
-      Math.ceil(safeViewportHeight / virtualRowHeight),
-    );
-    const startIndex = Math.max(
-      0,
-      Math.floor(virtualScrollTop / virtualRowHeight) - virtualOverscan,
-    );
-    const endIndex = Math.min(
+  const rowWindow = React.useMemo(
+    () =>
+      resolveVirtualRowWindow({
+        shouldVirtualizeRows,
+        rowCount: rows.length,
+        virtualViewportHeight,
+        virtualRowHeight,
+        virtualScrollTop,
+        virtualOverscan,
+      }),
+    [
       rows.length,
-      startIndex + estimatedVisibleCount + virtualOverscan * 2,
-    );
-    const topSpacerHeight = startIndex * virtualRowHeight;
-    const bottomSpacerHeight = Math.max(
-      0,
-      (rows.length - endIndex) * virtualRowHeight,
-    );
-
-    return {
-      startIndex,
-      endIndex,
-      topSpacerHeight,
-      bottomSpacerHeight,
-    };
-  }, [
-    rows.length,
-    shouldVirtualizeRows,
-    virtualOverscan,
-    virtualRowHeight,
-    virtualScrollTop,
-    virtualViewportHeight,
-  ]);
+      shouldVirtualizeRows,
+      virtualOverscan,
+      virtualRowHeight,
+      virtualScrollTop,
+      virtualViewportHeight,
+    ],
+  );
 
   const visibleRows = React.useMemo(() => {
     if (!shouldVirtualizeRows) {
@@ -418,10 +337,6 @@ function DataTableGenericImpl<
 
     return rows.slice(rowWindow.startIndex, rowWindow.endIndex);
   }, [rows, shouldVirtualizeRows, rowWindow.endIndex, rowWindow.startIndex]);
-
-  const resolveRowId =
-    getRowId ??
-    resolveDefaultRowId;
 
   return (
     <section className={classNames(styles.root, containerClassName)}>
@@ -585,7 +500,7 @@ function DataTableGenericImpl<
                   const resolvedRowIndex = shouldVirtualizeRows
                     ? rowWindow.startIndex + rowIndex
                     : rowIndex;
-                  const rowKey = resolveRowId(row, resolvedRowIndex);
+                  const rowKey = getRowId(row, resolvedRowIndex);
 
                   return (
                     <tr
