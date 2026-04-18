@@ -37,13 +37,7 @@
     "subtitle": "A token-driven design system with server-first rendering, URL-synced table interactions, and container-aware components.",
     "stats": {
       "sectionAria": "Stats and analytics",
-      "gridAria": "Key metrics",
-      "metric": {
-        "totalUsers": "Total Users",
-        "monthlyRevenue": "Monthly Revenue",
-        "avgSessions": "Avg. Sessions",
-        "conversionRate": "Conversion Rate"
-      }
+      "gridAria": "Key metrics"
     },
     "analytics": {
       "panelTitle": "Traffic Overview",

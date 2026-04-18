@@ -29,6 +29,8 @@ export type Translate = (
 
 const EN_MESSAGES: MessageCatalog = enMessages;
 const ES_MESSAGES: MessageCatalog = esMessages;
+const FLAT_MESSAGES_CACHE = new WeakMap<MessageCatalog, Record<TranslationKey, string>>();
+const TRANSLATOR_CACHE = new WeakMap<MessageCatalog, Translate>();
 
 const collectLeafPaths = (
   source: Record<string, unknown>,
@@ -52,22 +54,38 @@ const collectLeafPaths = (
   return paths;
 };
 
-const readMessageByPath = (
-  source: MessageCatalog,
-  path: TranslationKey,
-): string | undefined => {
-  const segments = path.split('.');
-  let cursor: unknown = source;
+const flattenMessages = (
+  source: Record<string, unknown>,
+  prefix = '',
+  result: Record<string, string> = {},
+): Record<string, string> => {
+  Object.entries(source).forEach(([segment, value]) => {
+    const path = prefix ? `${prefix}.${segment}` : segment;
 
-  for (const segment of segments) {
-    if (!cursor || typeof cursor !== 'object' || !(segment in cursor)) {
-      return undefined;
+    if (typeof value === 'string') {
+      result[path] = value;
+      return;
     }
 
-    cursor = (cursor as Record<string, unknown>)[segment];
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      flattenMessages(value as Record<string, unknown>, path, result);
+    }
+  });
+
+  return result;
+};
+
+const getFlatMessages = (
+  source: MessageCatalog,
+): Record<TranslationKey, string> => {
+  const cached = FLAT_MESSAGES_CACHE.get(source);
+  if (cached) {
+    return cached;
   }
 
-  return typeof cursor === 'string' ? cursor : undefined;
+  const flattened = flattenMessages(source as Record<string, unknown>) as Record<TranslationKey, string>;
+  FLAT_MESSAGES_CACHE.set(source, flattened);
+  return flattened;
 };
 
 const formatMessage = (
@@ -136,10 +154,19 @@ export const getMessagesForLocale = (
 export const createTranslator = (
   messages: MessageCatalog,
 ): Translate => {
-  return (key, fallback, values) => {
-    const template = readMessageByPath(messages, key) ?? fallback ?? key;
+  const cached = TRANSLATOR_CACHE.get(messages);
+  if (cached) {
+    return cached;
+  }
+
+  const flatMessages = getFlatMessages(messages);
+  const translator: Translate = (key, fallback, values) => {
+    const template = flatMessages[key] ?? fallback ?? key;
     return formatMessage(template, values);
   };
+
+  TRANSLATOR_CACHE.set(messages, translator);
+  return translator;
 };
 
 export const getTranslator = (

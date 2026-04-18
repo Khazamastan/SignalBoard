@@ -37,13 +37,7 @@
     "subtitle": "Un sistema de diseño basado en tokens con renderizado server-first, interacciones de tabla sincronizadas por URL y componentes conscientes del contenedor.",
     "stats": {
       "sectionAria": "Estadísticas y analítica",
-      "gridAria": "Métricas clave",
-      "metric": {
-        "totalUsers": "Usuarios Totales",
-        "monthlyRevenue": "Ingresos Mensuales",
-        "avgSessions": "Sesiones Prom.",
-        "conversionRate": "Tasa de Conversión"
-      }
+      "gridAria": "Métricas clave"
     },
     "analytics": {
       "panelTitle": "Resumen de Tráfico",
