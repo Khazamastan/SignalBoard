@@ -34,6 +34,7 @@ export function AnalyticsPanel({ series }: { series: AnalyticsSeries }) {
               key={`${point.label}-${point.value}`}
               className={styles.barWrap}
               tabIndex={0}
+              role="img"
               aria-label={`${point.label}: ${point.value}`}
             >
               <span

@@ -78,6 +78,7 @@ export function ChromeSidebar({
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  prefetch={false}
                   className={classNames(styles.navLink, isActive && styles.active)}
                   onClick={onCloseMobileSidebar}
                   aria-label={itemLabel}

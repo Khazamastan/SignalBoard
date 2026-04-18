@@ -27,9 +27,21 @@ const monoFont = JetBrains_Mono({
   display: 'swap',
 });
 
+const shouldIndexDeployment =
+  process.env.VERCEL_ENV !== 'preview' && process.env.VERCEL_ENV !== 'development';
+
 export const metadata: Metadata = {
   title: APP_METADATA.title,
   description: APP_METADATA.description,
+  robots: {
+    index: shouldIndexDeployment,
+    follow: shouldIndexDeployment,
+    googleBot: {
+      index: shouldIndexDeployment,
+      follow: shouldIndexDeployment,
+      noimageindex: !shouldIndexDeployment,
+    },
+  },
 };
 
 export default async function RootLayout({

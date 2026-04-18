@@ -49,7 +49,7 @@ export const API_DELAY_BYPASS_HEADER = 'x-internal-no-delay';
 export const API_DELAY_BYPASS_ENABLED_VALUE = '1';
 export const API_CACHE_MAX_AGE_SECONDS = 60;
 export const API_CACHE_STALE_WHILE_REVALIDATE_SECONDS = 300;
-export const API_CACHE_CONTROL_NO_STORE = 'private, no-store, max-age=0';
+export const API_SUCCESS_CACHE_CONTROL = `public, max-age=${API_CACHE_MAX_AGE_SECONDS}, stale-while-revalidate=${API_CACHE_STALE_WHILE_REVALIDATE_SECONDS}`;
 export const API_ERROR_CACHE_CONTROL_NO_STORE = 'no-store, max-age=0';
 export const API_ERROR_STATUS_CODE = 500;
 

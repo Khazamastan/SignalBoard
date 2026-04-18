@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { randomDelay, shouldBypassDelay } from '@/features/dashboard/api/http-effects';
 import { parseRangeKey } from '@/features/dashboard/api/query-parsers';
 import {
-  API_CACHE_CONTROL_NO_STORE,
+  API_SUCCESS_CACHE_CONTROL,
   API_ERROR_CACHE_CONTROL_NO_STORE,
   API_ERROR_STATUS_CODE,
   DASHBOARD_API_QUERY_PARAMS,
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(analyticsData, {
       headers: {
-        'Cache-Control': API_CACHE_CONTROL_NO_STORE,
+        'Cache-Control': API_SUCCESS_CACHE_CONTROL,
       },
     });
   } catch {
