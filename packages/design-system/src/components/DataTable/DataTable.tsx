@@ -213,7 +213,6 @@ function DataTableLegacy(props: DataTableLegacyProps) {
           maxBodyHeight !== undefined
             ? {
                 maxHeight: toCssSize(maxBodyHeight),
-                minHeight: toCssSize(maxBodyHeight),
               }
             : undefined
         }
@@ -423,7 +422,6 @@ function DataTableGenericImpl<
           maxBodyHeight !== undefined
             ? {
                 maxHeight: toCssSize(maxBodyHeight),
-                minHeight: toCssSize(maxBodyHeight),
               }
             : undefined
         }

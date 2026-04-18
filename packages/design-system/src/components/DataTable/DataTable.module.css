@@ -40,6 +40,17 @@
   width: 100%;
   --table-header-bg: var(--surface-table-header);
   --table-header-text: var(--text-primary);
+  --table-row-bg-base: var(--surface-card, var(--surface-default));
+  --table-row-bg-alt: color-mix(
+    in srgb,
+    var(--surface-card, var(--surface-default)) 82%,
+    var(--color-neutral-300)
+  );
+  --table-row-bg-hover: color-mix(
+    in srgb,
+    var(--surface-card, var(--surface-default)) 90%,
+    var(--color-primary-base) 10%
+  );
 }
 
 .caption {
@@ -98,25 +109,33 @@
 
 .stickyFirstColumn tbody :is(th:first-child, td:first-child),
 .td.stickyCell,
-.stickyFirstColumn .firstSticky {
-  z-index: 2;
-  background: var(--table-row-bg, var(--surface-card, var(--surface-default)));
+.stickyFirstColumn tbody .firstSticky {
+  z-index: 4;
+  isolation: isolate;
+  opacity: 1;
+  background: var(--table-sticky-row-bg, var(--table-row-bg-base));
+  background-color: var(--table-sticky-row-bg, var(--table-row-bg-base));
+  background-image: none;
 }
 
 .rowBase {
-  --table-row-bg: var(--surface-card, var(--surface-default));
+  --table-row-bg: var(--table-row-bg-base);
+  --table-sticky-row-bg: var(--table-row-bg-base);
 }
 
 .rowAlt {
-  --table-row-bg: var(--surface-table-row-alt);
+  --table-row-bg: var(--table-row-bg-alt);
+  --table-sticky-row-bg: var(--table-row-bg-alt);
 }
 
 .rowInteractive:hover {
-  --table-row-bg: color-mix(in srgb, var(--color-primary-base) 10%, transparent);
+  --table-row-bg: var(--table-row-bg-hover);
+  --table-sticky-row-bg: var(--table-row-bg-hover);
 }
 
 .rowStatic:hover {
-  --table-row-bg: var(--table-row-bg, var(--surface-card, var(--surface-default)));
+  --table-row-bg: var(--table-row-bg, var(--table-row-bg-base));
+  --table-sticky-row-bg: var(--table-sticky-row-bg, var(--table-row-bg-base));
 }
 
 @container (max-width: 58rem) {
@@ -128,7 +147,7 @@
   }
 
   .stickyFirstColumn tbody :is(th:first-child, td:first-child),
-  .stickyFirstColumn .firstSticky {
+  .stickyFirstColumn tbody .firstSticky {
     box-shadow:
       1px 0 0 var(--border-subtle, var(--border-default)),
       8px 0 14px color-mix(in srgb, var(--color-neutral-900) 6%, transparent);
@@ -210,7 +229,8 @@
 }
 
 .stateRow {
-  --table-row-bg: var(--surface-card, var(--surface-default));
+  --table-row-bg: var(--table-row-bg-base);
+  --table-sticky-row-bg: var(--table-row-bg-base);
 }
 
 .table td.emptyMessage .stateText {
@@ -223,6 +243,7 @@
 
 .virtualSpacerRow {
   --table-row-bg: transparent;
+  --table-sticky-row-bg: transparent;
 }
 
 .table .virtualSpacerCell {
