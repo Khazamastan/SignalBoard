@@ -5,7 +5,7 @@ export const USERS_PAGE_LIMIT = 8;
 export const USERS_TABLE_SKELETON_ROW_COUNT_MIN = 12;
 export const USERS_PAGE_LIMIT_MIN = 4;
 export const USERS_PAGE_LIMIT_MAX = 20;
-export const USERS_SEARCH_DEBOUNCE_MS = 300;
+export const USERS_SEARCH_DEBOUNCE_MS = 500;
 
 export const DEFAULT_USER_SORT_FIELD: UserSortField = 'name';
 export const DEFAULT_USER_SORT_ORDER: SortOrder = 'asc';
