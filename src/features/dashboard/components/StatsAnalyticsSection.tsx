@@ -1,5 +1,8 @@
-import { dashboardService } from '@/features/dashboard/data/dashboard-service';
 import { DEFAULT_ANALYTICS_RANGE } from '@/features/dashboard/constants';
+import {
+  readAnalyticsResponse,
+  readStatsResponse,
+} from '@/features/dashboard/data/dashboard-streaming';
 import { t } from '@/shared/i18n';
 
 import { StatsGrid } from './StatsGrid';
@@ -8,8 +11,8 @@ import styles from './StatsAnalyticsSection.module.css';
 
 export async function StatsAnalyticsSection() {
   const [stats, analytics] = await Promise.all([
-    dashboardService.getStatsResponse(),
-    dashboardService.getAnalyticsResponse(DEFAULT_ANALYTICS_RANGE),
+    readStatsResponse(),
+    readAnalyticsResponse(DEFAULT_ANALYTICS_RANGE),
   ]);
 
   return (

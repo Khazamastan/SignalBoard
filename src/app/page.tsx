@@ -4,6 +4,10 @@ import {
   dashboardFeatureRegistry,
   type DashboardRouteSearchParams,
 } from '@/features/dashboard/feature-registry';
+import {
+  preloadStatsAnalyticsSection,
+  preloadUsersTableSection,
+} from '@/features/dashboard/data/dashboard-streaming';
 import { t } from '@/shared/i18n';
 
 import styles from './page.module.css';
@@ -15,7 +19,9 @@ type DashboardPageProps = {
 };
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
+  preloadStatsAnalyticsSection();
   const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
+  preloadUsersTableSection(resolvedSearchParams);
 
   return (
     <>

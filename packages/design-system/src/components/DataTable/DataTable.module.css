@@ -51,6 +51,12 @@
     var(--surface-card, var(--surface-default)) 90%,
     var(--color-primary-base) 10%
   );
+  --table-skeleton-shimmer: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-neutral-200) 82%, transparent),
+    color-mix(in srgb, var(--color-neutral-100) 92%, transparent),
+    color-mix(in srgb, var(--color-neutral-200) 82%, transparent)
+  );
 }
 
 .caption {
@@ -275,6 +281,14 @@
   visibility: hidden;
 }
 
+.loadingDataCell::after,
+.skeleton {
+  border-radius: var(--radius-xs, 0.25rem);
+  background: var(--table-skeleton-shimmer);
+  background-size: 200% 100%;
+  animation: shimmer var(--duration-slow) linear infinite;
+}
+
 .loadingDataCell::after {
   content: "";
   position: absolute;
@@ -283,30 +297,12 @@
   top: 50%;
   transform: translateY(-50%);
   height: var(--space-md, 1rem);
-  border-radius: var(--radius-xs, 0.25rem);
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--color-neutral-200) 82%, transparent),
-    color-mix(in srgb, var(--color-neutral-100) 92%, transparent),
-    color-mix(in srgb, var(--color-neutral-200) 82%, transparent)
-  );
-  background-size: 200% 100%;
-  animation: shimmer var(--duration-slow) linear infinite;
 }
 
 .skeleton {
   display: inline-block;
   width: 100%;
   height: var(--space-md, 1rem);
-  border-radius: var(--radius-xs, 0.25rem);
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--color-neutral-200) 82%, transparent),
-    color-mix(in srgb, var(--color-neutral-100) 92%, transparent),
-    color-mix(in srgb, var(--color-neutral-200) 82%, transparent)
-  );
-  background-size: 200% 100%;
-  animation: shimmer var(--duration-slow) linear infinite;
 }
 
 @keyframes shimmer {

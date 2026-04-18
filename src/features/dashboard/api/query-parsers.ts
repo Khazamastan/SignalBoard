@@ -26,6 +26,25 @@ const DEFAULT_USERS_QUERY: UsersQuery = {
 
 const VALID_RANGES: RangeKey[] = DASHBOARD_RANGE_OPTIONS;
 
+export type RouteSearchParams = Record<string, string | string[] | undefined>;
+
+export const toUrlSearchParams = (searchParams: RouteSearchParams): URLSearchParams => {
+  const resolved = new URLSearchParams();
+
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (typeof value === 'string') {
+      resolved.set(key, value);
+      return;
+    }
+
+    if (Array.isArray(value) && value[0]) {
+      resolved.set(key, value[0]);
+    }
+  });
+
+  return resolved;
+};
+
 export const parseUsersSearchParams = (searchParams: URLSearchParams): UsersQuery => {
   const page = parseUsersPageParam(searchParams.get(USERS_QUERY_PARAMS.page), DEFAULT_USERS_QUERY.page);
   const limit = parseUsersLimitParam(searchParams.get(USERS_QUERY_PARAMS.limit), DEFAULT_USERS_QUERY.limit);
