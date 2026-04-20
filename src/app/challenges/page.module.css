@@ -43,6 +43,31 @@
   font-size: var(--font-size-sm);
 }
 
+.formulaBlock {
+  display: grid;
+  gap: var(--space-2xs);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  padding-bottom: var(--space-sm);
+}
+
+.formulaTitle {
+  margin: 0;
+  font-size: var(--font-size-md);
+}
+
+.formulaText {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.formulaCode {
+  margin: 0;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+}
+
 .specimen {
   display: grid;
   gap: var(--space-sm);

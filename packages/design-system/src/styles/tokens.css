@@ -8,7 +8,7 @@
   --breakpoint-xl: 80rem;
 
   /* Fluid typography formula: clamp(min, base + vw, max) */
-  --font-size-2xs: 0.875rem;
+  --font-size-2xs: clamp(0.875rem, 0.865rem + 0.05vw, 0.9375rem);
   --font-size-xs: clamp(0.875rem, 0.84rem + 0.18vw, 1rem);
   --font-size-sm: clamp(0.9375rem, 0.88rem + 0.28vw, 1.0625rem);
   --font-size-md: clamp(1rem, 0.94rem + 0.33vw, 1.1875rem);

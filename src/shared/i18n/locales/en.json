@@ -112,6 +112,11 @@
       "challenge2MainLabel": "Main-content container",
       "challenge4Title": "Challenge 4 · Fluid Typography & Spacing",
       "fluidSpecimen": "Spacing and type tokens use `clamp(min, preferred, max)` so they scale continuously from mobile to large displays without breakpoint jumps.",
+      "formulaTitle": "Formula Approach",
+      "formulaViewportRange": "Viewport range: 320px to 2560px.",
+      "formulaTokenRule": "For each token, set readable min/max bounds and interpolate linearly in between.",
+      "formulaEquation": "size = clamp(min, calc(intercept + slope * 1vw), max)",
+      "formulaMath": "slope = (max - min) / (25.6 - 3.2), intercept = min - slope * 3.2",
       "frameWidthLabel": "Frame width",
       "specimen": {
         "display": "Display / 2xl",

@@ -112,6 +112,11 @@
       "challenge2MainLabel": "Contenedor ancho de contenido principal",
       "challenge4Title": "Desafío 4 · Tipografía y Espaciado Fluido",
       "fluidSpecimen": "Los tokens de espaciado y tipografía usan `clamp(min, preferred, max)` para escalar continuamente de móvil a pantallas grandes sin saltos por breakpoints.",
+      "formulaTitle": "Enfoque de Fórmula",
+      "formulaViewportRange": "Rango de viewport: 320px a 2560px.",
+      "formulaTokenRule": "Para cada token, definimos límites mínimo/máximo legibles e interpolamos linealmente entre ambos.",
+      "formulaEquation": "size = clamp(min, calc(intercept + slope * 1vw), max)",
+      "formulaMath": "slope = (max - min) / (25.6 - 3.2), intercept = min - slope * 3.2",
       "frameWidthLabel": "Ancho del marco",
       "specimen": {
         "display": "Display / 2xl",

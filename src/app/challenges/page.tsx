@@ -45,6 +45,14 @@ async function ChallengesContent() {
         <h2 className={styles.sectionTitle}>{t('page.challenges.challenge4Title')}</h2>
 
         <Card>
+          <div className={styles.formulaBlock}>
+            <h3 className={styles.formulaTitle}>{t('page.challenges.formulaTitle')}</h3>
+            <p className={styles.formulaText}>{t('page.challenges.formulaViewportRange')}</p>
+            <p className={styles.formulaText}>{t('page.challenges.formulaTokenRule')}</p>
+            <p className={styles.formulaCode}>{t('page.challenges.formulaEquation')}</p>
+            <p className={styles.formulaCode}>{t('page.challenges.formulaMath')}</p>
+          </div>
+
           <div className={styles.specimen}>
             <div className={styles.typeSpecimen}>
               <h1 className={styles.specimenH1}>{t('page.challenges.specimen.display')}</h1>
