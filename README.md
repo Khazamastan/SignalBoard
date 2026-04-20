@@ -17,6 +17,11 @@ The app is token-driven, server-first by default, and URL-state driven for share
 
 ## Run Locally
 
+### Prerequisites
+
+- Node.js `v24.14.1` (tested)
+- npm `11.11.0` (tested)
+
 ```bash
 npm install
 npm run dev
@@ -141,3 +146,12 @@ ARCHITECTURE.md
 NOTES.md
 README.md
 ```
+
+## Submission Checklist
+
+- `README.md` includes live demo, local run instructions, file structure, and Part D challenge choices
+- `NOTES.md` includes Part E written reflection answers
+- Lint/build pass locally:
+  - `npm run lint`
+  - `npm run build`
+- Git history is reviewed and commit messages are meaningful (avoid one giant squash for final submission)
