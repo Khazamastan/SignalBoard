@@ -66,7 +66,7 @@
   margin: var(--space-2xs, 0.25rem) var(--space-sm, 0.75rem)
     var(--space-sm, 0.75rem);
   color: var(--text-muted);
-  font-size: var(--font-size-xs, 0.75rem);
+  font-size: var(--font-size-xs, 0.875rem);
 }
 
 .typographyRow {
@@ -107,7 +107,7 @@
 
 .spacingLabel {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs, 0.75rem);
+  font-size: var(--font-size-xs, 0.875rem);
   font-weight: 600;
 }
 
@@ -135,7 +135,7 @@
 .spacingToken {
   font-family: var(--font-family-mono);
   color: var(--text-muted);
-  font-size: var(--font-size-xs, 0.75rem);
+  font-size: var(--font-size-xs, 0.875rem);
   white-space: nowrap;
 }
 
@@ -200,7 +200,7 @@
 .kpiLabel {
   margin: 0;
   color: var(--text-secondary);
-  font-size: var(--font-size-xs, 0.75rem);
+  font-size: var(--font-size-xs, 0.875rem);
   text-transform: uppercase;
 }
 
@@ -224,7 +224,7 @@
   min-width: 13rem;
   max-width: min(18rem, calc(100vw - var(--space-xl, 2rem)));
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-2xs, 0.75rem);
+  font-size: var(--font-size-2xs, 0.875rem);
   display: grid;
   gap: var(--space-2xs, 0.25rem);
   z-index: 10;
