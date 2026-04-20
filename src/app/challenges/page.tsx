@@ -8,11 +8,49 @@ import { Card } from '@design-system';
 
 import styles from './page.module.css';
 
-const frameWidths = ['20rem', '48rem', '90rem', '160rem'] as const;
+const previewWidths = [320, 768, 1440, 2560] as const;
+
+type TypeSpecimenProps = {
+  bodyText: string;
+  className?: string;
+  displayText: string;
+  largeText: string;
+  mediumText: string;
+  smallText: string;
+};
+
+function TypeSpecimen({
+  bodyText,
+  className,
+  displayText,
+  largeText,
+  mediumText,
+  smallText,
+}: TypeSpecimenProps) {
+  const specimenClassName = className ? `${styles.typeSpecimen} ${className}` : styles.typeSpecimen;
+
+  return (
+    <div className={specimenClassName}>
+      <h1 className={styles.specimenH1}>{displayText}</h1>
+      <h2 className={styles.specimenH2}>{largeText}</h2>
+      <h3 className={styles.specimenH3}>{mediumText}</h3>
+      <h4 className={styles.specimenH4}>H4</h4>
+      <h5 className={styles.specimenH5}>H5</h5>
+      <h6 className={styles.specimenH6}>H6</h6>
+      <p className={styles.specimenBody}>{bodyText}</p>
+      <small className={styles.specimenSmall}>{smallText}</small>
+    </div>
+  );
+}
 
 async function ChallengesContent() {
   const statsData = await dashboardService.getStatsResponse();
   const sampleCard = statsData.data[0];
+  const bodyText = t('page.challenges.fluidSpecimen');
+  const displayText = t('page.challenges.specimen.display');
+  const largeText = t('page.challenges.specimen.large');
+  const mediumText = t('page.challenges.specimen.medium');
+  const smallText = t('page.challenges.specimen.small');
 
   return (
     <div className={styles.page}>
@@ -54,26 +92,34 @@ async function ChallengesContent() {
           </div>
 
           <div className={styles.specimen}>
-            <div className={styles.typeSpecimen}>
-              <h1 className={styles.specimenH1}>{t('page.challenges.specimen.display')}</h1>
-              <h2 className={styles.specimenH2}>{t('page.challenges.specimen.large')}</h2>
-              <h3 className={styles.specimenH3}>{t('page.challenges.specimen.medium')}</h3>
-              <h4 className={styles.specimenH4}>H4</h4>
-              <h5 className={styles.specimenH5}>H5</h5>
-              <h6 className={styles.specimenH6}>H6</h6>
-              <p className={styles.specimenBody}>{t('page.challenges.fluidSpecimen')}</p>
-              <small className={styles.specimenSmall}>{t('page.challenges.specimen.small')}</small>
+            <div className={styles.specimenPanel}>
+              <TypeSpecimen
+                bodyText={bodyText}
+                displayText={displayText}
+                largeText={largeText}
+                mediumText={mediumText}
+                smallText={smallText}
+              />
             </div>
           </div>
 
           <div className={styles.frames}>
-            {frameWidths.map((width) => (
+            {previewWidths.map((width) => (
               <div key={width} className={styles.frame}>
-                <p>
-                  {t('page.challenges.frameWidthLabel')}: {width}
+                <p className={styles.frameLabel}>
+                  {t('page.challenges.frameWidthLabel')}: {width}px
                 </p>
-                <div className={styles.cardFlow} style={{ width }}>
-                  <StatsCard data={sampleCard} />
+                <div className={styles.framePreview} style={{ width: `${width}px` }}>
+                  <div className={styles.frameLayout}>
+                    <TypeSpecimen
+                      bodyText={bodyText}
+                      className={styles.frameTypeSpecimen}
+                      displayText={displayText}
+                      largeText={largeText}
+                      mediumText={mediumText}
+                      smallText={smallText}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
