@@ -1,26 +1,25 @@
-# Frontend Engineer Assignment — SignalBoard
+# SignalBoard — Frontend Engineer Assignment
 
-SignalBoard is a Next.js App Router analytics dashboard built for the frontend engineer assignment.
-The app is token-driven, server-first by default, and URL-state driven for shareable table views.
+SignalBoard is an analytics dashboard built with Next.js App Router and TypeScript, focused on scalable design-system and data architecture.
 
 ## Live Demo
 
-- Live URL: [https://signal-board-green.vercel.app/](https://signal-board-green.vercel.app/)
+- Live demo: [https://signal-board-green.vercel.app/](https://signal-board-green.vercel.app/)
+- GitHub repo: [https://github.com/Khazamastan/SignalBoard](https://github.com/Khazamastan/SignalBoard)
 
 ## Tech Stack
 
-- Framework: Next.js 16.1.6 (App Router) + React 19 + TypeScript
-- Styling: CSS Modules + CSS custom properties (design tokens)
-- State: React state + reusable custom hooks
-- Data: Next.js Route Handlers (`src/app/api/*`) using shared `ApiResponse<T>` contract
-- Interactivity: client islands only where required (`UsersTable`, `DashboardChrome`, analytics range switcher, theme toggle)
+- Next.js (App Router) + TypeScript
+- CSS Modules + CSS custom-property tokens
+- React state/context + custom hooks
+- Next.js Route Handlers + native `fetch`
+- No UI component libraries or JS animation libraries
 
 ## Run Locally
 
-### Prerequisites
-
-- Node.js `v24.14.1` (tested)
-- npm `11.11.0` (tested)
+Prerequisites:
+- Node.js `24+`
+- npm `11+`
 
 ```bash
 npm install
@@ -29,129 +28,34 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-### Other Scripts
-
 ```bash
 npm run lint
 npm run build
 npm run start
 ```
 
-## Architecture Highlights
-
-- Server-first composition with per-section `Suspense` boundaries in `src/app/page.tsx`
-- Request-scoped dashboard preload/read layer in `src/features/dashboard/data/dashboard-streaming.ts` for streaming-friendly initial render
-- Registry-based section composition in `src/features/dashboard/feature-registry.tsx`
-- Generic `DataTable` now owns pagination rendering via `pagination` prop
-- URL-driven users table state (`page`, `sort`, `order`, `search`) with debounced search
-- i18n with nested JSON catalogs, typed dot-path keys, and cached translators
-
-## Assignment Coverage
-
-### Part A — Design System
-
-- Tokens centralized in `packages/design-system/src/styles/tokens.css`
-- Token categories include color, spacing, typography, borders/radii, shadows, breakpoints, and motion
-- Light/dark theme via `[data-theme="dark"]` token overrides
-- Core components: `Button`, `InputField`, `Card`, plus reusable table/pagination primitives
-
-### Part B — Dashboard Layout
-
-- Sticky top navigation with search, theme toggle, and user menu
-- Collapsible sidebar (desktop) + drawer behavior (mobile)
-- Main content includes stats cards, analytics panel, and users data table
-- Table supports sticky header and sticky first column with responsive overflow handling
-
-### Part C — Data + React/Next.js
-
-- APIs:
-  - `GET /api/stats`
-  - `GET /api/analytics`
-  - `GET /api/users`
-- Shared response envelope:
-
-```ts
-type ApiResponse<T> = {
-  data: T;
-  meta?: { page: number; totalPages: number; totalItems: number };
-  error?: string;
-}
-```
-
-- API routes implement realistic delay (`200–800ms`) and consistent error payload shape
-- Initial data is rendered server-side; client handles only interactive updates
-- Users table supports server-side sort/search/pagination, URL sync, loading skeleton rows, empty state, and error state
-
-### Part D Challenges Completed
-
-1. Challenge 2 — Container Queries (chosen to demonstrate component-level responsiveness independent of viewport)
-2. Challenge 4 — Fluid Typography and Spacing (`clamp()`) (chosen to showcase principled token scaling without breakpoint jumps)
-
-### Part E Reflection
-
-- See `NOTES.md`
-
-## Performance and Scalability Notes
-
-- Feature composition is modular and section-driven through registry entries
-- Users query path is optimized with:
-  - precomputed search index
-  - sorted dataset cache by field/order
-  - server-side query shaping
-- Client query hooks use `AbortController` to cancel stale requests
-- DataTable supports virtualization for large row counts (`threshold: 120`, `rowHeight: 52`, `overscan: 8`)
-
-## File Structure
+## File Structure Overview
 
 ```text
 src/
-  app/
-    api/
-      analytics/route.ts
-      stats/route.ts
-      users/route.ts
-    challenges/
-    design-system-lab/
-    reports/
-    settings/
-    error.tsx
-    layout.tsx
-    loading.tsx
-    page.tsx
-  features/
-    dashboard/
-      api/
-      components/
-      data/
-        dashboard-repository.ts
-        dashboard-service.ts
-        dashboard-streaming.ts
-      layout/
-      feature-registry.tsx
-      constants.ts
-      types.ts
-  shared/
-    hooks/
-    i18n/
-    types/
-    utils/
-packages/
-  design-system/
-    src/
-      components/
-      icons/
-      styles/
-      theme/
+  app/                 # routes, layouts, loading/error boundaries, API handlers
+  features/dashboard/  # dashboard sections, UI, data orchestration
+  shared/              # hooks, utils, i18n, shared types
+packages/design-system/# tokens, theming, reusable components
+README.md
 ARCHITECTURE.md
 NOTES.md
-README.md
 ```
 
-## Submission Checklist
+## Assignment Coverage
 
-- `README.md` includes live demo, local run instructions, file structure, and Part D challenge choices
-- `NOTES.md` includes Part E written reflection answers
-- Lint/build pass locally:
-  - `npm run lint`
-  - `npm run build`
-- Git history is reviewed and commit messages are meaningful (avoid one giant squash for final submission)
+- Part A: token system, theme switching, and core components (`Button`, `InputField`, `Card`).
+- Part B: dashboard layout with sticky top bar, collapsible sidebar, stats cards, and responsive data table.
+- Part C: mock APIs (`/api/stats`, `/api/analytics`, `/api/users`), server-first rendering, URL-driven table state, debounced search, and server-side sort/pagination.
+
+## Part D Challenges Completed (and why)
+
+1. Challenge 2 — Container Queries: to show component responsiveness based on container width, not viewport.
+2. Challenge 4 — Fluid Typography & Spacing: to demonstrate principled token scaling with `clamp()` from mobile to large screens.
+
+Part E reflection answers are in `NOTES.md`.

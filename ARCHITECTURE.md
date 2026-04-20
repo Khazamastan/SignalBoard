@@ -1,116 +1,40 @@
 # SignalBoard Architecture
 
-This document defines the current architecture and the guardrails we follow to keep the codebase modular, scalable, and safe to evolve.
+## 1) Goals
 
-## 1) Design Principles
+- Server Components by default, Client Components only for interactivity.
+- Token-first styling so components scale across themes and screens.
+- Clear layer boundaries so features stay modular.
 
-- Server-first rendering by default
-- Interactive islands only where browser state/events are needed
-- Strict module boundaries
-- Shared response contracts for all APIs
-- Token-first styling with CSS Modules
-- Performance choices that scale to larger datasets
+## 2) Project Layers
 
-## 2) Layered Structure
+- `src/app`: routes, layouts, `loading.tsx`, `error.tsx`, and route handlers.
+- `src/features/dashboard`: dashboard UI, data orchestration, and feature logic.
+- `src/shared`: reusable hooks, utilities, i18n helpers, shared types.
+- `packages/design-system`: tokens, theme logic, and reusable components.
 
-### App Layer (`src/app/*`)
+Import direction is one-way (`app -> features -> shared`, design system independent from `src/*`).
 
-Responsibilities:
-- Routes, layouts, and route handlers
-- Page-level composition
-- Server entry points and route boundaries (`loading.tsx`, `error.tsx`)
+## 3) Server vs Client Split
 
-Allowed imports:
-- `src/features/*`
-- `src/shared/*`
-- `@design-system`
+Server-rendered:
+- `src/app/page.tsx`
+- `src/features/dashboard/components/StatsAnalyticsSection.tsx`
+- `src/features/dashboard/components/UsersTableSection.tsx`
 
-Must not contain:
-- Reusable business/domain logic
+Client-rendered interaction islands:
+- `src/features/dashboard/layout/DashboardChrome.tsx`
+- `src/features/dashboard/components/UsersTable.tsx`
+- `src/features/dashboard/components/StatsAnalyticsClient.tsx`
 
-### Feature Layer (`src/features/<feature>/*`)
+## 4) Data Flow and API Contract
 
-Responsibilities:
-- Vertical slice ownership (UI, data orchestration, feature-specific adapters)
-- Server/client feature components
+Route handlers:
+- `GET /api/stats`
+- `GET /api/analytics`
+- `GET /api/users`
 
-Typical folders:
-- `components/`
-- `layout/`
-- `api/`
-- `data/`
-- `constants.ts`, `types.ts`, `utils/*`
-
-Allowed imports:
-- `src/shared/*`
-- `@design-system`
-
-Disallowed:
-- `src/app/*`
-
-### Shared Layer (`src/shared/*`)
-
-Responsibilities:
-- Cross-feature primitives only (types, generic hooks, pure utilities)
-
-Disallowed:
-- `src/features/*`
-- `src/app/*`
-
-### Design System (`packages/design-system/*`)
-
-Responsibilities:
-- Tokens, base styles, reusable UI primitives, icons, theme helpers
-
-Disallowed:
-- Any import from `src/*`
-
-## 3) Boundary Enforcement
-
-Import direction rules are enforced in `eslint.config.mjs` via `no-restricted-imports`.
-
-Command:
-
-```bash
-npm run lint
-```
-
-## 4) Rendering Boundaries (Server vs Client)
-
-### Server Components (default)
-
-- `src/app/page.tsx`: page composition with `Suspense`
-- `src/features/dashboard/components/StatsAnalyticsSection.tsx`: initial stats + analytics payload
-- `src/features/dashboard/components/UsersTableSection.tsx`: initial table payload from URL params
-
-### Client Components (interactive islands)
-
-- `src/features/dashboard/layout/DashboardChrome.tsx`: sidebar/header interactivity
-- `src/features/dashboard/components/UsersTable.tsx`: sort/search/pagination + URL sync
-- `src/features/dashboard/components/StatsAnalyticsClient.tsx`: range switching for analytics
-- Design system interactive components (for example `ThemeToggle`, `InputField`, `DataTable`)
-
-## 5) Dashboard Composition
-
-Dashboard sections are registry-driven:
-
-- `src/features/dashboard/feature-registry.tsx`
-
-Each section defines:
-- stable `id`
-- suspense `fallback`
-- `render` function
-- optional suspense key resolver for URL-sensitive sections
-
-Why this matters:
-- New sections can be added without rewriting page composition logic.
-- Existing sections can be removed with minimal risk to others.
-
-## 6) Data Flow
-
-### API Contract
-
-All route handlers return:
+Common response shape:
 
 ```ts
 type ApiResponse<T> = {
@@ -120,137 +44,17 @@ type ApiResponse<T> = {
 }
 ```
 
-Shared helpers:
-- `src/shared/utils/api-response.ts`
+The dashboard uses a repository/service layer in `src/features/dashboard/data/*` with realistic delays and request-scoped server preloading for smoother Suspense streaming.
 
-### Route Handlers
+## 5) URL-Driven Table State
 
-- `src/app/api/stats/route.ts`
-- `src/app/api/analytics/route.ts`
-- `src/app/api/users/route.ts`
+The users table keeps `page`, `limit`, `sort`, `order`, and `search` in URL params. This preserves shareable links and restores exact table state on refresh/navigation. Sorting, pagination, and debounced search are server-driven.
 
-Behavior:
-- randomized delay (`200–800ms`)
-- consistent envelope on success/failure
-- `dynamic = "force-dynamic"` for server freshness
+## 6) Design System and Theming
 
-### Repository/Service
+Tokens are defined in `packages/design-system/src/styles/tokens.css` (color, spacing, typography, shadows, radii, motion, breakpoints). Themes are implemented with CSS custom-property overrides via `data-theme`, and components consume tokens instead of hardcoded style values.
 
-- `src/features/dashboard/data/dashboard-repository.ts`
-  - in-memory source
-  - query/sort/filter/paginate users
-  - precomputed search index
-  - sorted-results cache
-- `src/features/dashboard/data/dashboard-service.ts`
-  - wraps repository output into `ApiResponse<T>`
+## 7) Part D Implemented
 
-### Streaming Preload/Read Layer
-
-- `src/features/dashboard/data/dashboard-streaming.ts`
-  - uses request-scoped `cache()` from React
-  - exposes preload helpers called in `src/app/page.tsx`
-  - exposes read helpers used by server sections
-
-Why this exists:
-- preserves server-first rendering
-- improves section-level streaming responsiveness under `Suspense`
-- avoids duplicate server fetch work for the same request
-
-### Client Fetch Layer
-
-- `src/features/dashboard/api/dashboard-client.ts`
-- `src/shared/hooks/useAsyncQuery.ts`
-
-Patterns:
-- `AbortController` cancels stale requests
-- query-key based loading state
-- explicit error propagation
-- feature-level caches (users + analytics) with TTL
-
-## 7) Data Table Architecture
-
-Core component:
-- `packages/design-system/src/components/DataTable/DataTable.tsx`
-
-Key behavior:
-- sticky header + sticky first column
-- server-driven sorting/pagination/search
-- URL synchronized state (`page`, `sort`, `order`, `search`)
-- loading skeleton rows
-- explicit empty and error states
-- optional virtualization for large datasets
-- built-in pagination rendering via `pagination` prop so feature components stay thinner
-
-Current virtualization defaults used in dashboard users table:
-- `threshold: 120`
-- `rowHeight: 52`
-- `overscan: 8`
-
-## 8) Styling and Theming
-
-### Token System
-
-Source:
-- `packages/design-system/src/styles/tokens.css`
-
-All components consume token variables for:
-- color
-- spacing
-- typography
-- shadows
-- radii
-- motion
-
-### CSS Isolation
-
-- Component styles use CSS Modules (`*.module.css`)
-- Avoid global overrides; prefer component-level tokenized styles
-- Keep selectors scoped and predictable
-- Prefer shared tokenized declarations over repeated rule blocks (for example skeleton shimmer styles)
-
-### Theme Model
-
-- `data-theme` on `<html>`
-- server initializes from cookie in `src/app/layout.tsx`
-- client toggles and persists via design-system theme helpers
-
-## 9) Extension Guidelines
-
-### Add a new dashboard section
-
-1. Create section component(s) under `src/features/dashboard/components`
-2. Add fallback if needed
-3. Register in `dashboardFeatureRegistry`
-4. Keep interactivity in client-only child components
-5. If section has slow server work, add preload/read hooks in `dashboard-streaming.ts`
-
-### Add a new API endpoint
-
-1. Add route in `src/app/api/<name>/route.ts`
-2. Return `ApiResponse<T>` shape
-3. Add parsing and service/repository logic in feature layer
-4. Reuse shared response helpers
-
-### Add a new design-system component
-
-1. Add component folder in `packages/design-system/src/components`
-2. Use only tokens and local module CSS
-3. Export from `packages/design-system/src/index.ts`
-4. Do not import from `src/*`
-
-### Add new i18n copy
-
-1. Add keys in `src/shared/i18n/locales/en.json`
-2. Add matching keys in `src/shared/i18n/locales/es.json`
-3. Use typed key access through shared `t` from `src/shared/i18n`
-4. Translate UI copy only; do not translate dynamic API data unless explicitly required
-
-## 10) Anti-Patterns to Avoid
-
-- Importing up the layer tree (`shared -> feature`, `feature -> app`)
-- Adding `use client` to server-safe components
-- Returning ad-hoc API response shapes
-- Hardcoding style values where token equivalents exist
-- Solving mobile issues with broad CSS overrides instead of component-level fixes
-- Reintroducing duplicated loading/skeleton CSS instead of shared primitives
-- Creating per-component translation instances when shared translator access already exists
+- Challenge 2: Container queries for stat cards (`@container`) so card layout adapts to container width.
+- Challenge 4: Fluid typography and spacing via `clamp()` token formulas for continuous scaling.
