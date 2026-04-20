@@ -1,5 +1,5 @@
 .card {
-  container-type: inline-size;
+  container: stats-card / inline-size;
   height: 100%;
 }
 
@@ -28,6 +28,10 @@
 .metric {
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
+}
+
+.details {
+  min-width: 0;
 }
 
 .value {
@@ -60,9 +64,10 @@
   flex-shrink: 0;
 }
 
-@container (max-width: 18.75rem) {
+@container stats-card (max-width: 18.75rem) {
   .layout {
     grid-template-columns: 1fr;
+    align-items: start;
     justify-items: start;
   }
 

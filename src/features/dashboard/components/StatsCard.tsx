@@ -36,7 +36,7 @@ export function StatsCard({ data }: { data: StatCardData }) {
             <MetricIcon className={styles.metricIcon} />
           </span>
 
-          <div>
+          <div className={styles.details}>
             <p className={styles.metric}>{data.metric}</p>
             <p className={styles.value}>{data.value}</p>
             <span className={`${styles.trend} ${trendClass}`}>

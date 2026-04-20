@@ -25,15 +25,19 @@ async function ChallengesContent() {
         <h2 className={styles.sectionTitle}>{t('page.challenges.challenge2Title')}</h2>
 
         <div className={styles.demoGrid}>
-          <Card>
-            <h3>{t('page.challenges.challenge2SidebarLabel')}</h3>
-            <StatsCard data={sampleCard} />
-          </Card>
+          <aside className={styles.sidebarDemo}>
+            <Card>
+              <h3 className={styles.demoLabel}>{t('page.challenges.challenge2SidebarLabel')}</h3>
+              <StatsCard data={sampleCard} />
+            </Card>
+          </aside>
 
-          <Card>
-            <h3>{t('page.challenges.challenge2MainLabel')}</h3>
-            <StatsCard data={sampleCard} />
-          </Card>
+          <section className={styles.mainDemo}>
+            <Card>
+              <h3 className={styles.demoLabel}>{t('page.challenges.challenge2MainLabel')}</h3>
+              <StatsCard data={sampleCard} />
+            </Card>
+          </section>
         </div>
       </section>
 

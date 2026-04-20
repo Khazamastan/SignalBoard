@@ -23,8 +23,24 @@
 
 .demoGrid {
   display: grid;
-  grid-template-columns: minmax(16rem, 20rem) minmax(0, 1fr);
+  grid-template-columns: minmax(16rem, 18rem) minmax(20rem, 1fr);
+  align-items: start;
   gap: var(--space-md);
+}
+
+.sidebarDemo {
+  width: 100%;
+  max-width: 18rem;
+}
+
+.mainDemo {
+  width: 100%;
+}
+
+.demoLabel {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
 }
 
 .specimen {
