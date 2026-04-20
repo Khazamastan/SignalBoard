@@ -73,11 +73,14 @@
   gap: var(--space-sm);
 }
 
-.typeSpecimen {
-  display: grid;
-  gap: var(--space-xs);
+.specimenPanel {
   border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
   padding-bottom: var(--space-sm);
+}
+
+.typeSpecimen {
+  display: grid;
+  gap: var(--specimen-space-xs, var(--space-xs));
 }
 
 .typeSpecimen > * {
@@ -85,36 +88,36 @@
 }
 
 .specimenH1 {
-  font-size: var(--font-size-2xl);
+  font-size: var(--specimen-font-size-2xl, var(--font-size-2xl));
 }
 
 .specimenH2 {
-  font-size: var(--font-size-xl);
+  font-size: var(--specimen-font-size-xl, var(--font-size-xl));
 }
 
 .specimenH3 {
-  font-size: var(--font-size-lg);
+  font-size: var(--specimen-font-size-lg, var(--font-size-lg));
 }
 
 .specimenH4 {
-  font-size: var(--font-size-md);
+  font-size: var(--specimen-font-size-md, var(--font-size-md));
 }
 
 .specimenH5 {
-  font-size: var(--font-size-sm);
+  font-size: var(--specimen-font-size-sm, var(--font-size-sm));
 }
 
 .specimenH6 {
-  font-size: var(--font-size-xs);
+  font-size: var(--specimen-font-size-xs, var(--font-size-xs));
 }
 
 .specimenBody {
-  font-size: var(--font-size-md);
+  font-size: var(--specimen-font-size-md, var(--font-size-md));
   color: var(--color-text-primary);
 }
 
 .specimenSmall {
-  font-size: var(--font-size-xs);
+  font-size: var(--specimen-font-size-xs, var(--font-size-xs));
   color: var(--color-text-secondary);
 }
 
@@ -130,9 +133,33 @@
   overflow: auto;
 }
 
-.cardFlow {
+.frameLabel {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.framePreview {
   display: grid;
-  gap: var(--space-sm);
+}
+
+.frameLayout {
+  container-type: inline-size;
+  border-radius: var(--radius-sm);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background: var(--color-surface-card);
+  padding: var(--specimen-space-sm, var(--space-sm));
+}
+
+.frameTypeSpecimen {
+  --specimen-font-size-xs: clamp(0.875rem, 0.84rem + 0.18cqi, 1rem);
+  --specimen-font-size-sm: clamp(0.9375rem, 0.88rem + 0.28cqi, 1.0625rem);
+  --specimen-font-size-md: clamp(1rem, 0.94rem + 0.33cqi, 1.1875rem);
+  --specimen-font-size-lg: clamp(1.125rem, 1.02rem + 0.5cqi, 1.5rem);
+  --specimen-font-size-xl: clamp(1.375rem, 1.2rem + 0.9cqi, 2rem);
+  --specimen-font-size-2xl: clamp(1.75rem, 1.45rem + 1.6cqi, 2.875rem);
+  --specimen-space-xs: clamp(0.5rem, 0.45rem + 0.16cqi, 0.75rem);
+  --specimen-space-sm: clamp(0.75rem, 0.68rem + 0.24cqi, 1rem);
 }
 
 @media (max-width: 64rem) {
